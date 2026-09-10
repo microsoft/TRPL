@@ -1,0 +1,295 @@
+.trigger {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px 10px 10px;
+  border: none;
+  border-radius: 2px;
+  background: var(--color-sand-20);
+  color: var(--color-night-sky);
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 80%;
+  cursor: pointer;
+}
+
+/* ============================================
+   TRIGGER ANIMATION VARIANTS
+   Controls how button color transitions between states
+   ============================================ */
+
+/* Fade variant: fast color transitions */
+.triggerFade {
+  transition: background-color 0.2s ease-out, color 0.2s ease-out;
+}
+
+/* Slide variant: slower, more deliberate color transitions */
+.triggerSlide {
+  transition: background-color 0.75s cubic-bezier(0.16, 1, 0.3, 1), color 0.75s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.trigger:hover {
+  background-color: var(--color-sand-75);
+}
+
+.triggerDisabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.triggerDisabled:hover {
+  background-color: var(--color-sand-20);
+}
+
+.trigger:focus-visible {
+  outline: 2px solid var(--color-bright-forest);
+}
+
+.chevron {
+  transition: transform 0.2s ease, filter 0.2s ease;
+}
+
+/* Chevron transitions match trigger animation variants */
+.triggerFade .chevron {
+  transition: transform 0.15s ease-out, filter 0.15s ease-out;
+}
+
+.triggerSlide .chevron {
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), filter 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Styles when dropdown is open */
+.trigger[data-popup-open] .chevron {
+  transform: rotate(180deg);
+}
+
+.positioner {
+  z-index: 200;
+  /* Clip animated content to prevent viewport overflow during slide animation */
+  overflow: hidden;
+  min-width: var(--anchor-width);
+}
+
+.popup {
+  position: relative;
+  background: var(--color-surface);
+  border: 1px solid var(--color-sand);
+  border-radius: 10px 10px 10px 0;
+  padding: 10px 10px 16px;
+  min-width: 200px;
+  width: 100%;
+  outline: none;
+  box-shadow: 0 8px 16px 0 rgba(153, 173, 197, 0.20);
+}
+
+.item {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 10px 12px;
+  cursor: pointer;
+  outline: none;
+  transition: background-color 0.15s ease;
+  color: var(--color-sand);
+}
+
+.item:hover,
+.item[data-highlighted] {
+  background: var(--color-sand-20);
+}
+
+.itemSelected {
+  background: var(--color-sand-20);
+  color: var(--color-night-sky);
+}
+
+.itemSelected .itemDescription {
+  color: var(--color-dark-gray);
+  opacity: 1;
+}
+
+.itemIconWrapper {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  width: 15px;
+  height: 15px;
+  flex-shrink: 0;
+}
+
+.itemIcon {
+  display: grid;
+  place-items: center;
+  width: 15px;
+  height: 15px;
+  border: 1px solid currentColor;
+  border-radius: 50%;
+  color: var(--color-sand-75);
+  font-size: 9px;
+  line-height: 1;
+}
+
+.itemSelected .itemIcon {
+  color: var(--color-blue);
+}
+
+.itemContent {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.itemLabel {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 80%;
+  color: var(--color-dark-gray);
+  opacity: 0.7;
+}
+
+.itemSelected .itemLabel {
+  color: var(--color-night-sky);
+  opacity: 1;
+}
+
+.itemDescription {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 10px;
+  font-weight: 400;
+  line-height: 120%;
+  color: var(--color-dark-gray);
+  opacity: 0.5;
+}
+
+/* ============================================
+   FADE ANIMATION (simple, default)
+   ============================================ */
+
+.animationFade {
+  transition: opacity 0.2s ease-out;
+}
+
+.animationFade[data-starting-style],
+.animationFade[data-ending-style] {
+  opacity: 0;
+}
+
+/* ============================================
+   SLIDE ANIMATION (complex, staggered)
+   ============================================ */
+
+.animationSlide {
+  will-change: transform, opacity, clip-path;
+}
+
+.animationSlide::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  border: 1px solid var(--color-sand);
+  box-shadow: 0 8px 16px 0 rgba(153, 173, 197, 0.20);
+  opacity: 0;
+  transition: opacity 0.1s ease-out;
+  pointer-events: none;
+  z-index: -1;
+}
+
+.animationSlide[data-open]::before {
+  opacity: 1;
+  transition: opacity 0.15s ease-out;
+}
+
+.animationSlide[data-closed]::before {
+  opacity: 0;
+  transition: opacity 0.2s ease-in;
+}
+
+/* Slide animation uses pseudo-element for shadow, but keep border on main element */
+.animationSlide {
+  box-shadow: none;
+  border: 1px solid var(--color-sand);
+}
+
+.animationSlide[data-open] {
+  animation: slidePopupIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.animationSlide[data-closed] {
+  animation: slidePopupOut 0.4s cubic-bezier(0.7, 0, 0.84, 0);
+}
+
+@keyframes slidePopupIn {
+  from {
+    opacity: 0;
+    transform: translateY(150px);
+    clip-path: inset(0 0 100% 0);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+@keyframes slidePopupOut {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+    clip-path: inset(0 0 0 0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(150px);
+    clip-path: inset(0 0 100% 0);
+  }
+}
+
+/* Slide animation for items - staggered open */
+.animationSlide .item {
+  opacity: 0;
+  will-change: transform, opacity;
+  animation: slideItemUp 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animationSlide .item:nth-child(1) { animation-delay: 0ms; }
+.animationSlide .item:nth-child(2) { animation-delay: 50ms; }
+.animationSlide .item:nth-child(3) { animation-delay: 100ms; }
+.animationSlide .item:nth-child(4) { animation-delay: 150ms; }
+
+/* Slide animation for items - reverse stagger close */
+.animationSlide[data-closed] .item {
+  opacity: 1;
+  transform: translateY(0);
+  animation: slideItemDown 0.25s cubic-bezier(0.7, 0, 0.84, 0) forwards;
+}
+
+.animationSlide[data-closed] .item:nth-child(4) { animation-delay: 0ms; }
+.animationSlide[data-closed] .item:nth-child(3) { animation-delay: 50ms; }
+.animationSlide[data-closed] .item:nth-child(2) { animation-delay: 100ms; }
+.animationSlide[data-closed] .item:nth-child(1) { animation-delay: 150ms; }
+
+@keyframes slideItemUp {
+  from {
+    opacity: 0;
+    transform: translateY(50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideItemDown {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(50px);
+  }
+}

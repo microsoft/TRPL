@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Camera-flow Avatar (Debug)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root {
+      --bg: #0f1216;
+      --fg: #e8eaed;
+      --muted: #8a93a3;
+      --accent: #6cd1ff;
+      --warn: #f4b860;
+      --err: #ff6b6b;
+      --ok: #7ec97e;
+    }
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0; padding: 0; height: 100%;
+      background: var(--bg); color: var(--fg);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+    .wrap {
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: flex-start;
+      min-height: 100vh; padding: 24px;
+    }
+    h1 {
+      font-size: 18px; font-weight: 600; margin: 0 0 4px; letter-spacing: 0.5px;
+    }
+    .subtitle {
+      font-size: 13px; color: var(--muted); margin-bottom: 24px;
+    }
+    .video-frame {
+      width: min(720px, 90vw);
+      aspect-ratio: 1 / 1;
+      background: #1a1f27;
+      border: 1px solid #2a313c;
+      border-radius: 12px;
+      position: relative;
+      overflow: hidden;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .video-frame video {
+      width: 100%; height: 100%; object-fit: cover; display: block;
+    }
+    .placeholder {
+      position: absolute; inset: 0;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      color: var(--muted); font-size: 14px; gap: 12px;
+      transition: opacity 0.4s ease;
+    }
+    .placeholder.hidden { opacity: 0; pointer-events: none; }
+    .spinner {
+      width: 32px; height: 32px;
+      border: 3px solid #2a313c; border-top-color: var(--accent);
+      border-radius: 50%; animation: spin 1s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .status-bar {
+      display: flex; flex-wrap: wrap; gap: 18px;
+      margin-top: 16px; font-size: 13px; color: var(--muted);
+    }
+    .status-bar b { color: var(--fg); font-weight: 500; }
+    .pill {
+      display: inline-block; padding: 2px 10px; border-radius: 10px;
+      background: #2a313c; color: var(--muted); font-size: 12px;
+    }
+    .pill.ok { background: rgba(126, 201, 126, 0.15); color: var(--ok); }
+    .pill.warn { background: rgba(244, 184, 96, 0.15); color: var(--warn); }
+    .pill.err { background: rgba(255, 107, 107, 0.15); color: var(--err); }
+    .caption {
+      margin-top: 14px;
+      width: min(720px, 90vw);
+      min-height: 36px;
+      padding: 8px 14px;
+      background: rgba(108, 209, 255, 0.08);
+      border: 1px solid rgba(108, 209, 255, 0.2);
+      border-radius: 8px;
+      font-size: 14px; color: var(--fg);
+      font-style: italic;
+    }
+    .caption:empty { display: none; }
+    .footer {
+      margin-top: 28px; font-size: 12px; color: var(--muted);
+      max-width: 720px; text-align: center; line-height: 1.6;
+    }
+    button#unmute {
+      margin-top: 12px;
+      padding: 8px 18px;
+      background: var(--accent); color: #0f1216;
+      border: none; border-radius: 6px; cursor: pointer;
+      font-weight: 600; display: none;
+    }
+    button#unmute.show { display: inline-block; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>📷 Camera-flow Avatar Debug</h1>
+    <p class="subtitle">Local kiosk integration test — joins a kiosk-prefixed LiveKit room</p>
+
+    <div class="video-frame">
+      <video id="avatar-video" autoplay playsinline></video>
+      <div class="placeholder" id="placeholder">
+        <div class="spinner"></div>
+        <div id="placeholder-text">Connecting to LiveKit…</div>
+      </div>
+    </div>
+
+    <button id="unmute">🔊 Tap to enable audio</button>
+
+    <div class="status-bar">
+      <span>Room: <b id="room-name">—</b></span>
+      <span>Status: <span class="pill" id="status-pill">disconnected</span></span>
+      <span>Avatar: <span class="pill" id="avatar-pill">waiting</span></span>
+    </div>
+
+    <div class="caption" id="caption"></div>
+
+    <div class="footer">
+      Keep this tab open to hold the kiosk session alive.<br/>
+      Closing the tab releases the LiveKit room and any LemonSlice avatar minutes in flight.<br/>
+      Run <code>camera_platform</code> locally pointing <code>AGENT_SERVER_URL</code> at this VM to see TR respond to camera events.
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/livekit-client/dist/livekit-client.umd.min.js"></script>
+  <script>
+    const $ = (id) => document.getElementById(id);
+    const videoEl = $("avatar-video");
+    const placeholder = $("placeholder");
+    const placeholderText = $("placeholder-text");
+    const statusPill = $("status-pill");
+    const avatarPill = $("avatar-pill");
+    const roomNameEl = $("room-name");
+    const captionEl = $("caption");
+    const unmuteBtn = $("unmute");
+
+    const audioElements = [];
+    let room = null;
+
+    const setStatus = (s, cls = "") => {
+      statusPill.textContent = s;
+      statusPill.className = "pill" + (cls ? " " + cls : "");
+    };
+    const setAvatar = (s, cls = "") => {
+      avatarPill.textContent = s;
+      avatarPill.className = "pill" + (cls ? " " + cls : "");
+    };
+    const setPlaceholder = (txt) => {
+      placeholderText.textContent = txt;
+      placeholder.classList.remove("hidden");
+    };
+    const hidePlaceholder = () => placeholder.classList.add("hidden");
+
+    async function tryPlay(audioEl) {
+      try {
+        await audioEl.play();
+      } catch (e) {
+        console.warn("audio autoplay blocked:", e.message);
+        unmuteBtn.classList.add("show");
+      }
+    }
+    unmuteBtn.addEventListener("click", async () => {
+      for (const a of audioElements) await tryPlay(a);
+      unmuteBtn.classList.remove("show");
+    });
+
+    async function connect() {
+      setStatus("requesting token");
+      try {
+        const r = await fetch(`/api/token?mode=kiosk&identity=kiosk-debug-${Date.now()}`);
+        const data = await r.json();
+        if (data.error) {
+          setStatus("token error", "err");
+          setPlaceholder("Token error: " + data.error);
+          return;
+        }
+        roomNameEl.textContent = data.room;
+
+        setStatus("connecting", "warn");
+        setPlaceholder("Connecting to LiveKit…");
+
+        room = new LivekitClient.Room({ adaptiveStream: true, dynacast: true });
+
+        room.on(LivekitClient.RoomEvent.ParticipantConnected, (p) => {
+          if (p.identity && p.identity.toLowerCase().includes("lemonslice")) {
+            setAvatar("waking", "warn");
+            setPlaceholder("Avatar is waking up…");
+          }
+        });
+
+        room.on(LivekitClient.RoomEvent.TrackSubscribed, (track, pub, p) => {
+          console.log("[livekit] track:", track.kind, "from", p && p.identity);
+          if (track.kind === "video") {
+            track.attach(videoEl);
+            videoEl.addEventListener("playing", () => {
+              hidePlaceholder();
+              setAvatar("ready", "ok");
+            }, { once: true });
+            setTimeout(() => { hidePlaceholder(); setAvatar("ready", "ok"); }, 2000);
+          }
+          if (track.kind === "audio") {
+            const audioEl = track.attach();
+            audioEl.autoplay = true;
+            audioEl.playsInline = true;
+            document.body.appendChild(audioEl);
+            audioElements.push(audioEl);
+            tryPlay(audioEl);
+          }
+        });
+
+        room.on(LivekitClient.RoomEvent.TranscriptionReceived, (segs, p) => {
+          if (!segs || !segs.length) return;
+          const senderId = p && p.identity;
+          // Show only remote (TR) transcripts; suppress the kiosk-debug identity.
+          if (senderId && senderId.startsWith("kiosk-debug-")) return;
+          const text = segs.map((s) => s.text).join(" ").trim();
+          if (text) captionEl.textContent = text;
+        });
+
+        room.on(LivekitClient.RoomEvent.Disconnected, () => {
+          setStatus("disconnected", "err");
+          setAvatar("gone", "err");
+          setPlaceholder("Disconnected. Reload to reconnect.");
+        });
+
+        await room.connect(data.url, data.token);
+        setStatus("connected", "ok");
+        // LiveKit is connected, but LemonSlice still has to cold-start its
+        // avatar process and join the room as a participant. That takes
+        // 60–180s on a cold worker. Show a countdown so it doesn't look
+        // hung. The placeholder will be replaced when ParticipantConnected
+        // fires for the lemonslice identity (see handler above).
+        const startedAt = Date.now();
+        const tick = setInterval(() => {
+          const elapsed = Math.floor((Date.now() - startedAt) / 1000);
+          if (placeholder.classList.contains("hidden")) { clearInterval(tick); return; }
+          if (avatarPill.textContent !== "waiting") { clearInterval(tick); return; }
+          setPlaceholder(`Connected. Waiting for avatar… (${elapsed}s, cold start can take up to ~3 min)`);
+        }, 1000);
+      } catch (e) {
+        console.error("connect failed:", e);
+        setStatus("error", "err");
+        setPlaceholder("Connection failed: " + (e.message || e));
+      }
+    }
+
+    // Make sure we release the LiveKit room when the tab is closed —
+    // critical because LemonSlice minutes burn until the room empties.
+    window.addEventListener("pagehide", () => {
+      if (room) {
+        try { room.disconnect(); } catch (_) {}
+      }
+    });
+
+    connect();
+  </script>
+</body>
+</html>

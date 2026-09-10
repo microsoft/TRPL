@@ -1,0 +1,34 @@
+{
+  "prompts": [
+    {
+      "id": "square-deal-sources",
+      "text": "Find sources on the Square Deal ideology",
+      "action": "Do research",
+      "topic": "Square Deal"
+    },
+    {
+      "id": "tr-taft-letters",
+      "text": "Do research on letters between TR and Taft",
+      "action": "Do research",
+      "topic": "letters between TR and Taft"
+    },
+    {
+      "id": "rough-riders-images",
+      "text": "Find images on the Rough Riders",
+      "action": "Find images",
+      "topic": "Rough Riders"
+    },
+    {
+      "id": "antitrust-research",
+      "text": "Research TR's antitrust policies",
+      "action": "Do research",
+      "topic": "antitrust actions"
+    },
+    {
+      "id": "conservation-lesson",
+      "text": "Build a lesson on TR's conservation legacy",
+      "action": "Build a lesson plan",
+      "topic": "Roosevelt's presidency"
+    }
+  ]
+}

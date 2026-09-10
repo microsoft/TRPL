@@ -1,0 +1,78 @@
+/* ================================
+   Artifact Gallery - Simple Scrollable
+   ================================ */
+
+.container {
+  width: 100%;
+  height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  cursor: grab;
+  /* Center the column */
+  display: flex;
+  justify-content: center;
+  /* Hide scrollbar but allow scroll */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE/Edge */
+}
+
+.container::-webkit-scrollbar {
+  display: none; /* Chrome/Safari/Opera */
+}
+
+.container:active {
+  cursor: grabbing;
+}
+
+/* ================================
+   Single Column Layout
+   ================================ */
+.column {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 14px 0;
+  /* Shift column 75px left from center */
+  margin-left: -75px;
+}
+
+/* ================================
+   Image Wrapper & Styles
+   ================================ */
+.imageWrapper {
+  width: 200px;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
+  outline: none;
+  /* Prevent flex shrinking so wrapper sizes to image content */
+  flex-shrink: 0;
+}
+
+.imageWrapper:hover {
+  transform: scale(1.02);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.imageWrapper:focus-visible {
+  outline: 2px solid var(--color-bright-forest);
+  outline-offset: 2px;
+}
+
+.image {
+  display: block;
+  width: 200px;
+  height: auto;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* ================================
+   Empty State
+   ================================ */
+.emptyMessage {
+  padding: 2rem;
+  text-align: center;
+  color: var(--color-text-secondary, #666);
+}

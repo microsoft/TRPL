@@ -1,0 +1,89 @@
+.modal {
+  max-width: 650px;
+  background-color: #fff;
+  padding-top: 24px;
+  padding-bottom: 24px;
+}
+
+.modal :global(button[aria-label="Close"]) {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: var(--color-sand-50);
+  font-size: 22px;
+  color: var(--color-blue);
+}
+
+.modal :global(button[aria-label="Close"]):hover {
+  background: var(--color-sand-75);
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.headline {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 120%;
+  color: var(--color-dark-gray);
+  margin: 0;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.description {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 10px;
+  font-weight: 400;
+  line-height: 140%;
+  color: var(--color-dark-gray);
+  margin: 0;
+}
+
+.dropdown {
+  max-width: 250px;
+  width: 100%;
+  justify-content: space-between;
+  border: 1px solid var(--color-sand);
+  border-radius: 2px;
+  padding: 12px;
+  background-color: var(--color-surface);
+}
+
+.textarea {
+  width: 100%;
+  padding: var(--space-sm) var(--space-md);
+  border: 1px solid var(--color-sand);
+  border-radius: 12px;
+  background-color: var(--color-surface);
+  color: var(--color-ink);
+  font-family: var(--font-display);
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 130%;
+  min-height: 120px;
+  resize: vertical;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.textarea::placeholder {
+  color: var(--color-muted);
+}
+
+.textarea:focus {
+  outline: none;
+  border-color: var(--color-night-sky);
+}
+
+.submitButton {
+  display: flex;
+  justify-content: flex-start;
+}

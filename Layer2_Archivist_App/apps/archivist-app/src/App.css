@@ -1,0 +1,145 @@
+
+/* src/app.css */
+
+/*
+The `@import "tailwindcss";` directive is the entry point
+for the Tailwind CSS framework. It generates all of Tailwind's
+utility classes based on your theme.
+*/
+@import "tailwindcss";
+
+/*
+The `@theme` at-rule is where you define your custom design tokens.
+Each property maps directly to a category of Tailwind utilities.
+*/
+@theme {
+  /* Define a custom font family. */
+  --font-inter: Arial, sans-serif;
+  --font-anton: Impact, Arial, sans-serif;
+  --font-clearface: Georgia, 'Times New Roman', serif;
+  --font-source-serif: Georgia, 'Times New Roman', serif;
+  /* Define your custom color palette.
+     The `--color-` prefix is used to generate color utilities like `bg-museum-50`. */
+  --color-museum-50: #f8fafc;
+  --color-museum-100: #f1f5f9;
+  --color-museum-200: #e2e8f0;
+  --color-museum-300: #cbd5e1;
+  --color-museum-400: #94a3b8;
+  --color-museum-500: #64748b;
+  --color-museum-600: #475569;
+  --color-museum-700: #334155;
+  --color-museum-800: #1e293b;
+  --color-museum-900: #0f172a;
+  --color-museum-950: #36454F;
+  /* --color-museum-accent: #F4AB6A; */
+  --color-museum-accent:#e7805d;
+  --color-museum-green: #41644A;
+
+  /*
+  To define custom animations, you use the `--animation-` prefix.
+  The value is a reference to a keyframe animation and its properties.
+  */
+  --animation-fade-in: fadeIn 0.3s ease-in-out;
+  --animation-slide-in: slideIn 0.3s ease-out;
+}
+/* Custom utility class for fonts */
+.font-anton {
+  font-family: var(--font-anton);
+}
+
+.font-source-serif {
+  font-family: var(--font-source-serif);
+}
+body {
+  font-family: var(--font-clearface);
+  color: var(--color-museum-900);
+  background-color: var(--color-museum-50);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+/*
+To define custom keyframes, you use the standard `@keyframes` at-rule in CSS.
+These keyframes are then referenced in the `--animation-` theme variables above.
+*/
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes slideIn {
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+
+/* In your main CSS file, e.g., src/app.css */
+
+/* This targets WebKit browsers like Chrome, Safari, and Edge. */
+/* Custom Scrollbar for modern browsers */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 16px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background-color: #333333; /* Dark gray background */
+  border-radius: 8px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background-color: #bbbbbb; /* Light gray thumb */
+  border-radius: 8px;
+  border: 3px solid #333333; /* Creates inset look */
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background-color: #999999;
+}
+
+/* Firefox support */
+.custom-scrollbar {
+  scrollbar-color: #bbbbbb #333333; /* thumb, track */
+  scrollbar-width: auto;
+}
+/* OCR */
+.ocr-scrollbar::-webkit-scrollbar-track {
+  background: #f0f0f0; /* light background */
+  border-radius: 8px;
+}
+
+.ocr-scrollbar::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #cbd5e1, #94a3b8);
+  border-radius: 8px;
+}
+
+.ocr-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #94a3b8, #64748b);
+}
+
+/* Firefox support for light scrollbar */
+.ocr-scrollbar {
+  scrollbar-color: #94a3b8 #f0f0f0;
+  scrollbar-width: thin;
+}
+
+
+#root {
+  width: 100%;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.card {
+  padding: 2em;
+}
+
+.read-the-docs {
+  color: #888;
+}

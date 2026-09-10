@@ -1,0 +1,13 @@
+# Bun configuration
+# See: https://bun.sh/docs/runtime/bunfig
+
+[install]
+# Refuse to install package versions younger than 7 days. Mitigates rapid
+# supply-chain attacks (chalk/debug, Shai-Hulud) which are typically detected
+# and yanked within hours-to-days of publication.
+minimumReleaseAge = 604800
+minimumReleaseAgeExcludes = ["@types/node", "typescript"]
+
+[test]
+# Preload happy-dom for browser globals (window, document, etc.)
+preload = ["./test-setup-bun.ts"]

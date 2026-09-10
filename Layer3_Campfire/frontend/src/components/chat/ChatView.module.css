@@ -1,0 +1,797 @@
+/* ================================
+   Chat Page Layout
+   ================================ */
+.main {
+  height: 100vh;
+  position: relative;
+  overflow: hidden; /* Prevent page scroll - layout scrolls instead */
+
+  /* Flexbox layout - chatbar is in normal flow, no magic numbers needed */
+  display: flex;
+  flex-direction: column;
+
+  /* Side padding — single source of truth for all children */
+  --main-padding-right: 30px;
+  padding-left: 30px;
+  padding-right: var(--main-padding-right);
+}
+
+/* Fixed background covers full viewport including margin area */
+.main::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  /* White background with subtle blue gradient from bottom */
+  background:
+    linear-gradient(0deg, rgba(153, 173, 197, 0.20) 0%, rgba(153, 173, 197, 0.00) 100%),
+    var(--color-surface);
+  z-index: 0;
+  pointer-events: none;
+}
+
+@media (min-width: 768px) {
+  .main {
+    --main-padding-right: 60px;
+    padding-left: 60px;
+    padding-right: var(--main-padding-right);
+  }
+}
+
+/* Desktop: add margin for sidebar */
+@media (min-width: 1200px) {
+  .main {
+    /* Initial margin for sidebar space - GSAP animates this on toggle */
+    margin-right: min(450px, 33%);
+    --main-padding-right: 60px;
+    padding-left: 128px;
+    padding-right: var(--main-padding-right);
+  }
+}
+
+/* Ensure content is above overlays */
+.main > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* ================================
+   Header Row - All breakpoints
+   Contains back button (all sizes) and artifacts toggle (mobile/tablet)
+   ================================ */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-shrink: 0;
+  padding-top: 24px;
+  padding-bottom: var(--space-md);
+  /* Initial hidden state for GSAP entrance animation */
+  opacity: 0;
+  z-index: 25;
+}
+
+.headerBackButton {
+  display: flex;
+  align-items: center;
+  min-width: 40px;
+  height: 40px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background 0.2s ease, border-radius 0.2s ease;
+}
+
+.headerBackButton:hover,
+.headerBackButton:focus-visible {
+  background: var(--color-sand-50);
+  border-radius: 20px 0 0 20px;
+}
+
+.headerBackButton:focus-visible {
+  outline: 2px solid var(--color-bright-forest);
+}
+
+.headerBackLabel {
+  max-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  opacity: 0;
+  padding-left: 0;
+  padding-right: 0;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 120%;
+  color: var(--color-dark-gray);
+  transition: max-width 0.3s ease, opacity 0.2s ease, padding 0.3s ease;
+}
+
+.headerBackButton:hover .headerBackLabel,
+.headerBackButton:focus-visible .headerBackLabel {
+  max-width: 200px;
+  opacity: 1;
+  padding-left: 10px;
+  padding-right: 16px;
+}
+
+@media (min-width: 1200px) {
+  .headerBackButton {
+    position: relative;
+    left: -80px;
+  }
+}
+
+/* History toggle button - always visible */
+.headerHistoryToggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  padding: 8px;
+  border: none;
+  border-radius: 50%;
+  background: var(--color-sand-50);
+  cursor: pointer;
+  transition: background-color 0.2s ease, opacity 0.3s ease;
+  position: fixed;
+  top: 24px;
+  right: 40px;
+  z-index: 5;
+  /* Fade in animation */
+  animation: fadeIn 0.5s ease-in forwards;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.headerHistoryToggle:hover {
+  background: var(--color-sand);
+}
+
+.headerHistoryToggle:focus-visible {
+  outline: 2px solid var(--color-bright-forest);
+  outline-offset: 2px;
+}
+
+.headerHistoryToggleIcon {
+  position: relative;
+  display: inline-block;
+  width: 22px;
+  height: 17px;
+}
+
+.headerHistoryToggleIconDefault,
+.headerHistoryToggleIconHover {
+  position: absolute;
+  inset: 0;
+  transition: opacity 0.2s ease;
+}
+
+.headerHistoryToggleIconHover {
+  opacity: 0;
+}
+
+.headerHistoryToggle:hover .headerHistoryToggleIconDefault,
+.headerHistoryToggle:focus-visible .headerHistoryToggleIconDefault {
+  opacity: 0;
+}
+
+.headerHistoryToggle:hover .headerHistoryToggleIconHover,
+.headerHistoryToggle:focus-visible .headerHistoryToggleIconHover {
+  opacity: 1;
+}
+
+.headerHistoryToggleHidden {
+  opacity: 0 !important;
+  pointer-events: none;
+  animation: none;
+  transition: opacity 0.3s ease;
+}
+
+/* Mobile controls container - New Chat + Show recent chats */
+.headerMobileControls {
+  display: none;
+  align-items: center;
+  gap: 8px;
+}
+
+@media (max-width: 1199px) {
+  .headerMobileControls {
+    display: flex;
+  }
+}
+
+/* New Chat button - mobile/tablet */
+.headerNewChatMobile {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 16px;
+  height: 40px;
+  border: none;
+  border-radius: 6px;
+  background: var(--color-sand-50);
+  color: var(--color-night-sky);
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.2;
+  cursor: pointer;
+  animation: fadeIn 0.5s ease-in forwards;
+  transition: background-color 0.2s ease;
+}
+
+.headerNewChatMobile:hover {
+  background: var(--color-sand);
+}
+
+.headerNewChatMobile:focus-visible {
+  outline: 2px solid var(--color-bright-forest);
+  outline-offset: 2px;
+}
+
+/* Mobile chat history toggle */
+.headerHistoryToggleMobile {
+  display: none;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  height: 40px;
+  border: none;
+  border-radius: 6px;
+  background: var(--color-sand-50);
+  color: var(--color-night-sky);
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.2;
+  cursor: pointer;
+  animation: fadeIn 0.5s ease-in forwards;
+  /* Slow, deliberate color transition matching Discovery Mode dropdown */
+  transition: background-color 0.75s cubic-bezier(0.16, 1, 0.3, 1), color 0.75s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.headerHistoryToggleMobile:hover {
+  background: var(--color-sand);
+}
+
+.headerHistoryToggleMobile:focus-visible {
+  outline: 2px solid var(--color-bright-forest);
+  outline-offset: 2px;
+}
+
+/* Open state - dark background, light text (matches Discovery Mode dropdown trigger) */
+.headerHistoryToggleMobile[data-popup-open] {
+  background: var(--color-night-sky);
+  color: var(--color-surface);
+}
+
+.headerHistoryToggleMobile[data-popup-open]:hover {
+  background: var(--color-night-sky);
+}
+
+/* Chevron rotation when open */
+.headerHistoryToggleMobile[data-popup-open] .headerHistoryToggleChevron {
+  transform: rotate(180deg);
+}
+
+.headerHistoryToggleLabel {
+  white-space: nowrap;
+}
+
+.headerHistoryToggleChevron {
+  width: 8px;
+  height: 4px;
+  color: currentColor;
+  /* Match the slow, deliberate transition of the trigger button */
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Positioner for Base UI Menu */
+.historyDropdownPositioner {
+  z-index: 100;
+}
+
+/* Mobile/tablet chat history dropdown - Base UI handles positioning */
+.historyDropdown {
+  width: min(360px, calc(100vw - 40px));
+  border: 1px solid var(--color-sand);
+  border-radius: 10px 0 10px 10px;
+  background: var(--color-surface);
+  /* Shadow handled by ::before pseudo-element for animated fade */
+  box-shadow: none;
+  overflow: visible;
+  outline: none;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+.historyDropdownList {
+  max-height: min(50vh, 360px);
+  overflow-y: auto;
+  padding: 10px 10px 16px;
+  /* Mobile touch scroll enhancements */
+  -webkit-overflow-scrolling: touch; /* Smooth momentum scrolling on iOS */
+  overscroll-behavior: contain; /* Prevent scroll chaining to parent/body */
+}
+
+.historyDropdownMessage {
+  padding: 10px 10px 16px;
+  font-family: var(--font-display);
+  font-size: 0.875rem;
+  color: var(--color-dark-gray);
+}
+
+/* Reset Menu.Item default styles */
+.historyDropdownItem {
+  all: unset;
+  display: block;
+  cursor: pointer;
+}
+
+@media (max-width: 1199px) {
+  .historyDropdown {
+    will-change: transform, opacity, clip-path;
+    pointer-events: none;
+    opacity: 0;
+    transform: translateY(-150px);
+    clip-path: inset(100% 0 0 0); /* Clip from TOP - reveals top-to-bottom */
+    visibility: hidden;
+    transition:
+      visibility 0s linear 0.4s;
+  }
+
+  /* Shadow pseudo-element - fades in/out separately for cleaner animation */
+  .historyDropdown::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    /* Only shadow - border is on main element */
+    box-shadow: 0 8px 16px 0 rgba(153, 173, 197, 0.20);
+    opacity: 0;
+    transition: opacity 0.1s ease-out;
+    pointer-events: none;
+    z-index: -1;
+  }
+
+  .historyDropdown[data-open]::before {
+    opacity: 1;
+    transition: opacity 0.15s ease-out;
+  }
+
+  .historyDropdown[data-closed]::before {
+    opacity: 0;
+    transition: opacity 0.2s ease-in;
+  }
+
+  .historyDropdown[data-open] {
+    pointer-events: auto;
+    visibility: visible;
+    animation: historyDropdownIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  .historyDropdown[data-closed] {
+    pointer-events: none;
+    visibility: hidden;
+    animation: historyDropdownOut 0.4s cubic-bezier(0.7, 0, 0.84, 0) forwards;
+  }
+
+  /* Item stagger animations - target Menu.Item elements */
+  .historyDropdownItem {
+    opacity: 0;
+    will-change: transform, opacity;
+  }
+
+  .historyDropdown[data-open] .historyDropdownItem {
+    animation: historyItemIn 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  .historyDropdown[data-open] .historyDropdownItem:nth-child(1) { animation-delay: 0ms; }
+  .historyDropdown[data-open] .historyDropdownItem:nth-child(2) { animation-delay: 50ms; }
+  .historyDropdown[data-open] .historyDropdownItem:nth-child(3) { animation-delay: 100ms; }
+  .historyDropdown[data-open] .historyDropdownItem:nth-child(4) { animation-delay: 150ms; }
+  .historyDropdown[data-open] .historyDropdownItem:nth-child(5) { animation-delay: 200ms; }
+  .historyDropdown[data-open] .historyDropdownItem:nth-child(6) { animation-delay: 250ms; }
+
+  /* Reverse stagger on close - last items animate out first */
+  .historyDropdown[data-closed] .historyDropdownItem {
+    opacity: 1;
+    transform: translateY(0);
+    animation: historyItemOut 0.25s cubic-bezier(0.7, 0, 0.84, 0) forwards;
+  }
+
+  .historyDropdown[data-closed] .historyDropdownItem:nth-last-child(1) { animation-delay: 0ms; }
+  .historyDropdown[data-closed] .historyDropdownItem:nth-last-child(2) { animation-delay: 50ms; }
+  .historyDropdown[data-closed] .historyDropdownItem:nth-last-child(3) { animation-delay: 100ms; }
+  .historyDropdown[data-closed] .historyDropdownItem:nth-last-child(4) { animation-delay: 150ms; }
+  .historyDropdown[data-closed] .historyDropdownItem:nth-last-child(5) { animation-delay: 200ms; }
+  .historyDropdown[data-closed] .historyDropdownItem:nth-last-child(6) { animation-delay: 250ms; }
+}
+
+/* Dropdown emerges from under the button - reveals top-to-bottom */
+@keyframes historyDropdownIn {
+  from {
+    opacity: 0;
+    transform: translateY(-150px);
+    clip-path: inset(100% 0 0 0); /* Fully clipped from top */
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    clip-path: inset(0 0 0 0); /* Fully revealed */
+  }
+}
+
+@keyframes historyDropdownOut {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+    clip-path: inset(0 0 0 0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-150px);
+    clip-path: inset(100% 0 0 0); /* Clips back up from top */
+  }
+}
+
+/* Items slide DOWN into place (emerging from under button) */
+@keyframes historyItemIn {
+  from {
+    opacity: 0;
+    transform: translateY(-50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes historyItemOut {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-50px);
+  }
+}
+
+@media (max-width: 1199px) {
+  .headerHistoryToggle {
+    display: none;
+  }
+
+  .headerHistoryToggleMobile {
+    display: inline-flex;
+  }
+}
+
+/* Default state (collapsed) - dark forest background, white text */
+.headerArtifactsToggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 2px;
+  background: var(--color-hunter-green);
+  color: var(--color-surface);
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.headerArtifactsToggle:hover {
+  background: var(--color-night-sky);
+}
+
+.headerArtifactsToggle:focus-visible {
+  outline: 2px solid var(--color-bright-forest);
+}
+
+/* Expanded state - lighter tan background, dark text */
+.headerArtifactsToggleOpen {
+  background: var(--color-sand-50);
+  color: var(--color-night-sky);
+}
+
+.headerArtifactsToggleOpen:hover {
+  background: var(--color-sand);
+}
+
+.headerChevron {
+  transition: transform 0.2s ease, filter 0.2s ease;
+  /* Invert to white for dark background (closed state) */
+  filter: brightness(0) invert(1);
+}
+
+.headerChevronOpen {
+  transform: rotate(180deg);
+  /* Reset to dark for light background (open state) */
+  filter: none;
+}
+
+.layout {
+  --scrollbar-reserve: 15px;
+
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+  /* Buffer matches the 30px fade zone so content is fully visible when scrolled to top/bottom */
+  padding-top: 30px;
+  padding-bottom: 30px;
+  /* Extend to right edge so scrollbar sits at viewport edge, not against content */
+  margin-right: calc(-1 * var(--main-padding-right));
+  padding-right: var(--main-padding-right);
+  /* Flex child - takes remaining space after chatbar */
+  flex: 1;
+  min-height: 0; /* Critical for overflow to work in flex child */
+  overflow-y: auto;
+  position: relative;
+  z-index: 1;
+  /* Auto-hide scrollbar - transparent by default, visible on hover */
+  scrollbar-color: transparent transparent;
+
+  /* Fade content at top and bottom edges — uses mask so page gradient shows through.
+     Two mask layers:
+       1. Fade gradient covering the content area (excludes scrollbar)
+       2. Fully opaque strip covering the scrollbar area (always visible)
+     Combined with mask-composite so scrollbar is never faded. */
+  -webkit-mask-image:
+    linear-gradient(to bottom, transparent 0px, black 30px, black calc(100% - 30px), transparent 100%),
+    linear-gradient(black, black);
+  -webkit-mask-size:
+    calc(100% - var(--scrollbar-reserve)) 100%,
+    var(--scrollbar-reserve) 100%;
+  -webkit-mask-position: left, right;
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-composite: source-over;
+
+  mask-image:
+    linear-gradient(to bottom, transparent 0px, black 30px, black calc(100% - 30px), transparent 100%),
+    linear-gradient(black, black);
+  mask-size:
+    calc(100% - var(--scrollbar-reserve)) 100%,
+    var(--scrollbar-reserve) 100%;
+  mask-position: left, right;
+  mask-repeat: no-repeat;
+  mask-composite: add;
+}
+
+/* Show scrollbar on hover */
+.layout:hover {
+  scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
+}
+
+/* ================================
+   Chat Area
+   ================================ */
+.chatArea {
+  /* GSAP handles initial opacity and animation - no CSS opacity needed */
+}
+
+.messageList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+}
+
+/* Message rows - full width containers for alignment */
+.messageRow {
+  display: flex;
+  width: 100%;
+}
+
+.messageRowUser {
+  justify-content: flex-end;
+}
+
+.messageRowAssistant {
+  justify-content: flex-start;
+  max-width: 96%;
+}
+
+.userQuery {
+  display: inline-block;
+  padding: 12px 16px;
+  border-radius: 2px;
+  background: rgba(153, 173, 197, 0.20);
+  font-family: var(--font-display);
+  font-size: 16px;
+  font-weight: 400;
+  color: var(--color-dark-gray);
+  line-height: 130%;
+  max-width: 80%;
+}
+
+.responseArea {
+  /* Full width - let content flow naturally */
+}
+
+/* ================================
+   Suggested Prompts - Outline style chips
+   ================================ */
+.suggestedPrompts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+  pointer-events: auto; /* Enable clicks since it's outside chatbarCard */
+}
+
+@media (min-width: 1200px) {
+  .suggestedPrompts {
+    padding-left: var(--space-lg); /* Align with chatbarCard content */
+  }
+}
+
+.viewMoreChip {
+  gap: 4px;
+}
+
+/* ================================
+   Bottom Chatbar (in-flow, not fixed)
+   ================================ */
+.chatbar {
+  /* In normal document flow - flexbox handles positioning */
+  flex-shrink: 0; /* Don't compress chatbar */
+  z-index: 10;
+  padding-top: calc(var(--space-lg) * 2); /* Double top padding for buffer */
+  padding-bottom: var(--space-lg);
+  /* No side padding — inherited from .main */
+  pointer-events: none; /* Allow clicks to pass through to page */
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  /* Initial hidden state for entrance animation - use opacity only for focusability */
+  opacity: 0;
+}
+
+.chatbarCard {
+  width: 100%;
+  background: var(--color-surface);
+  border-radius: 8px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+  padding: var(--space-md) var(--space-lg) var(--space-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  pointer-events: auto; /* Re-enable clicks on the card */
+}
+
+.disclaimer {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 12px;
+  color: #706F6C;
+  text-align: center;
+  margin: 4px 0 0;
+}
+
+/* ================================
+   Input Container
+   ================================ */
+.inputContainer {
+  display: flex;
+  align-items: flex-end;
+  gap: var(--space-sm);
+  width: 100%;
+}
+
+.input {
+  flex: 1;
+  padding: var(--space-sm) 0;
+  border: none;
+  background: transparent;
+  color: var(--color-dark-gray);
+  font-family: var(--font-display);
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 130%;
+  resize: none;
+  overflow-y: hidden;
+}
+
+.input::placeholder {
+  color: var(--color-dark-gray);
+  opacity: 0.5;
+}
+
+.input:focus {
+  outline: none;
+}
+
+.submitButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border: none;
+  background-color: var(--color-sand-50, #E8E4D9);
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  flex-shrink: 0;
+}
+
+.submitButton:hover:not(:disabled) {
+  background-color: var(--color-sand);
+}
+
+.submitButton:disabled {
+  opacity: 0.33;
+  cursor: not-allowed;
+}
+
+.submitButton:focus-visible {
+  outline: 2px solid var(--color-bright-forest);
+  background-color: var(--color-sand);
+}
+
+.submitButtonActive {
+  background-color: var(--color-deep-orange);
+}
+
+.submitButtonActive:hover:not(:disabled) {
+  background-color: var(--color-deep-orange-hover);
+}
+
+.submitButtonActive:hover:not(:disabled) img {
+  filter: brightness(0) invert(1);
+}
+
+.submitButtonActive:focus-visible {
+  background-color: var(--color-deep-orange-hover);
+}
+
+.submitButtonActive:focus-visible img {
+  filter: brightness(0) invert(1);
+}
+
+/* ================================
+   Action Bar - Text links style
+   ================================ */
+.actionBar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-md);
+}
+
+/* Hide on mobile, show on tablet+ */
+/* Using !important to override component-level display styles (e.g., Toolbar.Button's inline-flex) */
+.desktopOnly {
+  display: none !important;
+}
+
+@media (min-width: 768px) {
+  .desktopOnly {
+    display: flex !important;
+  }
+}
+
+/* ================================
+   Background Overlay for Transitions
+   ================================ */
+.backgroundOverlay {
+  position: fixed;
+  inset: 0;
+  background: linear-gradient(0deg, rgba(153, 173, 197, 0.20) 0%, rgba(153, 173, 197, 0.00) 100%),
+    var(--color-surface);
+  z-index: 50;
+  pointer-events: none;
+  opacity: 1;
+}

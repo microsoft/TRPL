@@ -1,0 +1,104 @@
+.page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 48px 48px;
+  background:
+    linear-gradient(180deg, var(--color-gray-sky) 0, var(--color-paper-blue) 400px, var(--color-surface) 400px);
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  width: 100%;
+  margin: 0 0 24px;
+}
+
+.backButton {
+  display: flex;
+  align-items: center;
+  min-width: 40px;
+  height: 40px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background 0.2s ease, border-radius 0.2s ease;
+}
+
+.backButton:hover,
+.backButton:focus-visible {
+  background: rgb(from var(--color-dark-gray-sky) r g b / 0.5);
+  border-radius: 20px 0 0 20px;
+}
+
+.backButton:focus-visible {
+  outline: 2px solid var(--color-bright-forest);
+}
+
+.backLabel {
+  max-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  opacity: 0;
+  padding-left: 0;
+  padding-right: 0;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 120%;
+  color: var(--color-surface);
+  transition: max-width 0.3s ease, opacity 0.2s ease, padding 0.3s ease;
+}
+
+.backButton:hover .backLabel,
+.backButton:focus-visible .backLabel {
+  max-width: 200px;
+  opacity: 1;
+  padding-left: 10px;
+  padding-right: 16px;
+}
+
+.content {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.placeholder {
+  color: var(--color-dark-gray, #25282a);
+  font-family: var(--font-body);
+  font-size: 24px;
+  font-weight: 700;
+  text-transform: uppercase;
+  text-align: center;
+  margin-top: 80px;
+}
+
+.backgroundOverlay {
+  position: fixed;
+  inset: 0;
+  background: linear-gradient(0deg, rgba(153, 173, 197, 0.20) 0%, rgba(153, 173, 197, 0.00) 100%),
+    var(--color-surface);
+  z-index: 50;
+  pointer-events: none;
+  opacity: 1;
+}
+
+@media (max-width: 1199px) and (min-width: 768px) {
+  .page {
+    padding-left: 24px;
+    padding-right: 24px;
+  }
+}
+
+@media (max-width: 767px) {
+  .page {
+    padding-top: 24px;
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+}

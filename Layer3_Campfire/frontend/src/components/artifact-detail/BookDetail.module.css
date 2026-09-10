@@ -1,0 +1,243 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.detailHeader {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.date {
+  font-family: var(--font-display);
+  font-size: 16px;
+  line-height: 175%;
+  color: var(--color-dark-gray);
+}
+
+.title {
+  font-family: var(--font-body);
+  font-size: 40px;
+  font-weight: 700;
+  line-height: 90%;
+  color: var(--color-dark-gray);
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.authors {
+  font-family: var(--font-display);
+  font-size: 18px;
+  line-height: 150%;
+  color: var(--color-dark-gray);
+  opacity: 0.85;
+}
+
+.chipRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.typeChip {
+  padding: 6px 8px 8px 8px;
+  align-items: center;
+  border-radius: 2px;
+  background-color: var(--color-dark-gray-sky);
+  color: var(--color-surface);
+  cursor: default;
+}
+
+.typeChip:hover {
+  background-color: var(--color-dark-gray-sky);
+}
+
+.categoryChip {
+  padding: 6px 8px 8px 8px;
+  align-items: center;
+  border-radius: 2px;
+  background-color: var(--color-dark-gray-sky);
+  color: var(--color-surface);
+  cursor: default;
+}
+
+.categoryChip:hover {
+  background-color: var(--color-dark-gray-sky);
+}
+
+.detailColumn {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin-top: 30px;
+}
+
+.descriptionBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.label {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 175%;
+  color: var(--color-dark-gray);
+  opacity: 0.75;
+}
+
+.description {
+  font-family: var(--font-display);
+  font-size: 16px;
+  line-height: 175%;
+  color: var(--color-dark-gray);
+  margin: 0;
+}
+
+.description p {
+  margin-bottom: 0;
+}
+
+.fieldBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.fieldValue {
+  font-family: var(--font-display);
+  font-size: 16px;
+  line-height: 175%;
+  color: var(--color-dark-gray);
+  margin: 0;
+}
+
+.accordionRoot {
+  display: flex;
+  flex-direction: column;
+}
+
+.accordionItem {
+  border-top: 1px solid rgb(from var(--color-sand) r g b / 0.75);
+}
+
+.accordionItem:last-child {
+  border-bottom: 1px solid rgb(from var(--color-sand) r g b / 0.75);
+}
+
+.accordionTrigger {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 10px;
+  width: 100%;
+  padding: 18px 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 175%;
+  color: var(--color-dark-gray);
+}
+
+.accordionLabel {
+  opacity: 0.75;
+}
+
+.accordionIconPlus,
+.accordionIconMinus {
+  width: 10px;
+  height: 10px;
+  flex-shrink: 0;
+}
+
+.accordionIconMinus {
+  display: none;
+}
+
+.accordionTrigger[data-panel-open] .accordionIconPlus {
+  display: none;
+}
+
+.accordionTrigger[data-panel-open] .accordionIconMinus {
+  display: block;
+}
+
+.accordionPanel {
+  overflow: hidden;
+  height: var(--accordion-panel-height);
+  transition: height 300ms ease;
+}
+
+.accordionPanel[data-starting-style],
+.accordionPanel[data-ending-style] {
+  height: 0;
+}
+
+.accordionContent {
+  font-family: var(--font-display);
+  font-size: 16px;
+  line-height: 175%;
+  color: var(--color-dark-gray);
+  margin: 0;
+  padding-bottom: 14px;
+}
+
+.citationBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.citationBlock + .citationBlock {
+  margin-top: 8px;
+}
+
+.citationFormat {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 175%;
+  color: var(--color-dark-gray);
+}
+
+.accordionLink {
+  color: var(--color-night-sky);
+  font-weight: 700;
+  text-decoration: underline;
+}
+
+.sourceButton {
+  margin-top: 24px;
+  align-self: flex-start;
+}
+
+@media (max-width: 767px) {
+  .date {
+    font-size: 14px;
+  }
+
+  .title {
+    font-size: 26px;
+  }
+
+  .authors {
+    font-size: 16px;
+  }
+
+  .typeChip,
+  .categoryChip {
+    font-size: 10px;
+  }
+
+  .description,
+  .fieldValue,
+  .accordionContent {
+    font-size: 14px;
+  }
+}

@@ -1,0 +1,146 @@
+/* ================================
+   Artifacts Sidebar - right side panel
+   Uses mask to clip the blended effect to the torn paper shape
+   ================================ */
+.sidebar {
+  /* Hidden on mobile */
+  display: none;
+}
+
+@media (min-width: 1200px) {
+  .sidebar {
+    display: block;
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: min(450px, 33%);
+    height: 100vh;
+    z-index: 1;
+    pointer-events: none;
+    overflow: hidden;
+
+    /* Start off-screen for slide-in animation - GSAP handles all transforms */
+    transform: translateX(100%);
+
+    /* Match main page background gradient */
+    background:
+      linear-gradient(0deg, rgba(153, 173, 197, 0.20) 0%, rgba(153, 173, 197, 0.00) 100%),
+      var(--color-surface);
+  }
+
+  /* Source-rendered neutral panel texture */
+  .sidebar::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(90deg, rgba(9, 42, 77, 0.08), transparent 24%),
+      repeating-linear-gradient(0deg, transparent 0 16px, rgba(9, 42, 77, 0.025) 16px 17px);
+    pointer-events: none;
+  }
+}
+
+/* ================================
+   Gallery Content Area
+   ================================ */
+.content {
+  display: none;
+}
+
+@media (min-width: 1200px) {
+  .content {
+    display: block;
+    position: absolute;
+    /* Offset from left to avoid torn edge area (~75px) */
+    left: 75px;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    overflow: hidden;
+    /* Re-enable pointer events for interactive gallery */
+    pointer-events: auto;
+  }
+}
+
+/* ================================
+   Toggle Button
+   ================================ */
+.toggle {
+  /* Hidden on mobile */
+  display: none;
+}
+
+@media (min-width: 1200px) {
+  /* Default state (sidebar closed) - dark forest background */
+  .toggle {
+    position: fixed;
+    top: 50%;
+    right: 0;
+    transform: translateY(-50%);
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 8px;
+    border: none;
+    border-radius: 2px 0 0 2px;
+    background: var(--color-hunter-green);
+    cursor: pointer;
+    transition: background 0.2s ease, opacity 0.2s ease;
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+    /* Start hidden for slide-in animation - use opacity only for focusability */
+    opacity: 0;
+  }
+
+  .toggle:hover {
+    background: var(--color-night-sky);
+  }
+
+  .toggle:focus-visible {
+    outline: 2px solid var(--color-bright-forest);
+    outline-offset: 2px;
+  }
+
+  /* Open state (sidebar visible) - lighter tan background */
+  .toggleOpen {
+    background: var(--color-sand-50);
+  }
+
+  .toggleOpen:hover {
+    background: var(--color-sand);
+  }
+}
+
+/* Default (closed) state - white text for dark background */
+.toggleText {
+  color: var(--color-surface);
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 80%;
+  white-space: nowrap;
+  transition: color 0.2s ease;
+}
+
+/* Open state - dark text for light background */
+.toggleTextOpen {
+  color: var(--color-night-sky);
+}
+
+.chevron {
+  margin-top: 8px;
+  transition: transform 0.2s ease, filter 0.2s ease;
+  /* Point left (to indicate "click to open") when closed */
+  transform: rotate(90deg);
+  /* Invert to white for dark background */
+  filter: brightness(0) invert(1);
+}
+
+.chevronOpen {
+  /* Point right (to indicate "click to close") when open */
+  transform: rotate(-90deg);
+  /* Reset to dark for light background */
+  filter: none;
+}

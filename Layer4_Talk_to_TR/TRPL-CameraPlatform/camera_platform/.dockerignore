@@ -1,0 +1,12 @@
+.env
+.env.*
+!.env.example
+__pycache__/
+*.py[cod]
+.pytest_cache/
+private/
+test_data/
+event_log/
+state/
+logs/
+*.log

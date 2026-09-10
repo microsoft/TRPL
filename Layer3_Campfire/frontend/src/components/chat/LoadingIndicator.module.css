@@ -1,0 +1,33 @@
+.container {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  border-radius: 2px;
+  background: var(--color-sand-50);
+}
+
+.icon {
+  animation: pulse 1.5s ease-in-out infinite;
+  flex-shrink: 0;
+}
+
+.text {
+  color: var(--color-dark-gray);
+  font-family: var(--font-display);
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 130%;
+  /* Fixed width to prevent layout shift during dot animation */
+  min-width: 155px;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.4;
+  }
+}

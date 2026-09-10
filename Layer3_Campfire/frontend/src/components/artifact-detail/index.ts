@@ -1,0 +1,1 @@
+export { ArtifactDetailView } from './ArtifactDetailView'

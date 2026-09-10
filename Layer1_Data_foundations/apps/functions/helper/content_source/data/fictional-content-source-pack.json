@@ -1,0 +1,176 @@
+{
+  "schema_version": "1.0",
+  "source": {
+    "id": "synthetic-reference-source",
+    "name": "Fictional Reference Collections",
+    "description": "Wholly invented records generated for offline interface verification.",
+    "homepage": "https://example.org/fictional-reference-collections"
+  },
+  "records": [
+    {
+      "id": "synthetic-record-001",
+      "source_identifier": "FRC-LETTER-001",
+      "title": "Letter about the clockwork garden",
+      "record_type": "letter",
+      "summary": "A wholly fictional letter describing an imaginary mechanical garden.",
+      "collection_id": "fictional-correspondence",
+      "record_url": "https://example.org/synthetic-records/record-001",
+      "published": true,
+      "created_at": "1903-01-15T12:00:00+00:00",
+      "updated_at": "2026-01-05T10:00:00+00:00",
+      "metadata": {
+        "Identifier": "FRC-LETTER-001",
+        "Creator": "Mira Solen",
+        "Institution": "Northwind Observatory Archive",
+        "Repository": "Fictional Reference Collections",
+        "Collection": "Fictional Correspondence",
+        "Display Type": "Letter",
+        "Display Date": "1903-01-15",
+        "Language": "en",
+        "Fictional": true
+      },
+      "rights": {
+        "status": "public-domain-dedication",
+        "statement": "Wholly fictional metadata and generated placeholder dedicated for unrestricted example use.",
+        "license_url": "https://example.org/rights/fictional-public-domain",
+        "credit_line": "Synthetic example; no real person, institution, or collection.",
+        "restrictions": []
+      },
+      "assets": [
+        {
+          "id": "synthetic-asset-001",
+          "name": "synthetic-record-001.png",
+          "media_type": "image/png",
+          "sequence": 1,
+          "metadata": {
+            "Purpose": "Neutral generated placeholder",
+            "Fictional": true
+          },
+          "rights": {
+            "status": "public-domain-dedication",
+            "statement": "Generated geometric placeholder with no third-party source material.",
+            "license_url": "https://example.org/rights/fictional-public-domain",
+            "credit_line": "Synthetic placeholder generated for this repository.",
+            "restrictions": []
+          },
+          "content": {
+            "generator": "solid_png",
+            "width": 320,
+            "height": 200,
+            "rgb": [220, 230, 239]
+          }
+        }
+      ]
+    },
+    {
+      "id": "synthetic-record-002",
+      "source_identifier": "FRC-PHOTO-002",
+      "title": "Survey of the floating lantern plaza",
+      "record_type": "photograph",
+      "summary": "An invented catalog entry for a place and event that never existed.",
+      "collection_id": "imaginary-civic-scenes",
+      "record_url": "https://example.org/synthetic-records/record-002",
+      "published": true,
+      "created_at": "1907-06-02T12:00:00+00:00",
+      "updated_at": "2026-01-06T10:00:00+00:00",
+      "metadata": {
+        "Identifier": "FRC-PHOTO-002",
+        "Creator": "Ivo Calder",
+        "Institution": "Blue Lantern Civic Museum",
+        "Repository": "Fictional Reference Collections",
+        "Collection": "Imaginary Civic Scenes",
+        "Display Type": "Photograph",
+        "Display Date": "1907-06-02",
+        "Language": "en",
+        "Fictional": true
+      },
+      "rights": {
+        "status": "public-domain-dedication",
+        "statement": "Wholly fictional metadata and generated placeholder dedicated for unrestricted example use.",
+        "license_url": "https://example.org/rights/fictional-public-domain",
+        "credit_line": "Synthetic example; no real person, institution, or collection.",
+        "restrictions": []
+      },
+      "assets": [
+        {
+          "id": "synthetic-asset-002",
+          "name": "synthetic-record-002.png",
+          "media_type": "image/png",
+          "sequence": 1,
+          "metadata": {
+            "Purpose": "Neutral generated placeholder",
+            "Fictional": true
+          },
+          "rights": {
+            "status": "public-domain-dedication",
+            "statement": "Generated geometric placeholder with no third-party source material.",
+            "license_url": "https://example.org/rights/fictional-public-domain",
+            "credit_line": "Synthetic placeholder generated for this repository.",
+            "restrictions": []
+          },
+          "content": {
+            "generator": "solid_png",
+            "width": 320,
+            "height": 200,
+            "rgb": [238, 228, 213]
+          }
+        }
+      ]
+    },
+    {
+      "id": "synthetic-record-003",
+      "source_identifier": "FRC-POSTER-003",
+      "title": "Poster for the cedar-kite symposium",
+      "record_type": "poster",
+      "summary": "A fictional poster record for an invented institution and symposium.",
+      "collection_id": "invented-ephemera",
+      "record_url": "https://example.org/synthetic-records/record-003",
+      "published": true,
+      "created_at": "1911-09-20T12:00:00+00:00",
+      "updated_at": "2026-01-07T10:00:00+00:00",
+      "metadata": {
+        "Identifier": "FRC-POSTER-003",
+        "Creator": "Nia Bellweather",
+        "Institution": "Cedar Kite Institute",
+        "Repository": "Fictional Reference Collections",
+        "Collection": "Invented Ephemera",
+        "Display Type": "Poster",
+        "Display Date": "1911-09-20",
+        "Language": "en",
+        "Fictional": true
+      },
+      "rights": {
+        "status": "public-domain-dedication",
+        "statement": "Wholly fictional metadata and generated placeholder dedicated for unrestricted example use.",
+        "license_url": "https://example.org/rights/fictional-public-domain",
+        "credit_line": "Synthetic example; no real person, institution, or collection.",
+        "restrictions": []
+      },
+      "assets": [
+        {
+          "id": "synthetic-asset-003",
+          "name": "synthetic-record-003.png",
+          "media_type": "image/png",
+          "sequence": 1,
+          "metadata": {
+            "Purpose": "Neutral generated placeholder",
+            "Fictional": true
+          },
+          "rights": {
+            "status": "public-domain-dedication",
+            "statement": "Generated geometric placeholder with no third-party source material.",
+            "license_url": "https://example.org/rights/fictional-public-domain",
+            "credit_line": "Synthetic placeholder generated for this repository.",
+            "restrictions": []
+          },
+          "content": {
+            "generator": "solid_png",
+            "width": 320,
+            "height": 200,
+            "rgb": [229, 226, 239]
+          }
+        }
+      ]
+    }
+  ]
+}

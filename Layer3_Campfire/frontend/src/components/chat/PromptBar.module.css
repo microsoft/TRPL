@@ -1,0 +1,35 @@
+.container {
+  margin-top: var(--space-md);
+  padding: 0 var(--space-md);
+}
+
+.promptList {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  flex-wrap: wrap;
+}
+
+/* View more button positioning */
+.viewMoreButton {
+  margin-left: auto;
+}
+
+/* Tablet and below: Remove right-push on View More */
+@media (max-width: 1440px) {
+  .viewMoreButton {
+    margin-left: 0;
+  }
+}
+
+/* Mobile: Stack prompts vertically */
+@media (max-width: 767px) {
+  .promptList {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .viewMoreButton {
+    align-self: flex-start;
+  }
+}

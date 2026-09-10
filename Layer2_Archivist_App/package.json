@@ -1,0 +1,42 @@
+{
+    "name": "archivistapp-ai",
+    "version": "1.0.0",
+    "private": true,
+    "packageManager": "npm@10.8.2",
+    "workspaces": [
+        "apps/*",
+        "packages/*"
+    ],
+    "scripts": {
+        "install:all": "npm install",
+        "install:ci": "npm ci",
+        "build": "npm run build --workspaces --if-present",
+        "build:shared": "npm run build --workspace=packages/shared-types",
+        "build:apps": "npm run build --workspace=apps/archivist-app",
+        "build:watch": "npm run watch --workspaces --if-present",
+        "lint": "npm run lint --workspaces --if-present",
+        "lint:fix": "npm run lint --workspaces --if-present -- --fix",
+        "package": "echo 'Packaging applications for deployment...'",
+        "test": "npm run test --workspaces --if-present",
+        "cypress:open": "cypress open",
+        "cypress:run": "cypress run --spec \"cypress/e2e/readOnly/**/*.cy.ts\"",
+        "test:app:smoke": "npm run cypress:run",
+        "clean": "npm run clean --workspaces --if-present && rimraf node_modules/.cache"
+    },
+    "devDependencies": {
+        "cypress": "^14.2.0",
+        "@types/node": "^20.19.0",
+        "azurite": "^3.35.0",
+        "concurrently": "^8.2.2",
+        "rimraf": "^5.0.5",
+        "typescript": "^5.9.2"
+    },
+    "engines": {
+        "node": ">=18.0.0",
+        "npm": ">=8.0.0"
+    },
+    "dependencies": {
+        "@types/react-window": "^1.8.8",
+        "react-window": "^2.2.3"
+    }
+}

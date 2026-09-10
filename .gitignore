@@ -1,0 +1,63 @@
+# Environment and secret material
+.env
+.env.*
+!.env.example
+!.env.sample
+!.env.*.example
+**/.env
+**/.env.*
+!**/.env.example
+!**/.env.sample
+!**/.env.*.example
+local.settings.json
+**/local.settings.json
+*.pem
+*.pfx
+*.p12
+*.key
+*.crt
+secrets.*
+**/private/guardrails/
+**/private/storys/
+**/private/models/
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# JavaScript and TypeScript
+node_modules/
+.next/
+next-env.d.ts
+*.tsbuildinfo
+dist/
+build/
+coverage/
+playwright-report/
+test-results/
+
+# Package-managed browser artifacts
+Layer3_Campfire/frontend/public/pdf.worker.min.mjs
+Layer4_Talk_to_TR/TRPL-Web/TRPL-web-oss/lia_agent_api/static/asyncapi/
+
+# Local runtime data and logs
+*.log
+logs/
+run/
+*.db
+*.sqlite
+*.sqlite3
+.cache/
+
+# Editors and operating systems
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/

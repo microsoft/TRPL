@@ -1,0 +1,43 @@
+[project]
+name = "trpl-reading-room"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = "==3.13.*"
+dependencies = [
+    "azure-identity",
+    "azure-search-documents",
+    "azure-storage-blob",
+    "azure-monitor-opentelemetry",
+    "fastapi[standard]",
+    "openai",
+    "aiohttp",
+    "numpy",
+    "redis",
+    "tenacity",
+    "presidio-analyzer",
+    "presidio-anonymizer",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=8.0.0",
+    "pytest-asyncio>=0.23.0",
+    "pytest-cov>=4.0.0",
+    "pytest-benchmark>=4.0.0",
+    "pytest-timeout>=2.0.0",
+    "ruff>=0.15.14",
+    "pyright>=1.1.409",
+]
+red-team = [
+    "azure-ai-evaluation[redteam]>=1.14.0",
+]
+
+[tool.ruff]
+line-length=120
+
+[tool.pyright]
+venvPath = "."
+venv = ".venv"
+extraPaths = ["backend"]
+exclude = ["evaluation", "scripts", "**/__pycache__", ".venv"]

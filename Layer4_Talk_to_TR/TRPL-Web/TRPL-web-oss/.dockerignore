@@ -1,0 +1,11 @@
+.git
+.env
+.env.*
+**/.env
+**/.env.*
+**/__pycache__
+**/.pytest_cache
+**/.venv
+**/node_modules
+lia_agent_api/private/
+lia_agent_api/static/asyncapi/

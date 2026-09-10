@@ -1,0 +1,23 @@
+azure-functions==1.25.0
+azure-functions-durable==1.5.0
+azure-identity==1.18.0
+azure-servicebus==7.14.3
+azure-storage-blob==12.16.0
+azure-search-documents==11.5.0
+azure-cosmos==4.5.1
+# Direct dependency: helper/cosmos_client.py imports `requests` explicitly
+requests==2.32.3
+openai==1.58.1
+tiktoken==0.7.0
+pydantic==2.12.3
+numpy==1.26.4
+# EPUB parsing
+ebooklib==0.18
+beautifulsoup4==4.12.3
+# Text processing
+spacy==3.7.5
+# Browser automation (AWS WAF challenge bypass for TRA website)
+playwright==1.60.0
+# OCR pipeline (PDF → image → GPT-4 Vision)
+pymupdf==1.25.5
+Pillow==12.3.0

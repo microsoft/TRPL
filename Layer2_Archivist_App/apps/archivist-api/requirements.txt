@@ -1,0 +1,36 @@
+fastapi==0.111.0
+uvicorn[standard]==0.29.0
+pydantic==2.12.1
+python-dotenv==1.0.0
+azure-cosmos==4.5.1
+azure-storage-blob==12.19.0
+azure-servicebus==7.14.3
+azure-search-documents==11.5.1
+azure-keyvault-secrets==4.9.0
+# Required for TransportType.AmqpOverWebsocket (sync client in services/service_bus.py)
+websocket-client==1.8.0
+azure-identity==1.18.0
+# pyjwt[crypto] pulls in `cryptography`, required for RS256/JWKS workload token validation (correction intake)
+pyjwt[crypto]==2.8.0
+ebooklib==0.19
+python-multipart==0.0.9
+# Runtime HTTP client (used by api/routes.py for Azure Functions orchestration calls)
+httpx==0.27.0
+gunicorn==22.0.0
+# Direct dependency: services/cosmos_service.py imports `requests` explicitly
+requests==2.32.3
+# HTML parsing for rich TRA Cyclopedia content extraction (captures <div> text nodes
+# missed by the stdlib HTMLParser approach used in _TRAContentParser)
+beautifulsoup4==4.15.0
+# Browser automation (AWS WAF challenge bypass for TRA/ClubExpress website)
+playwright==1.62.0
+# Azure Application Insights
+azure-monitor-opentelemetry==1.6.1
+opentelemetry-instrumentation-fastapi==0.47b0
+opentelemetry-instrumentation-logging==0.47b0
+# OCR Processing (GPT-4 Vision)
+openai==2.53.0
+pymupdf==1.28.2
+Pillow==12.3.0
+# Optional: for testing
+pytest==8.2.1

@@ -1,0 +1,93 @@
+.badge {
+  position: absolute;
+  top: 0;
+  right: -32px;
+  width: 22px;
+  height: 22px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--color-error);
+  color: var(--color-surface);
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1;
+  border-radius: 50%;
+  cursor: help;
+  user-select: none;
+  animation: factCheckFadeIn 200ms ease-out;
+}
+
+.badge:focus-visible {
+  outline: 2px solid var(--color-error);
+  outline-offset: 2px;
+}
+
+@keyframes factCheckFadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.7);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.positioner {
+  max-width: min(360px, var(--available-width));
+  max-height: var(--available-height);
+  z-index: 30;
+}
+
+.popup {
+  max-width: min(360px, var(--available-width));
+  max-height: var(--available-height);
+  padding: 10px 12px;
+  border-radius: 6px;
+  background-color: var(--color-dark-gray);
+  color: var(--color-surface);
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1.4;
+  overflow-y: auto;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  opacity: 0;
+  transition: opacity 0.15s ease;
+  pointer-events: none;
+}
+
+.popup[data-open] {
+  opacity: 1;
+}
+
+.popupHeader {
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.issueList {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.issueItem {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.issueClaim {
+  font-weight: 600;
+}
+
+.issueExplanation {
+  opacity: 0.85;
+}

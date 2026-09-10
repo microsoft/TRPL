@@ -1,0 +1,24 @@
+.wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.canvas {
+  width: 100%;
+  height: auto;
+  border-radius: 4px;
+  display: block;
+}
+
+.loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  aspect-ratio: 8.5 / 11;
+  border-radius: 4px;
+  background-color: rgb(from var(--color-sand) r g b / 0.2);
+  color: var(--color-dark-gray);
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 14px;
+}

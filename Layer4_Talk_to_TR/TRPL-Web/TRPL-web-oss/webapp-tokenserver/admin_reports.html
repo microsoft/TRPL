@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>TR Jailbreak Reports</title>
+<meta charset="utf-8">
+<style>
+  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; margin: 0; padding: 1em; background: #fafafa; color: #222; }
+  h1 { margin: 0 0 0.5em 0; font-size: 1.1em; }
+  #login { max-width: 380px; margin: 80px auto; padding: 2em; background: white; border: 1px solid #ddd; border-radius: 6px; }
+  #login input { width: 100%; padding: 0.5em; font-size: 1em; box-sizing: border-box; }
+  #login button { padding: 0.5em 1.2em; margin-top: 0.8em; }
+  #app { display: none; }
+  .toolbar { display: flex; gap: 0.5em; align-items: center; padding: 0.4em 0; }
+  button { padding: 0.4em 0.9em; cursor: pointer; border: 1px solid #aaa; background: #f4f4f4; border-radius: 3px; font-size: 0.9em; }
+  button.danger { background: #cc3333; color: white; border-color: #cc3333; }
+  .err { color: #c00; padding: 0.4em 0; font-size: 0.85em; }
+  table { width: 100%; border-collapse: collapse; background: white; }
+  th, td { text-align: left; padding: 0.5em 0.7em; border-bottom: 1px solid #eee; vertical-align: top; font-size: 0.85em; }
+  th { background: #efeae0; font-weight: 600; }
+  tr.report-row { cursor: pointer; }
+  tr.report-row:hover { background: #fff7e0; }
+  tr.detail-row { display: none; background: #fbf8ef; }
+  tr.detail-row.show { display: table-row; }
+  tr.detail-row td { padding: 0.8em 1em; }
+  .transcript { background: #fdfcf8; padding: 0.6em; border: 1px solid #e5dfc8; border-radius: 4px; font-family: ui-monospace, Menlo, Consolas, monospace; font-size: 12px; line-height: 1.6; white-space: pre-wrap; }
+  .turn { padding: 0.2em 0; }
+  .turn.user { color: #105; }
+  .turn.assistant { color: #503; }
+  .note { background: #fff3d6; padding: 0.5em; border-left: 3px solid #b87a00; margin-bottom: 0.6em; white-space: pre-wrap; font-style: italic; }
+  .empty { color: #999; padding: 2em; text-align: center; }
+  .muted { color: #999; font-size: 0.78em; }
+  .badge-time { font-family: ui-monospace, monospace; font-size: 0.75em; color: #666; }
+</style>
+</head>
+<body>
+
+<div id="login">
+  <h1>TR Jailbreak Reports</h1>
+  <p style="color:#666;font-size:0.9em;">Enter admin token to continue.</p>
+  <input id="token" type="password" placeholder="ADMIN_TOKEN" autofocus onkeydown="if(event.key==='Enter')login()">
+  <button onclick="login()">Continue</button>
+  <div id="loginErr" class="err"></div>
+</div>
+
+<div id="app">
+  <div class="toolbar">
+    <h1 style="margin:0;">Jailbreak Reports</h1>
+    <span id="count" class="muted"></span>
+    <button onclick="loadList()" style="margin-left:auto;">Reload</button>
+    <button onclick="logout()">Logout</button>
+  </div>
+  <div id="status" class="err"></div>
+  <table id="table">
+    <thead>
+      <tr>
+        <th style="width:11em;">Submitted</th>
+        <th style="width:8em;">Turns</th>
+        <th style="width:9em;">Tester</th>
+        <th>Note</th>
+        <th style="width:5em;"></th>
+      </tr>
+    </thead>
+    <tbody id="rows"></tbody>
+  </table>
+  <div id="empty" class="empty" style="display:none;">No reports yet.</div>
+</div>
+
+<script>
+let TOKEN = localStorage.getItem("admin_token") || "";
+
+async function api(method, path) {
+  const r = await fetch(path, { method, headers: { "X-Admin-Token": TOKEN } });
+  if (!r.ok) {
+    let detail = "";
+    try { detail = (await r.json()).detail || ""; } catch (_) { detail = await r.text(); }
+    throw new Error(r.status + ": " + detail);
+  }
+  // 204 has no body
+  if (r.status === 204) return null;
+  return r.json();
+}
+
+async function login() {
+  const t = document.getElementById("token").value;
+  if (!t) return;
+  TOKEN = t;
+  try {
+    await api("GET", "/admin/api/jailbreak-reports");
+    localStorage.setItem("admin_token", t);
+    document.getElementById("login").style.display = "none";
+    document.getElementById("app").style.display = "block";
+    await loadList();
+  } catch (e) {
+    document.getElementById("loginErr").textContent = String(e);
+  }
+}
+
+function logout() {
+  localStorage.removeItem("admin_token");
+  location.reload();
+}
+
+function escapeHtml(s) {
+  return (s || "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+}
+
+function fmtTime(iso) {
+  if (!iso) return "—";
+  return iso.replace("T", " ").replace("Z", " UTC");
+}
+
+async function loadList() {
+  setStatus("");
+  try {
+    const list = await api("GET", "/admin/api/jailbreak-reports");
+    renderList(list);
+  } catch (e) {
+    setStatus(String(e));
+  }
+}
+
+function renderList(list) {
+  const rows = document.getElementById("rows");
+  rows.innerHTML = "";
+  document.getElementById("count").textContent = list.length + " total";
+  document.getElementById("empty").style.display = list.length ? "none" : "block";
+  list.forEach(r => {
+    const tr = document.createElement("tr");
+    tr.className = "report-row";
+    tr.innerHTML = `
+      <td><span class="badge-time">${escapeHtml(fmtTime(r.submitted_at))}</span></td>
+      <td>${r.turn_count}</td>
+      <td>${escapeHtml(r.tester_label || "—")}</td>
+      <td>${escapeHtml((r.note || "").slice(0, 200))}${r.note && r.note.length > 200 ? "…" : ""}</td>
+      <td><button class="danger" onclick="event.stopPropagation(); deleteReport('${r.id}')">Delete</button></td>
+    `;
+    const detailTr = document.createElement("tr");
+    detailTr.className = "detail-row";
+    detailTr.id = "detail-" + r.id;
+    detailTr.innerHTML = `<td colspan="5"><div class="muted">click row again to collapse · loading…</div></td>`;
+    tr.onclick = () => toggleDetail(r.id, detailTr);
+    rows.appendChild(tr);
+    rows.appendChild(detailTr);
+  });
+}
+
+async function toggleDetail(reportId, detailTr) {
+  if (detailTr.classList.contains("show")) {
+    detailTr.classList.remove("show");
+    return;
+  }
+  detailTr.classList.add("show");
+  // lazy-fetch full transcript
+  if (detailTr.dataset.loaded) return;
+  try {
+    const full = await api("GET", "/admin/api/jailbreak-reports/" + encodeURIComponent(reportId));
+    const noteHtml = full.note ? `<div class="note">${escapeHtml(full.note)}</div>` : "";
+    const turnsHtml = full.transcript.map(t =>
+      `<div class="turn ${t.role}"><strong>[${escapeHtml(t.role)}]</strong> ${escapeHtml(t.text)}</div>`
+    ).join("");
+    const meta = `<div class="muted">id: <code>${escapeHtml(full.id)}</code> · room: <code>${escapeHtml(full.room_name || "—")}</code></div>`;
+    detailTr.innerHTML = `<td colspan="5">${meta}${noteHtml}<div class="transcript">${turnsHtml || '<i>no transcript captured</i>'}</div></td>`;
+    detailTr.dataset.loaded = "1";
+  } catch (e) {
+    detailTr.innerHTML = `<td colspan="5" class="err">${escapeHtml(String(e))}</td>`;
+  }
+}
+
+async function deleteReport(reportId) {
+  if (!confirm("Delete report " + reportId + "?")) return;
+  try {
+    await api("DELETE", "/admin/api/jailbreak-reports/" + encodeURIComponent(reportId));
+    await loadList();
+  } catch (e) {
+    setStatus(String(e));
+  }
+}
+
+function setStatus(msg) {
+  document.getElementById("status").textContent = msg;
+}
+
+if (TOKEN) {
+  (async () => {
+    try {
+      await api("GET", "/admin/api/jailbreak-reports");
+      document.getElementById("login").style.display = "none";
+      document.getElementById("app").style.display = "block";
+      await loadList();
+    } catch (e) {
+      localStorage.removeItem("admin_token");
+      TOKEN = "";
+    }
+  })();
+}
+</script>
+
+</body>
+</html>

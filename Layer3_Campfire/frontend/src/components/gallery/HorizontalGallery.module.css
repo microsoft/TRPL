@@ -1,0 +1,278 @@
+/* ================================
+   Horizontal Gallery WAAPI Clone - Infinite Scroll (Mobile/Tablet)
+   Uses Web Animations API for smooth compositor-thread animation
+   Complete feature parity with HorizontalGallery
+   ================================ */
+
+/* Focus wrapper - provides visible focus indicator for keyboard navigation
+   Uses box-shadow instead of outline because container has overflow:hidden */
+.focusWrapper {
+  padding: 8px 0;
+  /* Offset the container's 54px padding-bottom for caption space + focus ring */
+  margin-bottom: -54px;
+  /* Remove default outline - we use ::before pseudo-element for focus ring */
+  outline: none;
+  position: relative;
+}
+
+/* Focus ring via pseudo-element (not clipped by overflow:hidden) */
+.focusWrapper:focus-visible::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  /* Account for the negative margin */
+  bottom: 54px;
+  border: 2px solid var(--color-bright-forest);
+  border-radius: var(--radius-sm);
+  pointer-events: none;
+  z-index: 100;
+}
+
+.container {
+  width: 100%;
+  /* Use clip on X-axis for infinite scroll, visible on Y for bottom row caption */
+  overflow-x: clip;
+  overflow-y: visible;
+  position: relative;
+  cursor: grab;
+  /* Create isolated stacking context to prevent layer interference */
+  isolation: isolate;
+  /* Touch action to allow horizontal swipe while preventing vertical scroll interference */
+  touch-action: pan-y pinch-zoom;
+  /* Padding to accommodate bottom row caption overflow + focus ring border (2px) + buffer */
+  padding-bottom: 54px;
+}
+
+.container:active {
+  cursor: grabbing;
+}
+
+/* ================================
+   Two-Row Stacked Layout
+   ================================ */
+.track {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+  gap: var(--space-sm);
+  height: 120px;
+  position: relative;
+  /* Allow items to overflow for infinite loop effect */
+  overflow: visible;
+  /* GPU acceleration for smooth WAAPI animation */
+  will-change: transform;
+  backface-visibility: hidden;
+  /* Isolate paint/layout to prevent compositor thrashing */
+  contain: layout style;
+}
+
+/* Remove layout containment when an image is focused, so the focus ring
+   can extend beyond the row bounds without being clipped */
+.row:has(.imageWrapper:focus-visible) {
+  contain: style;
+}
+
+/* ================================
+   Image Wrapper & Styles
+   ================================ */
+.imageWrapper {
+  position: relative;
+  flex-shrink: 0;
+  height: 120px;
+  border-radius: var(--radius-sm);
+  overflow: visible; /* Allow scaled card to overflow - caption extends below */
+  outline: none;
+  text-decoration: none;
+  color: inherit;
+  /* Smooth transition for selection opacity */
+  transition: opacity 0.3s ease-out;
+  /* Note: contain: content would clip the caption overflow, so we skip it here */
+}
+
+/* Sand background - covers image area only */
+.imageWrapper::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: var(--color-sand);
+  border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+  opacity: 0;
+  z-index: 0;
+  transition: opacity 0.2s ease-out;
+  pointer-events: none;
+}
+
+.selected::before,
+.imageWrapper[data-selected="true"]::before {
+  opacity: 1;
+}
+
+/* Focus ring - added to ::before which already extends below to cover caption */
+.imageWrapper:focus-visible {
+  outline: none;
+}
+
+/* When focused, add border to the sand background pseudo-element */
+.imageWrapper:focus-visible::before {
+  /* Make visible even without selection */
+  opacity: 1;
+  /* Add focus ring border */
+  border: 2px solid var(--color-bright-forest);
+}
+
+.imageContainer {
+  position: relative;
+  z-index: 1;
+  height: 100%;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  /* Shrink image inward to create visual padding effect */
+  transition: transform 0.2s ease-out, border-radius 0.2s ease-out;
+}
+
+.selected .imageContainer,
+.imageWrapper[data-selected="true"] .imageContainer {
+  /* Image shrinks to create gap for sand background to show through */
+  transform: scale(0.92);
+  border-radius: calc(var(--radius-sm) - 1px);
+}
+
+.image {
+  display: block;
+  height: 100%;
+  width: auto;
+  object-fit: cover;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* ================================
+   Selected State (on click)
+   ================================ */
+.selected,
+.imageWrapper[data-selected="true"] {
+  z-index: 10;
+}
+
+/* Elevate the entire row when it contains a selected image */
+/* This ensures the caption area doesn't get overlapped by the other row */
+/* Also remove layout containment so caption can extend beyond row bounds */
+.row:has([data-selected="true"]) {
+  z-index: 10;
+  contain: style;
+}
+
+/* Invisible hit area - captures pointer events for the extended card area */
+.selected::after,
+.imageWrapper[data-selected="true"]::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: -60px; /* Generous area to cover caption */
+  z-index: 1;
+  pointer-events: auto;
+}
+
+/* Dimmed state for non-selected images when one is selected */
+.dimmed,
+.imageWrapper[data-dimmed="true"] {
+  opacity: 0.2;
+}
+
+/* Ensure selected image stays fully visible */
+.selected:not(.dimmed),
+.imageWrapper[data-selected="true"]:not([data-dimmed="true"]) {
+  opacity: 1;
+}
+
+/* ================================
+   Caption - positioned BELOW the image, in the extended sand area
+   ================================ */
+.caption {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 2;
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+  /* Top padding reduced - imageContainer scale gap already provides space above */
+  padding: 2px 4px 6px;
+  font-size: 14px;
+  line-height: 1.3;
+  color: var(--color-text);
+  /* Caption has its own sand background that connects to image sand */
+  background-color: var(--color-sand);
+  border-radius: 0 0 var(--radius-sm) var(--radius-sm);
+  /* Hidden by default */
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease-out;
+}
+
+.selected .caption,
+.imageWrapper[data-selected="true"] .caption {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.captionText {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  word-break: break-word;
+}
+
+.captionButton {
+  width: 16px;
+  height: 16px;
+  border-radius: 16px;
+  background: var(--color-deep-orange);
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: transform 0.2s ease-out, opacity 0.2s ease-out;
+}
+
+.captionButton:hover {
+  transform: scale(1.1);
+  opacity: 0.9;
+}
+
+.captionButton:active {
+  transform: scale(0.95);
+}
+
+.captionButton img {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* ================================
+   Empty State
+   ================================ */
+.emptyMessage {
+  padding: 2rem;
+  text-align: center;
+  color: var(--color-text-secondary);
+}
+

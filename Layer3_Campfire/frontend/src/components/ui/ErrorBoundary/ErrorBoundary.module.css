@@ -1,0 +1,59 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-xl);
+  text-align: center;
+  min-height: 200px;
+}
+
+.title {
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 500;
+  color: var(--color-ink);
+  margin: 0 0 var(--space-sm) 0;
+}
+
+.message {
+  font-family: var(--font-body);
+  font-size: 16px;
+  color: var(--color-ink);
+  opacity: 0.8;
+  margin: 0 0 var(--space-md) 0;
+}
+
+.errorDetails {
+  font-family: monospace;
+  font-size: 12px;
+  background: rgba(0, 0, 0, 0.05);
+  padding: var(--space-sm);
+  border-radius: 4px;
+  margin: 0 0 var(--space-md) 0;
+  max-width: 100%;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.resetButton {
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-weight: 500;
+  padding: var(--space-sm) var(--space-md);
+  background: var(--color-accent);
+  color: var(--color-surface);
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+}
+
+.resetButton:hover {
+  opacity: 0.9;
+}
+
+.resetButton:focus-visible {
+  outline: 2px solid var(--color-accent);
+}

@@ -1,0 +1,35 @@
+.root {
+  width: 100%;
+}
+
+.item {
+  width: 100%;
+}
+
+.header {
+  margin: 0;
+}
+
+.trigger {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+}
+
+.panel {
+  overflow: hidden;
+  height: var(--accordion-panel-height);
+  transition: height 300ms ease;
+}
+
+.panel[data-starting-style],
+.panel[data-ending-style] {
+  height: 0;
+}

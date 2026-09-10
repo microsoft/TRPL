@@ -1,0 +1,818 @@
+asyncapi: 3.0.0
+info:
+  title: Debate API WebSocket Interface
+  version: 1.0.0
+  description: |
+    WebSocket interface for the multi-agent debate moderation system.
+    
+    This API provides real-time communication for debate sessions where AI agents
+    moderate discussions between human participants. The WebSocket connection allows
+    for bidirectional communication with the debate engine.
+    
+    ## Features
+    - Real-time debate session updates
+    - AI agent questions and reflections
+    - User input prompts and responses
+    - Hand raising and selection
+    - Meeting notes/whiteboard updates
+    - Session status and error handling
+    - Streaming text output (chunked debate_output messages)
+    - Streaming audio output (binary WebSocket frames)
+    - Debug information and logging
+    
+    ## Connection
+    Connect to: `/api/debate/ws/{session_id}`
+    Where `session_id` is obtained from the POST `/api/debate/start` endpoint.
+
+    ## WebSocket Auth Rollout
+    WebSocket auth is controlled by server env var `WS_AUTH_ENABLED`.
+
+    - When `WS_AUTH_ENABLED=false`:
+      - Connect directly to `/api/debate/ws/{session_id}`.
+    - When `WS_AUTH_ENABLED=true`:
+      - Provide a short-lived single-use token as query param `token` or header `x-ws-token`.
+      - Controller token is returned by `POST /api/debate/start`.
+      - Observer token is minted by `POST /api/debate/join/{session_id}` using `observer_join_code`.
+      - Controller reconnect token is rotated by `POST /api/debate/reconnect/{session_id}`.
+
+    REST endpoints used by the token workflow:
+    - `POST /api/debate/start` -> `session_id`, `controller_token`, `reconnect_token`, `observer_join_code`
+    - `POST /api/debate/join/{session_id}` with `join_code` -> `observer_token`
+    - `POST /api/debate/reconnect/{session_id}` with `reconnect_token` -> fresh `controller_token`, rotated `reconnect_token`
+    
+  contact:
+    name: Debate API Support
+  license:
+    name: MIT
+
+servers:
+  production:
+    host: localhost:8000
+    protocol: ws
+    description: Production WebSocket server
+    pathname: /api/debate/ws/{sessionId}
+    security:
+      - $ref: '#/components/securitySchemes/TokenQuery'
+      - $ref: '#/components/securitySchemes/TokenHeader'
+    variables:
+      sessionId:
+        description: The debate session ID
+        default: "abc123-def456-ghi789"
+
+operations:
+  # Server-to-Client Operations (Messages sent by the server)
+  debateOutput:
+    action: receive
+    channel:
+      $ref: '#/channels/debateOutput'
+    summary: Debate output messages
+    description: User-facing messages including text for room audio and touchscreen prompts (streaming supported)
+
+  audioChunk:
+    action: receive
+    channel:
+      $ref: '#/channels/audioChunk'
+    summary: Streaming audio chunks
+    description: Binary audio frames containing 24kHz 16-bit mono PCM with a 4-byte header
+
+  captionTiming:
+    action: receive
+    channel:
+      $ref: '#/channels/captionTiming'
+    summary: Caption timing boundary event
+    description: Word/punctuation/sentence timing emitted by Azure TTS for live text/audio alignment
+
+  captionTimingEnd:
+    action: receive
+    channel:
+      $ref: '#/channels/captionTimingEnd'
+    summary: Caption timing stream ended
+    description: Indicates no further caption timing boundaries will be sent for an utterance
+
+  debugMessage:
+    action: receive
+    channel:
+      $ref: '#/channels/debugMessage'
+    summary: Debug messages
+    description: Internal agent communication and debug information
+    
+  sessionComplete:
+    action: receive
+    channel:
+      $ref: '#/channels/sessionComplete'
+    summary: Session completion notification
+    description: Sent when the debate session has finished successfully
+    
+  supplementalNotes:
+    action: receive
+    channel:
+      $ref: '#/channels/supplementalNotes'
+    summary: Meeting notes update
+    description: Meeting notes/whiteboard content updated during the debate session
+    
+  pong:
+    action: receive
+    channel:
+      $ref: '#/channels/pong'
+    summary: Ping response
+    description: Response to client ping messages
+
+  # Client-to-Server Operations (Messages sent by the client)
+  participantInput:
+    action: send
+    channel:
+      $ref: '#/channels/participantInput'
+    summary: Participant input submission
+    description: Submit participant spoken responses and touchscreen selections
+
+  audioControl:
+    action: send
+    channel:
+      $ref: '#/channels/audioControl'
+    summary: Enable or disable audio streaming
+    description: Toggle server-side audio streaming for this session
+
+  audioIdle:
+    action: send
+    channel:
+      $ref: '#/channels/audioIdle'
+    summary: Notify server that client audio playback is idle
+    description: Sent when the client finishes playing audio and is ready for the next utterance
+    
+  participantJoined:
+    action: send
+    channel:
+      $ref: '#/channels/participantJoined'
+    summary: Add participant to session
+    description: Add a new participant to the debate session. Can be sent at any time during any phase.
+    
+  startDebate:
+    action: send
+    channel:
+      $ref: '#/channels/startDebate'
+    summary: Start debate phase
+    description: Transition from welcome phase to opening phase, starting the debate
+    
+  ping:
+    action: send
+    channel:
+      $ref: '#/channels/ping'
+    summary: Connection ping
+    description: Ping message to keep connection alive
+
+channels:
+  debateOutput:
+    address: /api/debate/ws/{sessionId}
+    messages:
+      debateOutputMessage:
+        $ref: '#/components/messages/DebateOutputMessage'
+
+  audioChunk:
+    address: /api/debate/ws/{sessionId}
+    messages:
+      audioChunkMessage:
+        $ref: '#/components/messages/AudioChunkMessage'
+
+  captionTiming:
+    address: /api/debate/ws/{sessionId}
+    messages:
+      captionTimingMessage:
+        $ref: '#/components/messages/CaptionTimingMessage'
+
+  captionTimingEnd:
+    address: /api/debate/ws/{sessionId}
+    messages:
+      captionTimingEndMessage:
+        $ref: '#/components/messages/CaptionTimingEndMessage'
+    
+  debugMessage:
+    address: /api/debate/ws/{sessionId}
+    messages:
+      debugMessage:
+        $ref: '#/components/messages/DebugMessage'
+    
+  sessionComplete:
+    address: /api/debate/ws/{sessionId}
+    messages:
+      sessionCompleteMessage:
+        $ref: '#/components/messages/SessionCompleteMessage'
+    
+  supplementalNotes:
+    address: /api/debate/ws/{sessionId}
+    messages:
+      supplementalNotesMessage:
+        $ref: '#/components/messages/SupplementalNotesMessage'
+    
+  pong:
+    address: /api/debate/ws/{sessionId}
+    messages:
+      pongMessage:
+        $ref: '#/components/messages/PongMessage'
+    
+  participantInput:
+    address: /api/debate/ws/{sessionId}
+    messages:
+      participantInputMessage:
+        $ref: '#/components/messages/ParticipantInputMessage'
+
+  audioControl:
+    address: /api/debate/ws/{sessionId}
+    messages:
+      audioControlMessage:
+        $ref: '#/components/messages/AudioControlMessage'
+
+  audioIdle:
+    address: /api/debate/ws/{sessionId}
+    messages:
+      audioIdleMessage:
+        $ref: '#/components/messages/AudioIdleMessage'
+    
+  participantJoined:
+    address: /api/debate/ws/{sessionId}
+    messages:
+      participantJoinedMessage:
+        $ref: '#/components/messages/ParticipantJoinedMessage'
+    
+  startDebate:
+    address: /api/debate/ws/{sessionId}
+    messages:
+      startDebateMessage:
+        $ref: '#/components/messages/StartDebateMessage'
+    
+  ping:
+    address: /api/debate/ws/{sessionId}
+    messages:
+      pingMessage:
+        $ref: '#/components/messages/PingMessage'
+
+components:
+  messages:
+    DebateOutputMessage:
+      name: DebateOutputMessage
+      title: Debate Output
+      summary: User-facing debate output with optional text and touchscreen prompts
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/DebateOutputPayload'
+
+    AudioChunkMessage:
+      name: AudioChunkMessage
+      title: Audio Chunk
+      summary: Binary audio frame for a streamed utterance
+      contentType: application/octet-stream
+      payload:
+        $ref: '#/components/schemas/AudioChunkPayload'
+
+    CaptionTimingMessage:
+      name: CaptionTimingMessage
+      title: Caption Timing
+      summary: Per-boundary timing event for synchronizing captions to streamed audio
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/CaptionTimingPayload'
+
+    CaptionTimingEndMessage:
+      name: CaptionTimingEndMessage
+      title: Caption Timing End
+      summary: Indicates the timing stream has ended for an utterance
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/CaptionTimingEndPayload'
+    
+    DebugMessage:
+      name: DebugMessage
+      title: Debug Message
+      summary: Internal agent communication and debug information
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/DebugMessagePayload'
+    
+    SessionCompleteMessage:
+      name: SessionCompleteMessage
+      title: Session Complete
+      summary: Notification that the debate session has completed
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/SessionCompletePayload'
+    
+    SupplementalNotesMessage:
+      name: SupplementalNotesMessage
+      title: Supplemental Notes
+      summary: Meeting notes/whiteboard content in structured format
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/SupplementalNotesPayload'
+    
+    PongMessage:
+      name: PongMessage
+      title: Pong Response
+      summary: Response to ping messages
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/PongPayload'
+    
+    ParticipantInputMessage:
+      name: ParticipantInputMessage
+      title: Participant Input
+      summary: Participant spoken responses and touchscreen selections
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/ParticipantInputPayload'
+
+    AudioControlMessage:
+      name: AudioControlMessage
+      title: Audio Control
+      summary: Enable or disable audio streaming for this connection
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/AudioControlPayload'
+
+    AudioIdleMessage:
+      name: AudioIdleMessage
+      title: Audio Idle
+      summary: Notify server that client audio playback is idle
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/AudioIdlePayload'
+    
+    ParticipantJoinedMessage:
+      name: ParticipantJoinedMessage
+      title: Participant Joined
+      summary: Add a new participant to the debate session
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/ParticipantJoinedPayload'
+    
+    StartDebateMessage:
+      name: StartDebateMessage
+      title: Start Debate
+      summary: Transition from welcome phase to opening phase
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/StartDebatePayload'
+    
+    PingMessage:
+      name: PingMessage
+      title: Ping Message
+      summary: Connection keep-alive ping
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/PingPayload'
+
+  schemas:
+    BaseMessage:
+      type: object
+      required:
+        - type
+        - timestamp
+      properties:
+        type:
+          type: string
+          description: Message type identifier
+        timestamp:
+          type: string
+          format: date-time
+          description: ISO 8601 timestamp of when the message was sent
+      additionalProperties: true
+
+    DebateOutputPayload:
+      allOf:
+        - $ref: '#/components/schemas/BaseMessage'
+        - type: object
+          required:
+            - waiting_for_input
+            - done
+            - debug
+          properties:
+            type:
+              type: string
+              enum: [debate_output]
+            text:
+              type: string
+              description: Text to be read aloud in the room. When streaming, this is a partial chunk.
+              example: "Here's what the AI moderator says"
+            utterance_id:
+              type: string
+              description: Identifier for this utterance. Used to stitch streaming text and audio chunks together.
+              example: "T0000001"
+            streaming:
+              type: boolean
+              description: True when this message is part of a streaming utterance.
+            stream_end:
+              type: boolean
+              description: True when this is the final chunk for a streaming utterance.
+            touchscreen_prompts:
+              type: array
+              description: Touchscreen prompts for participants (optional)
+              items:
+                $ref: '#/components/schemas/TouchscreenPrompt'
+            waiting_for_input:
+              type: boolean
+              description: Whether the system is waiting for participant responses
+            done:
+              type: boolean
+              description: Whether the session is complete
+            debug:
+              type: boolean
+              enum: [false]
+              description: Marks this as a user-facing message
+            phase:
+              type: string
+              description: Current debate phase when this message was emitted
+            speaker_prompt:
+              type: object
+              description: Prompt for the speaker
+              required:
+                - participant_id
+                - text
+              properties:
+                participant_id:
+                  type: string
+                  description: ID of the participant this prompt is for
+                  example: "alice"
+                text:
+                  type: string
+                  description: The text of the prompt
+                  example: "IDEA: ..."
+            tr_question_summary:
+              type: string
+              description: |
+                Optional short summary of TR's current question/request.
+                Present only on relevant `debate_output` events.
+              example: "TR asks for one practical downside of the proposal."
+            eligible_speakers:
+              type: array
+              description: |
+                List of speakers eligible to raise hands.
+                If unset, no change to previous list.
+                Client should clear a raised hand when the speaker is no longer eligible.
+              items:
+                $ref: '#/components/schemas/HandRaisePrompt'
+              example:
+                - participant_id: "alice"
+                  hint: "Consider the fairness implications"
+                - participant_id: "bob"
+
+    TouchscreenPrompt:
+      type: object
+      required:
+        - participant_id
+        - question
+        - options
+      properties:
+        participant_id:
+          type: string
+          description: ID of the participant this prompt is for
+          example: "alice"
+        question:
+          type: string
+          description: The question text
+          example: "Do you agree with this point?"
+        options:
+          type: array
+          items:
+            type: string
+          description: Multiple choice options
+          example: ["Yes", "No", "Partially"]
+
+    HandRaisePrompt:
+      type: object
+      required:
+        - participant_id
+        - hint
+      properties:
+        participant_id:
+          type: string
+          description: ID of the participant eligible to raise their hand
+          example: "alice"
+        hint:
+          type: string
+          description: Hint text to guide the participant's response
+          example: "What are the limits to our power?\nConsider the fairness implications"
+
+    DebugMessagePayload:
+      allOf:
+        - $ref: '#/components/schemas/BaseMessage'
+        - type: object
+          required:
+            - agent
+            - content
+            - phase
+            - debug
+          properties:
+            type:
+              type: string
+              enum: [debug_message]
+            agent:
+              type: string
+              description: Name of the AI agent
+              example: "Critic"
+            content:
+              type: string
+              description: Debug message content
+              example: "Internal agent reflection..."
+            phase:
+              type: string
+              description: Current phase of the debate
+              example: "critic"
+            debug:
+              type: boolean
+              enum: [true]
+              description: Marks this as a debug message
+
+    SessionCompletePayload:
+      allOf:
+        - $ref: '#/components/schemas/BaseMessage'
+        - type: object
+          properties:
+            type:
+              type: string
+              enum: [session_complete]
+            history_id:
+              type: string
+              description: Session ID for retrieving debate history
+              example: "abc123-def456-ghi789"
+
+    SupplementalNotesPayload:
+      allOf:
+        - $ref: '#/components/schemas/BaseMessage'
+        - type: object
+          required:
+            - notes
+          properties:
+            type:
+              type: string
+              enum: [supplemental_notes]
+            notes:
+              type: object
+              description: Structured meeting notes grouped into action categories
+              required:
+                - title
+                - categories
+              properties:
+                title:
+                  type: string
+                  description: Current discussion question
+                  example: "Should President Roosevelt intervene in the strike now?"
+                categories:
+                  type: array
+                  minItems: 2
+                  items:
+                    type: object
+                    required:
+                      - header
+                      - items
+                    properties:
+                      header:
+                        type: string
+                        description: Category heading
+                        example: "Act Now"
+                      items:
+                        type: array
+                        description: Short bullet points supporting this category
+                        items:
+                          type: string
+                        example:
+                          - "Violence could escalate quickly"
+                          - "Federal action can stabilize talks"
+
+    PongPayload:
+      allOf:
+        - $ref: '#/components/schemas/BaseMessage'
+        - type: object
+          properties:
+            type:
+              type: string
+              enum: [pong]
+
+    ParticipantInputPayload:
+      type: object
+      required:
+        - type
+      properties:
+        type:
+          type: string
+          enum: [participant_input]
+        spoken:
+          type: object
+          description: Spoken input from a participant (optional)
+          properties:
+            participant_id:
+              type: string
+              description: ID of the participant who spoke
+              example: "alice"
+            text:
+              type: string
+              description: What the participant said
+              example: "I think this approach has merit because..."
+        touchscreen_responses:
+          type: object
+          description: Touchscreen responses from participants (optional)
+          additionalProperties:
+            type: string
+          example:
+            alice: "Yes"
+            bob: "No"
+        raised_hands:
+          type: array
+          description: |
+            List of raised hands. Entries not in `eligible_speakers` are ignored.
+            If unset, no change to previous list.
+            Client should clear raised hands and update this list when appropriate.
+          items:
+            type: string
+          example: ["alice", "bob"]
+
+    AudioControlPayload:
+      type: object
+      required:
+        - type
+        - enabled
+      properties:
+        type:
+          type: string
+          enum: [audio_control]
+        enabled:
+          type: boolean
+          description: True to enable audio streaming for this connection, false to disable
+
+    AudioIdlePayload:
+      type: object
+      required:
+        - type
+      properties:
+        type:
+          type: string
+          enum: [audio_idle]
+          description: Client audio playback is idle and ready for the next utterance
+
+    AudioChunkPayload:
+      type: string
+      format: binary
+      description: |
+        Binary WebSocket frame containing a 4-byte header followed by raw PCM audio.
+        Header layout (big-endian):
+        - Bits 31..28: flags (bit 28 = is_done, other flags reserved)
+        - Bits 27..16: utterance_id (12 bits)
+        - Bits 15..0: chunk_index (16 bits)
+        Audio payload: 24kHz 16-bit mono PCM.
+
+    CaptionTimingPayload:
+      allOf:
+        - $ref: '#/components/schemas/BaseMessage'
+        - type: object
+          required:
+            - utterance_id
+            - tts_utterance_id
+            - audio_utterance_id
+            - boundary_type
+            - text
+            - text_offset
+            - word_length
+            - audio_offset_ticks
+            - audio_offset_ms
+            - duration_ms
+          properties:
+            type:
+              type: string
+              enum: [caption_timing]
+            utterance_id:
+              type: string
+              description: Full server utterance identifier.
+              example: "T0000123"
+            tts_utterance_id:
+              type: integer
+              description: Full integer utterance ID from the server TTS pipeline.
+              example: 123
+            audio_utterance_id:
+              type: integer
+              description: 12-bit utterance ID used in binary audio chunk headers (`tts_utterance_id & 0xFFF`).
+              example: 123
+            phase:
+              type: string
+              description: Debate phase when this boundary was emitted.
+            boundary_type:
+              type: string
+              enum: [word, punctuation, sentence]
+              description: Azure speech boundary type.
+            text:
+              type: string
+              description: Boundary text returned by Azure TTS.
+            text_offset:
+              type: integer
+              description: Character offset in synthesized text.
+            word_length:
+              type: integer
+              description: Length of boundary text in characters.
+            audio_offset_ticks:
+              type: integer
+              description: Boundary offset from utterance start in 100ns ticks.
+            audio_offset_ms:
+              type: number
+              format: double
+              description: Boundary offset from utterance start in milliseconds.
+            duration_ms:
+              type: number
+              format: double
+              description: Boundary duration in milliseconds.
+
+    CaptionTimingEndPayload:
+      allOf:
+        - $ref: '#/components/schemas/BaseMessage'
+        - type: object
+          required:
+            - utterance_id
+            - tts_utterance_id
+            - audio_utterance_id
+            - reason
+          properties:
+            type:
+              type: string
+              enum: [caption_timing_end]
+            utterance_id:
+              type: string
+              description: Full server utterance identifier.
+              example: "T0000123"
+            tts_utterance_id:
+              type: integer
+              description: Full integer utterance ID from the server TTS pipeline.
+              example: 123
+            audio_utterance_id:
+              type: integer
+              description: 12-bit utterance ID used in binary audio chunk headers (`tts_utterance_id & 0xFFF`).
+              example: 123
+            reason:
+              type: string
+              enum: [completed, canceled, force_closed]
+              description: Why caption timing ended for this utterance.
+
+    PingPayload:
+      type: object
+      required:
+        - type
+      properties:
+        type:
+          type: string
+          enum: [ping]
+
+    ParticipantJoinedPayload:
+      type: object
+      required:
+        - type
+        - participant_id
+      properties:
+        type:
+          type: string
+          enum: [participant_joined]
+          description: Message type identifier
+        participant_id:
+          type: string
+          description: ID of the participant to add to the session
+          example: "alice"
+        agent_type:
+          type: string
+          description: |
+            Optional agent type for automated participant behavior.
+            If provided, a debug agent will be created for this participant.
+            If omitted, the participant is treated as a human.
+          enum:
+            - informed
+            - curious_museum_visitor
+            - uninformed
+            - malicious_disruptive
+            - disengaged
+            - struggling
+            - off_topic
+            - on_track_needs_more
+            - "8_year_old"
+          example: "informed"
+
+    StartDebatePayload:
+      type: object
+      required:
+        - type
+      properties:
+        type:
+          type: string
+          enum: [start_debate]
+          description: Message type identifier
+      description: |
+        Transitions the session from welcome phase to opening phase.
+        This immediately ends the welcome phase and starts the debate.
+        Only effective when the session is currently in the welcome phase.
+
+  securitySchemes:
+    TokenQuery:
+      type: httpApiKey
+      in: query
+      name: token
+      description: |
+        Short-lived single-use WebSocket token.
+        Token is provided as `?token=...` in the websocket URL.
+    TokenHeader:
+      type: httpApiKey
+      in: header
+      name: x-ws-token
+      description: |
+        Alternative header form for WebSocket token.
+        Token is provided as `x-ws-token` in the websocket request header.

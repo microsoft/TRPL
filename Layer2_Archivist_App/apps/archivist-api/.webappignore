@@ -1,0 +1,20 @@
+# azd App Service packaging — service root (see Microsoft Learn: service-packaging-ignore-files).
+# Oryx build is disabled in zero trust; antenv must ship in the zip.
+
+# Local / dev only
+.env
+.env.local
+.pytest_cache/
+tests/
+
+# Python artifacts
+__pycache__/
+*.py[cod]
+*.egg-info/
+
+# Other local venv names (not antenv — that is the Linux deploy artifact)
+.venv/
+venv/
+
+# Force-include prebuilt Linux venv from CI prepackage (also listed in repo .gitignore)
+!antenv/

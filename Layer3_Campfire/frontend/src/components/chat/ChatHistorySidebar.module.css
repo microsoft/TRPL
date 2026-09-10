@@ -1,0 +1,261 @@
+/* ================================
+   Chat History Sidebar - right side panel
+   Uses mask to clip the blended effect to the torn paper shape
+   ================================ */
+.sidebar {
+  /* Hidden on mobile */
+  display: none;
+}
+
+@media (min-width: 1200px) {
+  .sidebar {
+    display: block;
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: min(450px, 33%);
+    height: 100vh;
+    z-index: 1;
+    pointer-events: none;
+    overflow: hidden;
+
+    /* Start off-screen for slide-in animation - GSAP handles all transforms */
+    transform: translateX(100%);
+
+    /* Match main page background gradient */
+    background:
+      linear-gradient(0deg, rgba(153, 173, 197, 0.20) 0%, rgba(153, 173, 197, 0.00) 100%),
+      var(--color-surface);
+  }
+
+  /* Source-rendered neutral panel texture */
+  .sidebar::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(90deg, rgba(9, 42, 77, 0.08), transparent 24%),
+      repeating-linear-gradient(0deg, transparent 0 16px, rgba(9, 42, 77, 0.025) 16px 17px);
+    pointer-events: none;
+  }
+}
+
+/* ================================
+   Content Area
+   ================================ */
+.content {
+  display: none;
+}
+
+@media (min-width: 1200px) {
+  .content {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    /* Offset from left to avoid torn edge area (~75px) */
+    left: 75px;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    /* Hide content when closed, disable pointer events */
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease-in-out;
+  }
+
+  .sidebar[data-open="true"] .content {
+    opacity: 1;
+    pointer-events: auto;
+    transition-delay: 0.1s; /* Slight delay for smoother appearance */
+  }
+
+  .sidebar[data-open="false"] .content {
+    transition-delay: 0s; /* No delay when closing */
+  }
+}
+
+/* ================================
+   Header with New Chat Button
+   ================================ */
+.header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.5rem 0 1rem 0;
+  margin-right: 1.5rem;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.closeButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  padding: 8px;
+  border: none;
+  border-radius: 50%;
+  background: var(--color-sand-50);
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.closeButton:hover {
+  background: var(--color-sand);
+}
+
+.closeButton:focus-visible {
+  outline: 2px solid var(--color-bright-forest);
+  outline-offset: 2px;
+}
+
+.closeButtonIcon {
+  position: relative;
+  display: inline-block;
+  width: 22px;
+  height: 17px;
+}
+
+.closeButtonIconDefault,
+.closeButtonIconHover {
+  position: absolute;
+  inset: 0;
+  transition: opacity 0.2s ease;
+}
+
+.closeButtonIconHover {
+  opacity: 0;
+}
+
+.closeButton:hover .closeButtonIconDefault,
+.closeButton:focus-visible .closeButtonIconDefault {
+  opacity: 0;
+}
+
+.closeButton:hover .closeButtonIconHover,
+.closeButton:focus-visible .closeButtonIconHover {
+  opacity: 1;
+}
+
+.title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  font-family: var(--font-display);
+  color: var(--color-dark-gray);
+  margin: 0;
+  flex: 1;
+  text-align: center;
+}
+
+.newChatButton {
+  display: flex;
+  align-items: center;
+  min-width: 40px;
+  height: 40px;
+  padding: 0;
+  background: transparent;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background 0.2s ease, border-radius 0.2s ease;
+}
+
+.newChatButton:hover,
+.newChatButton:focus-visible {
+  background: var(--color-sand-50);
+  border-radius: 0 20px 20px 0;
+}
+
+.newChatButton:focus-visible {
+  outline: 2px solid var(--color-bright-forest);
+  outline-offset: 2px;
+}
+
+/* Icon container */
+.iconContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background: var(--color-sand-50);
+  border-radius: 50%;
+  flex-shrink: 0;
+  transition: background 0.2s ease;
+}
+
+.newChatButton:hover .iconContainer,
+.newChatButton:focus-visible .iconContainer {
+  background: var(--color-sand);
+}
+
+.plusIcon {
+  /* Make icon black */
+  filter: brightness(0);
+}
+
+/* Expandable text label */
+.newChatLabel {
+  max-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  opacity: 0;
+  padding-left: 0;
+  padding-right: 0;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 120%;
+  color: var(--color-dark-gray);
+  transition: max-width 0.3s ease, opacity 0.2s ease, padding 0.3s ease;
+}
+
+.newChatButton:hover .newChatLabel,
+.newChatButton:focus-visible .newChatLabel {
+  max-width: 70px;
+  opacity: 1;
+  padding-left: 12px;
+  padding-right: 4px;
+}
+
+/* ================================
+   Chat List
+   ================================ */
+.chatList {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-right: 1.5rem;
+  position: relative;
+}
+
+/* Custom scrollbar */
+.chatList::-webkit-scrollbar {
+  width: 6px;
+}
+
+.chatList::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.chatList::-webkit-scrollbar-thumb {
+  background: var(--border-subtle);
+  border-radius: 3px;
+}
+
+.chatList::-webkit-scrollbar-thumb:hover {
+  background: var(--border);
+}
+
+.loadingMessage,
+.emptyMessage {
+  padding: 2rem 1rem;
+  text-align: center;
+  color: var(--color-text-secondary);
+  font-size: 0.875rem;
+}
+
+.emptyMessage {
+  font-size: 14px;
+  font-family: var(--font-display);
+}

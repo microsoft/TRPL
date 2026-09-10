@@ -1,0 +1,22 @@
+.positioner {
+  max-width: var(--available-width);
+}
+
+.popup {
+  padding: 6px 10px;
+  border-radius: 4px;
+  background-color: var(--color-dark-gray);
+  color: var(--color-surface);
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.15s ease;
+}
+
+.popup[data-open] {
+  opacity: 1;
+}

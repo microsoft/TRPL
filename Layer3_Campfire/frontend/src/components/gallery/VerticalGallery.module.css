@@ -1,0 +1,258 @@
+/* ================================
+   Vertical Gallery - Infinite Scroll
+   ================================ */
+
+.container {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  position: relative;
+  cursor: grab;
+  /* Create isolated stacking context to prevent layer interference */
+  isolation: isolate;
+  /* Padding to allow focus ring to be visible within clipped area */
+  padding: 4px;
+}
+
+.container:active {
+  cursor: grabbing;
+}
+
+/* ================================
+   Two-Column Vertical Layout
+   ================================ */
+.track {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-md);
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  /* GPU layer promotion - applied to the actual animated element */
+  will-change: transform;
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+  /* Isolate paint/layout to prevent compositor thrashing */
+  contain: layout paint;
+}
+
+/* Remove layout containment when an image is focused, so the focus ring
+   can extend beyond the column bounds without being clipped */
+.column:has(.imageWrapper:focus-visible) {
+  contain: paint;
+}
+
+/* ================================
+   Image Wrapper & Styles
+   ================================ */
+.imageWrapper {
+  position: relative;
+  border-radius: var(--radius-sm);
+  overflow: visible; /* Allow scaled card to overflow */
+  outline: none;
+  /* Smooth transitions for scale and opacity */
+  transition: opacity 0.3s ease-out, transform 0.25s ease-out;
+}
+
+/* Sand background - covers image area */
+.imageWrapper::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: var(--color-sand);
+  border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+  opacity: 0;
+  z-index: 0;
+  transition: opacity 0.2s ease-out;
+  pointer-events: none;
+}
+
+.selected::before {
+  opacity: 1;
+}
+
+/* Focus ring - sand background with border */
+.imageWrapper:focus-visible {
+  outline: none;
+}
+
+.imageWrapper:focus-visible::before {
+  opacity: 1;
+  border: 2px solid var(--color-bright-forest);
+  border-bottom: 0;
+}
+
+/* Extend the focus ring across the caption (dynamic height safe). */
+.imageWrapper:focus-visible .caption {
+  /* Draw left, right, and bottom edges only to join with the image ring above. */
+  box-shadow:
+    inset 2px 0 0 var(--color-bright-forest),
+    inset -2px 0 0 var(--color-bright-forest),
+    inset 0 -2px 0 var(--color-bright-forest);
+}
+
+.imageContainer {
+  position: relative;
+  z-index: 1;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  /* Use padding transition for consistent spacing regardless of image height */
+  transition: padding 0.2s ease-out, border-radius 0.2s ease-out;
+  box-sizing: border-box;
+}
+
+.selected .imageContainer {
+  /* Fixed padding creates consistent inset on all sides */
+  padding: 8px;
+  border-radius: calc(var(--radius-sm) - 1px);
+}
+
+.image {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* ================================
+   Selected State (on hover)
+   ================================ */
+.selected {
+  z-index: 10;
+}
+
+/* Dimmed state for non-selected images when one is selected */
+.dimmed {
+  opacity: 0.2;
+}
+
+/* Ensure selected image stays fully visible */
+.selected:not(.dimmed) {
+  opacity: 1;
+}
+
+/* ================================
+   Caption - positioned BELOW the image with its own sand background.
+   The image wrapper ::before provides the top sand area; the caption
+   provides the bottom sand area. Together they form one seamless card.
+   ================================ */
+.caption {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 2;
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  /* Top padding reduced - imageContainer padding already provides gap above */
+  padding: 2px 8px 8px;
+  font-size: 18px;
+  line-height: 1.4;
+  color: var(--color-text);
+  /* Caption has its own sand background that visually connects to the image sand */
+  background-color: var(--color-sand);
+  border-radius: 0 0 var(--radius-sm) var(--radius-sm);
+  /* Hidden by default */
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease-out;
+}
+
+.selected .caption {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.captionText {
+  flex: 1;
+  margin: 0;
+  word-break: break-word;
+}
+
+.captionButton {
+  width: 20px;
+  height: 20px;
+  border-radius: 20px;
+  background: var(--color-deep-orange);
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-top: 2px; /* Align with first line of text */
+  transition: transform 0.2s ease-out, opacity 0.2s ease-out;
+}
+
+.captionButton:hover {
+  transform: scale(1.1);
+  opacity: 0.9;
+}
+
+.captionButton:active {
+  transform: scale(0.95);
+}
+
+.captionButton img {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* ================================
+   Empty State
+   ================================ */
+.emptyMessage {
+  padding: 2rem;
+  text-align: center;
+  color: var(--color-text-secondary);
+}
+
+/* ================================
+   Single Column Mode
+   ================================ */
+.singleColumn {
+  cursor: default;
+}
+
+.trackSingleColumn {
+  grid-template-columns: 1fr;
+}
+
+/* ================================
+   Action Buttons (for showActions mode)
+   ================================ */
+.actionButtons {
+  display: flex;
+  gap: var(--space-sm);
+  margin-top: var(--space-sm);
+  position: relative;
+  z-index: 2;
+}
+
+.actionButton {
+  padding: var(--space-xs) var(--space-md);
+  border: 1px solid var(--color-hunter-green);
+  border-radius: var(--radius-sm);
+  background: var(--color-white);
+  color: var(--color-hunter-green);
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.actionButton:hover {
+  background: var(--color-hunter-green);
+  color: var(--color-white);
+}

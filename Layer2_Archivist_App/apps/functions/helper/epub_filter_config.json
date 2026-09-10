@@ -1,0 +1,74 @@
+{
+  "description": "Configuration for filtering HTML content during EPUB indexing",
+  
+  "exclude_tags": [
+    "script",
+    "style",
+    "head",
+    "meta",
+    "link",
+    "nav",
+    "aside",
+    "footer",
+    "figcaption",
+    "figure",
+    "caption",
+    "img"
+  ],
+  
+  "exclude_classes": [
+    "caption",
+    "image-caption",
+    "img-caption",
+    "photo-caption",
+    "figure-caption",
+    "wp-caption",
+    "gallery-caption",
+    "media-caption",
+    "sidebar",
+    "advertisement",
+    "ad-container",
+    "footnote",
+    "endnote",
+    "page-number",
+    "header",
+    "footer",
+    "navigation",
+    "toc",
+    "table-of-contents",
+    "figure"
+  ],
+  
+  "exclude_ids": [
+    "toc",
+    "table-of-contents",
+    "navigation",
+    "sidebar",
+    "footer",
+    "header",
+    "advertisement"
+  ],
+  
+  "exclude_data_attributes": {
+    "data-type": ["footnote", "endnote", "sidebar", "advertisement"],
+    "role": ["navigation", "banner", "contentinfo", "complementary"]
+  },
+  
+  "class_patterns": [
+    "caption",
+    "sidebar",
+    "ad-",
+    "advertisement",
+    "footnote",
+    "endnote"
+  ],
+  
+  "notes": {
+    "exclude_tags": "HTML tags to completely remove (content included)",
+    "exclude_classes": "Elements with these CSS classes will be removed",
+    "exclude_ids": "Elements with these IDs will be removed",
+    "exclude_data_attributes": "Elements with matching data-* or role attributes",
+    "class_patterns": "Partial class name matches (e.g., 'ad-' matches 'ad-banner', 'ad-sidebar')"
+  }
+}
+

@@ -1,0 +1,153 @@
+/* Button base styles */
+.button {
+  display: inline-flex;
+  padding: 12px 16px;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+
+  /* Text styles */
+  font-family: var(--font-button);
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 80%;
+  letter-spacing: 0.36px;
+  text-transform: uppercase;
+
+  cursor: pointer;
+  /* Only transition hover/active state properties - avoids conflict with GSAP animations */
+  transition:
+    background-color var(--transition-fast),
+    border-color var(--transition-fast),
+    color var(--transition-fast);
+}
+
+.button:link,
+.button:visited,
+.button:hover,
+.button:focus,
+.button:active,
+.button:focus-visible {
+  text-decoration: none;
+}
+
+.button:focus-visible {
+  outline: 2px solid var(--color-bright-forest);
+}
+
+/* Primary - Outlined default, filled on hover */
+.primary {
+  color: var(--color-night-sky);
+  background-color: transparent;
+  border: 1px solid var(--color-night-sky);
+}
+
+.primary:hover:not(:disabled) {
+  background: var(--color-night-sky);
+  border: 1px solid var(--color-night-sky);
+  color: var(--color-surface);
+}
+
+.primary:active:not(:disabled) {
+  border: 2px solid var(--color-bright-forest);
+  background: var(--color-night-sky);
+  color: var(--color-surface);
+}
+
+.primary:disabled {
+  border: 1px solid var(--color-dark-gray-sky);
+  opacity: 0.33;
+  cursor: not-allowed;
+}
+
+/* Secondary */
+.secondary {
+  background-color: transparent;
+  border: 1px solid var(--color-border);
+  color: var(--color-ink);
+}
+
+.secondary:hover:not(:disabled) {
+  background-color: var(--color-surface-hover);
+}
+
+.secondary:disabled {
+  opacity: 0.33;
+  cursor: not-allowed;
+}
+
+/* Ghost */
+.ghost {
+  background-color: transparent;
+  border: 1px solid transparent;
+  color: var(--color-ink);
+}
+
+.ghost:hover:not(:disabled) {
+  background-color: var(--color-surface-hover);
+}
+
+.ghost:disabled {
+  opacity: 0.33;
+  cursor: not-allowed;
+}
+
+/* Soft - Muted background, used for secondary actions */
+.soft {
+  background: var(--color-sand-20);
+  border: none;
+  border-radius: 2px;
+  color: var(--color-night-sky);
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  text-transform: none;
+  letter-spacing: normal;
+}
+
+.soft:hover:not(:disabled) {
+  opacity: 0.7;
+}
+
+.soft:disabled {
+  opacity: 0.33;
+  cursor: not-allowed;
+}
+
+/* Sizes */
+.sm {
+  padding: 8px 12px;
+  font-size: 14px;
+}
+
+.md {
+  padding: 12px 16px;
+  font-size: 18px;
+}
+
+.lg {
+  padding: 16px 24px;
+  font-size: 20px;
+}
+
+/* ================================
+   Mobile & Tablet (up to 1199px)
+   ================================ */
+@media (max-width: 1199px) {
+  .button {
+    font-size: 16px;
+  }
+
+  .sm {
+    font-size: 14px;
+  }
+
+  .md {
+    font-size: 16px;
+  }
+
+  .lg {
+    font-size: 18px;
+  }
+}

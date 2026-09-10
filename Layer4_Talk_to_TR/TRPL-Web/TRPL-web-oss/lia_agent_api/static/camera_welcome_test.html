@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Camera → Welcome Test</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #0d1117;
+            color: #e6edf3;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        #topbar {
+            padding: 12px 20px;
+            background: #161b22;
+            border-bottom: 1px solid #30363d;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        #topbar h1 { font-size: 1.1em; color: #58a6ff; }
+        #status {
+            margin-left: auto;
+            font-size: 0.85em;
+            padding: 4px 12px;
+            border-radius: 12px;
+        }
+        #status.waiting { color: #8b949e; background: #1c1c1c; }
+        #status.connecting { color: #d29922; background: #2d2200; }
+        #status.connected { color: #3fb950; background: #0d2818; }
+        #status.error { color: #f85149; background: #2d0a0a; }
+        #phase-badge {
+            font-size: 0.8em;
+            padding: 3px 10px;
+            border-radius: 10px;
+            color: #a371f7;
+            background: #1a1030;
+            border: 1px solid #a371f755;
+        }
+
+        .main { display: flex; flex: 1; overflow: hidden; }
+
+        /* Left panel — controls */
+        #controls {
+            width: 340px;
+            min-width: 340px;
+            background: #161b22;
+            border-right: 1px solid #30363d;
+            padding: 16px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        #controls h3 {
+            font-size: 0.9em;
+            color: #8b949e;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 4px;
+        }
+        .ctrl-section {
+            background: #0d1117;
+            border: 1px solid #30363d;
+            border-radius: 8px;
+            padding: 12px;
+        }
+        .ctrl-row {
+            display: flex;
+            gap: 8px;
+            margin-top: 8px;
+        }
+        .ctrl-row label {
+            font-size: 0.8em;
+            color: #8b949e;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            flex: 1;
+        }
+        .ctrl-row input, .ctrl-row select {
+            background: #21262d;
+            border: 1px solid #30363d;
+            color: #e6edf3;
+            padding: 6px 8px;
+            border-radius: 4px;
+            font-size: 0.85em;
+        }
+        button {
+            padding: 8px 14px;
+            border: none;
+            border-radius: 6px;
+            font-size: 0.85em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+        button:hover { opacity: 0.85; }
+        button:disabled { opacity: 0.4; cursor: not-allowed; }
+        .btn-blue { background: #1f6feb; color: #fff; }
+        .btn-green { background: #238636; color: #fff; }
+        .btn-orange { background: #9e6a03; color: #fff; }
+        .btn-red { background: #da3633; color: #fff; }
+        .btn-purple { background: #8957e5; color: #fff; }
+        .btn-full { width: 100%; margin-top: 8px; }
+
+        /* Right panel — messages */
+        #messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .msg {
+            max-width: 85%;
+            padding: 10px 14px;
+            border-radius: 10px;
+            line-height: 1.5;
+            animation: fadeIn 0.2s ease;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .msg.event {
+            align-self: flex-end;
+            background: #1c3a5f;
+            color: #a2d2ff;
+            font-size: 0.82em;
+            font-family: monospace;
+        }
+        .msg.response {
+            align-self: flex-start;
+            background: #1a3328;
+            color: #a8e6cf;
+            font-size: 1em;
+        }
+        .msg.user {
+            align-self: flex-end;
+            background: #1f3d5f;
+            color: #cfe2f3;
+        }
+        .msg.system {
+            align-self: center;
+            background: #21262d;
+            color: #8b949e;
+            font-size: 0.8em;
+            text-align: center;
+        }
+        .msg.phase-change {
+            align-self: center;
+            background: #1a1030;
+            color: #a371f7;
+            font-size: 0.85em;
+            font-weight: 600;
+            border: 1px solid #a371f744;
+        }
+        .msg .label {
+            font-size: 0.72em;
+            opacity: 0.5;
+            margin-bottom: 3px;
+        }
+        .msg .time {
+            font-size: 0.68em;
+            opacity: 0.35;
+            margin-top: 3px;
+            text-align: right;
+        }
+
+        /* Chat input */
+        #chat-bar {
+            padding: 12px 20px;
+            background: #161b22;
+            border-top: 1px solid #30363d;
+            display: flex;
+            gap: 8px;
+        }
+        #chat-bar input {
+            flex: 1;
+            background: #21262d;
+            border: 1px solid #30363d;
+            color: #e6edf3;
+            padding: 10px 14px;
+            border-radius: 8px;
+            font-size: 0.95em;
+        }
+        #chat-bar input:focus { outline: none; border-color: #58a6ff; }
+        #chat-bar input:disabled { opacity: 0.4; }
+    </style>
+</head>
+<body>
+    <div id="topbar">
+        <h1>Camera → Welcome Test</h1>
+        <span id="phase-badge">—</span>
+        <span id="status" class="waiting">not started</span>
+    </div>
+    <div class="main">
+        <div id="controls">
+            <!-- Step 1: Create session -->
+            <div class="ctrl-section">
+                <h3>1. Session</h3>
+                <button class="btn-blue btn-full" id="btnCreate">Create Camera+Welcome Session</button>
+                <div style="margin-top:6px; font-size:0.78em; color:#8b949e;" id="sessionInfo">—</div>
+            </div>
+
+            <!-- Step 2: Simulate camera events -->
+            <div class="ctrl-section">
+                <h3>2. Camera Events</h3>
+                <div class="ctrl-row">
+                    <label>Person ID
+                        <input type="number" id="personId" value="1" min="1">
+                    </label>
+                </div>
+                <div class="ctrl-row">
+                    <label>Top
+                        <input type="text" id="appTop" value="blue jacket" placeholder="upper body clothing">
+                    </label>
+                    <label>Bottom
+                        <input type="text" id="appBottom" value="dark jeans" placeholder="lower body clothing">
+                    </label>
+                </div>
+                <div class="ctrl-row">
+                    <label>Notable
+                        <input type="text" id="appNotable" value="glasses" placeholder="notable features">
+                    </label>
+                </div>
+                <button class="btn-green btn-full" id="btnEnter" disabled>PERSON_ENTERED_ROOM</button>
+                <button class="btn-orange btn-full" id="btnBatch" disabled>BATCH_INVITE</button>
+                <button class="btn-purple btn-full" id="btnMic" disabled>MIC_ZONE_ENGAGED → Welcome</button>
+            </div>
+
+            <!-- Step 3: Extra events -->
+            <div class="ctrl-section">
+                <h3>3. Other Events</h3>
+                <button class="btn-orange btn-full" id="btnHandRaise" disabled>HAND_RAISE_RESPONSE</button>
+                <button class="btn-red btn-full" id="btnMicLeft" disabled>MIC_ZONE_LEFT</button>
+            </div>
+        </div>
+
+        <div id="messages">
+            <div class="msg system">Click "Create Session" to begin.</div>
+        </div>
+    </div>
+
+    <div id="chat-bar">
+        <input type="text" id="chatInput" placeholder="Type as visitor (press Enter to send)..." disabled>
+        <button class="btn-blue" id="btnSend" disabled>Send</button>
+    </div>
+
+<script>
+    // ── Elements ──
+    const statusEl = document.getElementById('status');
+    const phaseEl  = document.getElementById('phase-badge');
+    const msgEl    = document.getElementById('messages');
+    const sessionInfoEl = document.getElementById('sessionInfo');
+    const chatInput  = document.getElementById('chatInput');
+    const btnSend    = document.getElementById('btnSend');
+    const btnCreate  = document.getElementById('btnCreate');
+    const btnEnter   = document.getElementById('btnEnter');
+    const btnBatch   = document.getElementById('btnBatch');
+    const btnMic     = document.getElementById('btnMic');
+    const btnHandRaise = document.getElementById('btnHandRaise');
+    const btnMicLeft   = document.getElementById('btnMicLeft');
+
+    let sessionId = null;
+    let ws = null;
+    let eventCounter = 0;
+    let currentPhase = 'camera';
+
+    // ── Helpers ──
+    function ts() { return new Date().toLocaleTimeString(); }
+    function uid() { return `evt_${++eventCounter}_${Date.now()}`; }
+
+    function addMsg(type, label, text) {
+        const div = document.createElement('div');
+        div.className = `msg ${type}`;
+        div.innerHTML = `<div class="label">${label}</div>${text}<div class="time">${ts()}</div>`;
+        msgEl.appendChild(div);
+        msgEl.scrollTop = msgEl.scrollHeight;
+    }
+
+    function setStatus(cls, text) {
+        statusEl.className = cls;
+        statusEl.textContent = text;
+    }
+
+    function setPhase(p) {
+        currentPhase = p;
+        phaseEl.textContent = p;
+        addMsg('phase-change', '', `Phase → ${p}`);
+    }
+
+    function getAppearance() {
+        return {
+            top: document.getElementById('appTop').value,
+            bottom: document.getElementById('appBottom').value,
+            notable: document.getElementById('appNotable').value,
+        };
+    }
+
+    function getPid() {
+        return parseInt(document.getElementById('personId').value) || 1;
+    }
+
+    function enableCameraButtons(on) {
+        btnEnter.disabled = !on;
+        btnBatch.disabled = !on;
+        btnMic.disabled = !on;
+        btnHandRaise.disabled = !on;
+        btnMicLeft.disabled = !on;
+    }
+
+    function enableChat(on) {
+        chatInput.disabled = !on;
+        btnSend.disabled = !on;
+        if (on) chatInput.focus();
+    }
+
+    // ── API calls ──
+    async function sendCameraEvent(eventType, payload) {
+        const body = {
+            event_id: uid(),
+            timestamp: new Date().toISOString(),
+            source: "test_page",
+            event_type: eventType,
+            payload: payload,
+        };
+        addMsg('event', `→ ${eventType}`, `<pre>${JSON.stringify(payload, null, 2)}</pre>`);
+        try {
+            const resp = await fetch('/api/camera/test/events', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(body),
+            });
+            const data = await resp.json();
+            if (data.session_id && !sessionId) {
+                sessionId = data.session_id;
+                sessionInfoEl.textContent = `Session: ${sessionId.substring(0, 12)}...`;
+            }
+        } catch (e) {
+            addMsg('system', 'error', `Failed to send event: ${e.message}`);
+        }
+    }
+
+    async function sendSpokenText(text) {
+        if (!ws || ws.readyState !== WebSocket.OPEN) return;
+        const msg = {
+            type: "participant_input",
+            spoken: {
+                participant_id: `visitor_${getPid()}`,
+                text: text,
+                utterance_id: uid(),
+            },
+        };
+        ws.send(JSON.stringify(msg));
+        addMsg('user', `visitor_${getPid()}`, text);
+    }
+
+    // ── WebSocket ──
+    function connectWs(sid) {
+        setStatus('connecting', 'connecting...');
+        const proto = location.protocol === 'https:' ? 'wss:' : 'ws:';
+        ws = new WebSocket(`${proto}//${location.host}/api/debate/ws/${sid}`);
+
+        ws.onopen = () => {
+            setStatus('connected', `connected`);
+            addMsg('system', '', 'WebSocket connected');
+        };
+
+        ws.onmessage = (evt) => {
+            if (typeof evt.data !== 'string') return;
+            try {
+                const msg = JSON.parse(evt.data);
+                handleWsMessage(msg);
+            } catch (e) { /* ignore */ }
+        };
+
+        ws.onclose = () => {
+            setStatus('waiting', 'disconnected');
+            addMsg('system', '', 'WebSocket disconnected');
+            enableChat(false);
+        };
+
+        ws.onerror = () => setStatus('error', 'ws error');
+    }
+
+    // Track streaming
+    let streamBuffer = '';
+    let streamId = null;
+
+    function handleWsMessage(msg) {
+        const type = msg.type;
+
+        if (type === 'debate_output') {
+            // Detect phase change
+            if (msg.phase && msg.phase !== currentPhase) {
+                setPhase(msg.phase);
+                if (msg.phase === 'welcome') {
+                    enableChat(true);
+                }
+            }
+
+            if (msg.streaming) {
+                // Streaming chunk
+                if (msg.stream_id !== streamId) {
+                    streamId = msg.stream_id;
+                    streamBuffer = '';
+                }
+                streamBuffer += (msg.text || '');
+            } else if (msg.stream_end) {
+                // Stream finished — use final text
+                const text = msg.text || streamBuffer;
+                if (text) addMsg('response', msg.speaker || 'TR', text);
+                streamId = null;
+                streamBuffer = '';
+            } else if (msg.text && !msg.streaming) {
+                // Non-streamed output
+                addMsg('response', msg.speaker || 'TR', msg.text);
+            }
+
+            // Check for input prompt
+            if (msg.waiting_for_input) {
+                enableChat(true);
+            }
+        } else if (type === 'debug_message') {
+            const content = msg.content || '';
+            if (content.includes('Transitioning to')) {
+                const match = content.match(/Transitioning to (\w+)/);
+                if (match) setPhase(match[1]);
+                if (match && match[1] === 'welcome') enableChat(true);
+            }
+            // Show in chat as system msg
+            if (!msg.debug) {
+                addMsg('system', msg.agent || 'System', content);
+            }
+        } else if (type === 'phase_change') {
+            setPhase(msg.phase || msg.next_phase || 'unknown');
+        }
+    }
+
+    // ── Button handlers ──
+    btnCreate.onclick = async () => {
+        btnCreate.disabled = true;
+        setStatus('connecting', 'creating session...');
+        addMsg('system', '', 'Creating camera+welcome session...');
+
+        try {
+            // Create a camera+welcome test session
+            const resp = await fetch('/api/camera/test/create-session', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+            });
+            const data = await resp.json();
+            sessionId = data.session_id;
+
+            if (!sessionId) {
+                throw new Error('No session ID returned');
+            }
+
+            if (sessionId) {
+                sessionInfoEl.textContent = `Session: ${sessionId.substring(0, 12)}...`;
+                addMsg('system', '', `Session created: ${sessionId.substring(0, 12)}...`);
+                setPhase('camera');
+                enableCameraButtons(true);
+
+                // Small delay then connect WS
+                setTimeout(() => connectWs(sessionId), 500);
+            } else {
+                throw new Error('No session ID returned');
+            }
+        } catch (e) {
+            addMsg('system', 'error', `Failed: ${e.message}`);
+            setStatus('error', 'failed');
+            btnCreate.disabled = false;
+        }
+    };
+
+    btnEnter.onclick = () => {
+        sendCameraEvent('PERSON_ENTERED_ROOM', {
+            person_id: getPid(),
+            room_person_count: 1,
+        });
+    };
+
+    btnBatch.onclick = () => {
+        const pid = getPid();
+        const app = getAppearance();
+        sendCameraEvent('BATCH_INVITE', {
+            batch_id: `inv_${Date.now()}`,
+            person_ids: [pid],
+            new_person_count: 1,
+            total_room_count: 1,
+            model_choice: "solo",
+            appearances: {
+                [pid]: app,
+            },
+        });
+    };
+
+    btnMic.onclick = () => {
+        const pid = getPid();
+        const app = getAppearance();
+        sendCameraEvent('MIC_ZONE_ENGAGED', {
+            person_id: pid,
+            appearance: app,
+            appearance_ready: true,
+            mic_zone_visits: 1,
+            hand_raise_count: 0,
+            room_person_count: 1,
+        });
+    };
+
+    btnHandRaise.onclick = () => {
+        const pid = getPid();
+        const app = getAppearance();
+        sendCameraEvent('HAND_RAISE_RESPONSE', {
+            person_id: pid,
+            appearance: app,
+            appearance_ready: true,
+            in_mic_zone: false,
+            hand_raise_count: 1,
+            room_person_count: 1,
+        });
+    };
+
+    btnMicLeft.onclick = () => {
+        sendCameraEvent('MIC_ZONE_LEFT', {
+            person_id: getPid(),
+        });
+    };
+
+    // Chat input
+    chatInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' && chatInput.value.trim()) {
+            sendSpokenText(chatInput.value.trim());
+            chatInput.value = '';
+        }
+    });
+    btnSend.onclick = () => {
+        if (chatInput.value.trim()) {
+            sendSpokenText(chatInput.value.trim());
+            chatInput.value = '';
+        }
+    };
+</script>
+</body>
+</html>

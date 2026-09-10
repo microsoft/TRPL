@@ -1,0 +1,16 @@
+{
+  "name": "lia-agent-api-docs",
+  "version": "1.0.0",
+  "private": true,
+  "packageManager": "npm@10.8.2",
+  "scripts": {
+    "install:ci": "npm ci",
+    "generate:asyncapi": "bash scripts/generate_asyncapi.sh --force-write",
+    "postinstall": "npm run generate:asyncapi"
+  },
+  "dependencies": {
+    "@asyncapi/cli": "3.1.1",
+    "@asyncapi/html-template": "3.5.5",
+    "@asyncapi/react-component": "3.0.2"
+  }
+}

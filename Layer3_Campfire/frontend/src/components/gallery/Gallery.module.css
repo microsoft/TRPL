@@ -1,0 +1,59 @@
+/* ================================
+   Responsive Gallery Visibility
+   ================================ */
+
+/* Desktop breakpoint: 1200px */
+.desktopOnly {
+  display: none;
+}
+
+.mobileOnly {
+  display: block;
+}
+
+@media (min-width: 1200px) {
+  .desktopOnly {
+    display: block;
+  }
+
+  .mobileOnly {
+    display: none;
+  }
+}
+
+/* ================================
+   Loading Placeholder
+   ================================ */
+
+.placeholder {
+  min-height: 320px;
+  display: grid;
+  place-items: center;
+  border-radius: 12px;
+  background: var(--color-surface);
+  color: var(--color-muted);
+  position: relative;
+  overflow: hidden;
+}
+
+.placeholder::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    120deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.06) 40%,
+    rgba(255, 255, 255, 0) 80%
+  );
+  animation: placeholderShimmer 1.8s ease-in-out infinite;
+}
+
+@keyframes placeholderShimmer {
+  0% {
+    transform: translateX(-60%);
+  }
+  100% {
+    transform: translateX(60%);
+  }
+}

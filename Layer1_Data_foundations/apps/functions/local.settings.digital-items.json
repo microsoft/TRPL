@@ -1,0 +1,13 @@
+{
+  "IsEncrypted": false,
+  "Values": {
+    "AzureWebJobsStorage": "UseDevelopmentStorage=true",
+    "FUNCTIONS_WORKER_RUNTIME": "python",
+    "COSMOS_ENDPOINT": "https://<cosmos-account>.documents.azure.com:443/",
+    "COSMOS_DATABASE_NAME": "<database-name>",
+    "COSMOS_CONTAINER_NAME": "<records-container-name>",
+    "COSMOS_DIGITAL_ITEMS_CONTAINER_NAME": "<digital-items-container-name>",
+    "COSMOS_CONNECTION_MODE": "Gateway",
+    "_comment": "Reference-only example. Copy to ignored local.settings.json, replace placeholders locally, and use DefaultAzureCredential/RBAC."
+  }
+}

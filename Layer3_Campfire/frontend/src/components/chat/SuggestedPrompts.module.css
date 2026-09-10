@@ -1,0 +1,47 @@
+.container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+  pointer-events: auto; /* Enable clicks since it's outside chatbarCard */
+}
+
+@media (min-width: 1200px) {
+  .container {
+    padding-left: var(--space-lg); /* Align with chatbarCard content */
+  }
+}
+
+/* Mobile expand button - only visible on mobile when prompts are collapsed */
+.mobileExpandButton {
+  display: flex;
+  gap: 4px;
+}
+
+@media (min-width: 768px) {
+  .mobileExpandButton.mobileExpandButton {
+    display: none;
+  }
+}
+
+/* Prompts wrapper - hidden on mobile by default */
+.promptsWrapper {
+  display: none;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+}
+
+/* Show prompts when expanded on mobile */
+.promptsWrapperExpanded {
+  display: flex;
+}
+
+/* Always show prompts on tablet/desktop */
+@media (min-width: 768px) {
+  .promptsWrapper.promptsWrapper {
+    display: flex;
+  }
+}
+
+.viewMoreChip {
+  gap: 4px;
+}

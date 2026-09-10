@@ -1,0 +1,16 @@
+.container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--chip-gap);
+}
+
+.viewMore {
+  padding: 4px 10px;
+  background-color: var(--color-sand-50);
+  border: none;
+  font-size: 10px;
+}
+
+.viewMore:hover {
+  background-color: var(--color-sand-75);
+}

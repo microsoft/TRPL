@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>TR Jailbreak Gallery</title>
+<style>
+  :root {
+    --bg: #1c1712; --card: #2a2118; --ink: #f2e6d2; --muted: #b09a7e;
+    --brass: #d4af37; --line: #4a3c2c; --user: #8fb7e0; --tr: #e0b48f;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; min-height: 100vh; background: var(--bg); color: var(--ink);
+         font-family: Georgia, 'Times New Roman', serif; }
+
+  /* ── Access-code gate ── */
+  .gate { position: fixed; inset: 0; z-index: 20; display: flex;
+          align-items: center; justify-content: center; background: #14100c;
+          flex-direction: column; padding: 24px; text-align: center; }
+  .gate.hidden { display: none; }
+  .gate h1 { color: var(--brass); margin: 0 0 .2em; font-size: 1.5em; }
+  .gate p { color: var(--muted); margin: 0 0 1.2em; font-size: .95em; }
+  .gate input { padding: 11px 14px; border-radius: 8px; border: 1px solid var(--line);
+                background: #221b14; color: var(--ink); font-size: 1em; width: min(280px, 80vw); }
+  .gate button { margin-top: .9em; padding: 10px 22px; border: none; border-radius: 8px;
+                 background: var(--brass); color: #2a2012; font-weight: bold;
+                 font-size: 1em; cursor: pointer; }
+  .gate .err { color: #e88; min-height: 1.2em; margin-top: .8em; font-size: .85em; }
+
+  /* ── Header ── */
+  header { position: sticky; top: 0; z-index: 5; display: flex; align-items: center;
+           gap: 14px; padding: 14px 22px; background: rgba(20,16,12,.92);
+           border-bottom: 1px solid var(--line); backdrop-filter: blur(4px); }
+  header h1 { margin: 0; font-size: 1.2em; color: var(--brass); }
+  header .count { color: var(--muted); font-size: .85em; }
+  header .spacer { flex: 1; }
+  header input.search { padding: 7px 12px; border-radius: 8px; border: 1px solid var(--line);
+                        background: #221b14; color: var(--ink); font-size: .9em; width: 220px; }
+  header button { padding: 7px 14px; border: 1px solid var(--line); border-radius: 8px;
+                  background: #2a2118; color: var(--ink); cursor: pointer; font-size: .85em; }
+  header button:hover { border-color: var(--brass); }
+
+  /* ── Card grid ── */
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+          gap: 16px; padding: 22px; max-width: 1400px; margin: 0 auto; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 12px;
+          padding: 16px 18px; cursor: pointer; transition: transform .12s, border-color .12s;
+          display: flex; flex-direction: column; gap: 8px; }
+  .card:hover { transform: translateY(-2px); border-color: var(--brass); }
+  .card .top { display: flex; align-items: center; gap: 8px; }
+  .card .trophy { font-size: 1.2em; }
+  .card .tester { font-weight: bold; color: var(--brass); }
+  .card .time { color: var(--muted); font-size: .78em; font-family: ui-monospace, Menlo, monospace; }
+  .card .note { color: var(--ink); font-size: .9em; line-height: 1.5; font-style: italic;
+                opacity: .92; overflow: hidden; display: -webkit-box;
+                -webkit-line-clamp: 4; -webkit-box-orient: vertical; }
+  .card .note.empty { opacity: .4; font-style: normal; }
+  .card .meta { color: var(--muted); font-size: .76em; margin-top: auto; }
+  .status { padding: 40px; text-align: center; color: var(--muted); }
+
+  /* ── Detail modal ── */
+  .modal-bg { display: none; position: fixed; inset: 0; z-index: 30; background: rgba(8,6,4,.78);
+              align-items: center; justify-content: center; padding: 20px; }
+  .modal-bg.show { display: flex; }
+  .modal { background: #221b14; border: 1px solid var(--line); border-radius: 14px;
+           width: min(760px, 96vw); max-height: 88vh; display: flex; flex-direction: column; }
+  .modal .mhead { display: flex; align-items: center; gap: 10px; padding: 16px 20px;
+                  border-bottom: 1px solid var(--line); }
+  .modal .mhead h2 { margin: 0; font-size: 1.05em; color: var(--brass); }
+  .modal .mhead .x { margin-left: auto; cursor: pointer; color: var(--muted); font-size: 1.4em;
+                     background: none; border: none; }
+  .modal .mbody { overflow-y: auto; padding: 16px 20px; }
+  .modal .mnote { background: #2c2316; border-left: 3px solid var(--brass); padding: 10px 12px;
+                  margin-bottom: 14px; font-style: italic; white-space: pre-wrap; border-radius: 4px; }
+  .modal .mmeta { color: var(--muted); font-size: .78em; margin-bottom: 12px;
+                  font-family: ui-monospace, Menlo, monospace; word-break: break-all; }
+  .turn { padding: 5px 0; line-height: 1.55; font-size: .92em; white-space: pre-wrap; }
+  .turn .who { font-weight: bold; font-size: .8em; letter-spacing: .03em; }
+  .turn.user .who { color: var(--user); }
+  .turn.assistant .who { color: var(--tr); }
+  .turn.system { color: var(--muted); font-style: italic; }
+</style>
+</head>
+<body>
+
+<div id="gate" class="gate">
+  <h1>🏆 TR Jailbreak Gallery</h1>
+  <p>Successful jailbreak cases from internal testing.<br/>Enter the access code to view.</p>
+  <input id="gate-input" type="password" autocomplete="off" placeholder="access code" />
+  <button id="gate-btn">View cases</button>
+  <div id="gate-err" class="err"></div>
+</div>
+
+<div id="app" style="display:none;">
+  <header>
+    <h1>🏆 Jailbreak Gallery</h1>
+    <span id="count" class="count"></span>
+    <span class="spacer"></span>
+    <input id="search" class="search" placeholder="filter by tester / note…" />
+    <button id="reload">Reload</button>
+    <button id="lock">Lock</button>
+  </header>
+  <div id="status" class="status">Loading…</div>
+  <div id="grid" class="grid"></div>
+</div>
+
+<div id="modal-bg" class="modal-bg">
+  <div class="modal">
+    <div class="mhead">
+      <h2 id="m-title">Case</h2>
+      <button class="x" id="m-close">×</button>
+    </div>
+    <div class="mbody" id="m-body"></div>
+  </div>
+</div>
+
+<script>
+  const $ = (id) => document.getElementById(id);
+  let CODE = localStorage.getItem("jb_view_code") || "";
+  let CASES = [];
+
+  function esc(s) {
+    return (s || "").replace(/[&<>"']/g, c =>
+      ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+  }
+  function fmtTime(iso) {
+    if (!iso) return "—";
+    return iso.replace("T", " ").replace("Z", " UTC");
+  }
+
+  async function apiGet(path) {
+    const r = await fetch(path, { headers: { "X-Access-Code": CODE }, cache: "no-store" });
+    if (!r.ok) {
+      let d = ""; try { d = (await r.json()).detail || ""; } catch (_) {}
+      const e = new Error(r.status + (d ? ": " + d : "")); e.status = r.status; throw e;
+    }
+    return r.json();
+  }
+
+  // ── Gate ──
+  async function tryUnlock() {
+    const code = $("gate-input").value.trim();
+    if (!code) { $("gate-err").textContent = "Enter the access code."; return; }
+    CODE = code;
+    try {
+      const list = await apiGet("/api/jailbreak-cases");
+      localStorage.setItem("jb_view_code", code);
+      $("gate").classList.add("hidden");
+      $("app").style.display = "block";
+      onList(list);
+    } catch (e) {
+      CODE = "";
+      $("gate-err").textContent = e.status === 401 ? "Wrong code. Try again." : String(e);
+    }
+  }
+  $("gate-btn").addEventListener("click", tryUnlock);
+  $("gate-input").addEventListener("keydown", (e) => { if (e.key === "Enter") tryUnlock(); });
+
+  function lock() { localStorage.removeItem("jb_view_code"); location.reload(); }
+  $("lock").addEventListener("click", lock);
+
+  // ── List + cards ──
+  async function reload() {
+    $("status").style.display = "block";
+    $("status").textContent = "Loading…";
+    try { onList(await apiGet("/api/jailbreak-cases")); }
+    catch (e) {
+      if (e.status === 401) return lock();
+      $("status").textContent = "Failed to load: " + e.message;
+    }
+  }
+  $("reload").addEventListener("click", reload);
+
+  function onList(list) {
+    CASES = Array.isArray(list) ? list : [];
+    // Newest first.
+    CASES.sort((a, b) => (b.submitted_at || "").localeCompare(a.submitted_at || ""));
+    render();
+  }
+
+  function render() {
+    const q = $("search").value.trim().toLowerCase();
+    const items = q
+      ? CASES.filter(r => ((r.tester_label || "") + " " + (r.note || "")).toLowerCase().includes(q))
+      : CASES;
+    $("count").textContent = items.length + (q ? " / " + CASES.length : "") + " cases";
+    const grid = $("grid");
+    grid.innerHTML = "";
+    $("status").style.display = items.length ? "none" : "block";
+    if (!items.length) { $("status").textContent = q ? "No matches." : "No cases yet."; return; }
+    for (const r of items) {
+      const card = document.createElement("div");
+      card.className = "card";
+      const note = (r.note || "").trim();
+      card.innerHTML = `
+        <div class="top">
+          <span class="trophy">🏆</span>
+          <span class="tester">${esc(r.tester_label || "Anonymous")}</span>
+        </div>
+        <div class="time">${esc(fmtTime(r.submitted_at))}</div>
+        <div class="note ${note ? "" : "empty"}">${note ? esc(note) : "— no note —"}</div>
+        <div class="meta">${r.turn_count ?? "?"} turns · tap to read</div>`;
+      card.addEventListener("click", () => openCase(r.id));
+      grid.appendChild(card);
+    }
+  }
+  $("search").addEventListener("input", render);
+
+  // ── Detail modal ──
+  async function openCase(id) {
+    $("modal-bg").classList.add("show");
+    $("m-title").textContent = "Loading…";
+    $("m-body").innerHTML = '<div class="status">Loading…</div>';
+    try {
+      const full = await apiGet("/api/jailbreak-cases/" + encodeURIComponent(id));
+      $("m-title").textContent = "🏆 " + (full.tester_label || "Anonymous") + " · " + fmtTime(full.submitted_at);
+      const noteHtml = full.note ? `<div class="mnote">${esc(full.note)}</div>` : "";
+      const meta = `<div class="mmeta">id: ${esc(full.id)} · room: ${esc(full.room_name || "—")}</div>`;
+      const turns = (full.transcript || []).map(t =>
+        `<div class="turn ${esc(t.role)}"><span class="who">[${esc(t.role)}]</span> ${esc(t.text)}</div>`
+      ).join("");
+      $("m-body").innerHTML = meta + noteHtml +
+        (turns || '<div class="status">No transcript captured.</div>');
+    } catch (e) {
+      if (e.status === 401) return lock();
+      $("m-body").innerHTML = `<div class="status">Failed: ${esc(e.message)}</div>`;
+    }
+  }
+  function closeModal() { $("modal-bg").classList.remove("show"); }
+  $("m-close").addEventListener("click", closeModal);
+  $("modal-bg").addEventListener("click", (e) => { if (e.target === $("modal-bg")) closeModal(); });
+  document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeModal(); });
+
+  // ── Auto-unlock if we have a stored code ──
+  if (CODE) {
+    apiGet("/api/jailbreak-cases")
+      .then(list => { $("gate").classList.add("hidden"); $("app").style.display = "block"; onList(list); })
+      .catch(() => { CODE = ""; localStorage.removeItem("jb_view_code"); });
+  }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,120 @@
+.container {
+  width: 100%;
+}
+
+.inputGroup {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-xl);
+  align-items: end;
+  padding-bottom: 16px;
+}
+
+.inputWrapper {
+  display: flex;
+  align-items: flex-end;
+}
+
+.inputWrapperRight {
+  display: flex;
+  align-items: flex-end;
+  gap: var(--space-sm);
+  align-items: center;
+}
+
+.inputWrapperRight .input {
+  flex: 1;
+}
+
+.input {
+  width: 100%;
+  padding: var(--space-sm) 0;
+  border: none;
+  background: transparent;
+  color: var(--color-dark-gray);
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 130%; /* 26px */
+  resize: none;
+  overflow-y: hidden;
+}
+
+.input::placeholder {
+  color: var(--color-muted);
+  opacity: 1;
+}
+
+.input:focus {
+  outline: none;
+}
+
+.divider {
+  color: var(--color-dark-gray);
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 130%;
+  flex-shrink: 0;
+}
+
+.voiceButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border: none;
+  background-color: var(--color-sand-50);
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.voiceButton:hover {
+  background-color: var(--color-sand);
+}
+
+.voiceButton:focus-visible {
+  outline: 2px solid var(--color-bright-forest);
+  background-color: var(--color-sand);
+}
+
+.submitButton {
+  background-color: var(--color-deep-orange);
+}
+
+.submitButton:hover {
+  background-color: var(--color-deep-orange-hover);
+}
+
+.submitButton:hover img {
+  filter: brightness(0) invert(1);
+}
+
+.submitButton:focus-visible {
+  background-color: var(--color-deep-orange-hover);
+}
+
+.submitButton:focus-visible img {
+  filter: brightness(0) invert(1);
+}
+
+.disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.disabled:hover {
+  background-color: var(--color-deep-orange);
+}
+
+/* Mobile: Stack inputs vertically */
+@media (max-width: 767px) {
+  .inputGroup {
+    grid-template-columns: 1fr;
+    gap: var(--space-md);
+  }
+}

@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>TR Prompts Admin</title>
+<meta charset="utf-8">
+<style>
+  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; margin: 0; padding: 0.8em; background: #fafafa; color: #222; }
+  h1 { margin: 0 0 0.5em 0; font-size: 1.1em; }
+  #login { max-width: 380px; margin: 80px auto; padding: 2em; background: white; border: 1px solid #ddd; border-radius: 6px; }
+  #login p { color: #666; font-size: 0.9em; }
+  #login input { width: 100%; padding: 0.5em; font-size: 1em; box-sizing: border-box; }
+  #login button { padding: 0.5em 1.2em; margin-top: 0.8em; }
+  #app { display: none; }
+  .toolbar { display: flex; gap: 0.5em; align-items: center; padding: 0.4em 0; flex-wrap: wrap; }
+  select, button, textarea, input { font-size: 0.9em; }
+  textarea { width: 100%; height: 78vh; font-family: ui-monospace, Menlo, Consolas, monospace; font-size: 12px; line-height: 1.4; padding: 0.6em; box-sizing: border-box; border: 1px solid #ccc; border-radius: 3px; }
+  button { padding: 0.4em 0.9em; cursor: pointer; border: 1px solid #aaa; background: #f4f4f4; border-radius: 3px; }
+  button.primary { background: #0066cc; color: white; border-color: #0066cc; }
+  button.danger { background: #cc3333; color: white; border-color: #cc3333; }
+  button:hover { filter: brightness(0.95); }
+  .badge { padding: 0.2em 0.6em; border-radius: 3px; font-size: 0.75em; font-weight: bold; }
+  .badge.override { background: #ffeacc; color: #b35900; }
+  .badge.default  { background: #d8f5d8; color: #155a15; }
+  .meta { color: #666; font-size: 0.85em; margin-left: auto; }
+  .err { color: #c00; padding: 0.4em 0; font-size: 0.85em; }
+  .ok  { color: #060; padding: 0.4em 0; font-size: 0.85em; }
+  .muted { color: #999; font-size: 0.8em; }
+</style>
+</head>
+<body>
+
+<div id="login">
+  <h1>TR Prompts Admin</h1>
+  <p>Enter admin token to continue.</p>
+  <input id="token" type="password" placeholder="ADMIN_TOKEN" autofocus onkeydown="if(event.key==='Enter')login()">
+  <button onclick="login()">Continue</button>
+  <div id="loginErr" class="err"></div>
+</div>
+
+<div id="app">
+  <div class="toolbar">
+    <strong>Slot:</strong>
+    <select id="slot" onchange="loadSlot()"></select>
+    <span id="badge" class="badge"></span>
+    <button onclick="loadSlot()">Reload</button>
+    <button class="primary" onclick="save()">Save Override</button>
+    <button class="danger" onclick="resetSlot()">Reset to Default</button>
+    <span id="meta" class="meta"></span>
+    <button onclick="logout()">Logout</button>
+  </div>
+  <div id="status" class="ok"></div>
+  <textarea id="editor" spellcheck="false" oninput="updateMeta()"></textarea>
+  <div class="muted">Saves persist to <code>~/.lia_prompt_overrides.json</code> on the brain VM. Existing sessions keep their old prompt; new sessions pick up the override.</div>
+</div>
+
+<script>
+let TOKEN = localStorage.getItem("admin_token") || "";
+let CURRENT_DEFAULT = "";
+
+async function api(method, path, body) {
+  const opts = { method, headers: { "X-Admin-Token": TOKEN } };
+  if (body !== undefined) {
+    opts.body = JSON.stringify(body);
+    opts.headers["Content-Type"] = "application/json";
+  }
+  const r = await fetch(path, opts);
+  if (!r.ok) {
+    let detail = "";
+    try { detail = (await r.json()).detail || ""; } catch (_) { detail = await r.text(); }
+    throw new Error(r.status + ": " + detail);
+  }
+  return r.json();
+}
+
+async function login() {
+  const t = document.getElementById("token").value;
+  if (!t) return;
+  TOKEN = t;
+  try {
+    await api("GET", "/admin/api/prompts");
+    localStorage.setItem("admin_token", t);
+    document.getElementById("login").style.display = "none";
+    document.getElementById("app").style.display = "block";
+    await init();
+  } catch (e) {
+    document.getElementById("loginErr").textContent = String(e);
+  }
+}
+
+function logout() {
+  localStorage.removeItem("admin_token");
+  location.reload();
+}
+
+async function init() {
+  const slots = await api("GET", "/admin/api/prompts");
+  const sel = document.getElementById("slot");
+  sel.innerHTML = "";
+  slots.forEach(function (s) {
+    const o = document.createElement("option");
+    o.value = s.key;
+    o.textContent = s.key + (s.is_override ? "  (override)" : "");
+    sel.appendChild(o);
+  });
+  await loadSlot();
+}
+
+async function loadSlot() {
+  const key = document.getElementById("slot").value;
+  const data = await api("GET", "/admin/api/prompts/" + encodeURIComponent(key));
+  CURRENT_DEFAULT = data.default;
+  document.getElementById("editor").value = data.text;
+  setBadge(data.is_override);
+  setStatus("Loaded " + key);
+  updateMeta();
+}
+
+function setBadge(isOverride) {
+  const b = document.getElementById("badge");
+  if (isOverride) {
+    b.textContent = "OVERRIDE ACTIVE";
+    b.className = "badge override";
+  } else {
+    b.textContent = "using default";
+    b.className = "badge default";
+  }
+}
+
+function updateMeta() {
+  const t = document.getElementById("editor").value;
+  const lines = t.split("\n").length;
+  document.getElementById("meta").textContent = t.length + " chars · " + lines + " lines · default " + CURRENT_DEFAULT.length + " chars";
+}
+
+function setStatus(msg, isErr) {
+  const el = document.getElementById("status");
+  el.textContent = msg;
+  el.className = isErr ? "err" : "ok";
+}
+
+async function save() {
+  const key = document.getElementById("slot").value;
+  const text = document.getElementById("editor").value;
+  if (!text) { setStatus("Empty body not allowed", true); return; }
+  try {
+    const data = await api("PUT", "/admin/api/prompts/" + encodeURIComponent(key), { text: text });
+    setBadge(data.is_override);
+    setStatus("Saved override for " + key + " at " + new Date().toLocaleTimeString() + " — new sessions will use it.");
+  } catch (e) {
+    setStatus(String(e), true);
+  }
+}
+
+async function resetSlot() {
+  const key = document.getElementById("slot").value;
+  if (!confirm("Delete override for " + key + "? This restores the default compiled into the code.")) return;
+  try {
+    const data = await api("DELETE", "/admin/api/prompts/" + encodeURIComponent(key));
+    document.getElementById("editor").value = data.text;
+    setBadge(false);
+    setStatus("Reverted " + key + " to default");
+    updateMeta();
+  } catch (e) {
+    setStatus(String(e), true);
+  }
+}
+
+// auto-login if token saved
+if (TOKEN) {
+  (async function () {
+    try {
+      await api("GET", "/admin/api/prompts");
+      document.getElementById("login").style.display = "none";
+      document.getElementById("app").style.display = "block";
+      await init();
+    } catch (e) {
+      localStorage.removeItem("admin_token");
+      TOKEN = "";
+    }
+  })();
+}
+</script>
+
+</body>
+</html>

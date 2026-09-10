@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Pledges API Test Client</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f0f2f5;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #00a4e4 0%, #0078a4 100%);
+            color: white;
+            padding: 28px 24px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 164, 228, 0.2);
+        }
+
+        .header h1 {
+            font-size: 28px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .header p {
+            font-size: 14px;
+            opacity: 0.95;
+        }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e1e5e9;
+        }
+
+        .card h2 {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            color: #1a1a1a;
+        }
+
+        .controls {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .form-group label {
+            font-size: 14px;
+            font-weight: 500;
+            color: #374151;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            padding: 8px 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-size: 14px;
+            transition: border-color 0.2s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #00a4e4;
+            box-shadow: 0 0 0 3px rgba(0, 164, 228, 0.1);
+        }
+
+        .pledge-sentence {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 10px;
+            font-size: 16px;
+            color: #1f2937;
+        }
+
+        .hidden,
+        .pledge-sentence.hidden {
+            display: none;
+        }
+
+        .pledge-sentence select {
+            padding: 6px 10px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-size: 14px;
+            background: white;
+        }
+
+        .pledge-sentence select:focus {
+            outline: none;
+            border-color: #00a4e4;
+            box-shadow: 0 0 0 3px rgba(0, 164, 228, 0.1);
+        }
+
+        .inline-counts {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .inline-counts label {
+            font-size: 13px;
+            color: #4b5563;
+        }
+
+        .inline-counts input {
+            width: 80px;
+            padding: 6px 8px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-size: 13px;
+        }
+
+        .inline-counts select {
+            width: 110px;
+            padding: 6px 8px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-size: 13px;
+            background: white;
+        }
+
+        .inline-counts input:focus,
+        .inline-counts select:focus {
+            outline: none;
+            border-color: #00a4e4;
+            box-shadow: 0 0 0 3px rgba(0, 164, 228, 0.1);
+        }
+
+        .inline-row {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: flex-end;
+            gap: 16px;
+        }
+
+        .inline-row .form-group {
+            flex: 1 1 220px;
+            min-width: 180px;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 80px;
+            font-family: 'Courier New', monospace;
+        }
+
+        .button {
+            background: #00a4e4;
+            color: white;
+            border: none;
+            padding: 10px 16px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .button:hover {
+            background: #0078a4;
+        }
+
+        .button:disabled {
+            background: #9ca3af;
+            cursor: not-allowed;
+        }
+
+        .button.secondary {
+            background: #6b7280;
+        }
+
+        .button.secondary:hover {
+            background: #4b5563;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .status {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 12px;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .status.idle {
+            background: #f3f4f6;
+            color: #4b5563;
+            border: 1px solid #d1d5db;
+        }
+
+        .status.loading {
+            background: #fef5e7;
+            color: #c05621;
+            border: 1px solid #fbd38d;
+        }
+
+        .status.done {
+            background: #f0fff4;
+            color: #2f855a;
+            border: 1px solid #9ae6b4;
+        }
+
+        .status.error {
+            background: #fee;
+            color: #c53030;
+            border: 1px solid #feb2b2;
+        }
+
+        .list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .list-item {
+            padding: 10px 12px;
+            border-radius: 8px;
+            background: #f9fafb;
+            border: 1px solid #e5e7eb;
+            font-size: 14px;
+        }
+
+        .accordion {
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 10px 12px;
+            background: #f9fafb;
+        }
+
+        .accordion summary {
+            cursor: pointer;
+            font-weight: 600;
+            color: #1f2937;
+            list-style: none;
+        }
+
+        .accordion summary::-webkit-details-marker {
+            display: none;
+        }
+
+        .accordion summary::before {
+            content: "▸";
+            display: inline-block;
+            margin-right: 8px;
+            transition: transform 0.2s ease;
+        }
+
+        .accordion[open] summary::before {
+            transform: rotate(90deg);
+        }
+
+        .accordion-content {
+            margin-top: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .placeholder {
+            color: #6b7280;
+            font-style: italic;
+            font-size: 14px;
+        }
+
+        .mono {
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            background: #f9fafb;
+            border: 1px solid #e1e5e9;
+            border-radius: 6px;
+            padding: 12px;
+            white-space: pre-wrap;
+        }
+
+        @media (max-width: 600px) {
+            .inline-row {
+                flex-direction: column;
+                align-items: stretch;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Pledges API Test Client</h1>
+            <p>Submit 6 hand-written pledges and generate 24 more with less/default/more variants.</p>
+        </div>
+
+        <div class="card">
+            <h2>Inputs</h2>
+            <div class="status idle" id="status">Ready.</div>
+            <div class="controls">
+                <div class="pledge-sentence">
+                    <span>I will use my</span>
+                    <select id="contribution" aria-label="Contribution">
+                        <option value="">(optional)</option>
+                        <option value="time">time</option>
+                        <option value="money">money</option>
+                        <option value="words">words</option>
+                        <option value="creativity">creativity</option>
+                    </select>
+                    <span>to take action in my</span>
+                    <select id="sphere" aria-label="Sphere">
+                        <option value="">(optional)</option>
+                        <option value="self">self</option>
+                        <option value="family">family</option>
+                        <option value="community">community</option>
+                        <option value="nation">nation</option>
+                        <option value="world">world</option>
+                    </select>
+                    <select id="need" aria-label="Value or need">
+                        <option value="">(optional need)</option>
+                        <option value="empathy">empathy</option>
+                        <option value="justice">justice</option>
+                        <option value="service">service</option>
+                        <option value="belonging">belonging</option>
+                        <option value="accountability">accountability</option>
+                    </select>
+                    <span>.</span>
+                </div>
+                <div class="form-group">
+                    <label for="inputPledges">Input pledges (exactly 6 lines)</label>
+                    <textarea id="inputPledges" placeholder="Line 1&#10;Line 2&#10;Line 3&#10;Line 4&#10;Line 5&#10;Line 6"></textarea>
+                </div>
+                <div class="inline-row">
+                    <div class="form-group">
+                        <label for="age">Age</label>
+                        <input id="age" type="number" min="1" required placeholder="Required">
+                    </div>
+                </div>
+                <details class="accordion">
+                    <summary>Advanced options</summary>
+                    <div class="accordion-content">
+                        <div class="form-group">
+                            <label for="personalization">Personalization (free-form, included directly in LLM prompt)</label>
+                            <textarea id="personalization" placeholder='Optional profile information, e.g. "age group: adult"'></textarea>
+                        </div>
+                        <div class="inline-counts">
+                            <label for="modelTier">Model tier</label>
+                            <select id="modelTier">
+                                <option value="">Default</option>
+                                <option value="nano">nano</option>
+                                <option value="mini">mini</option>
+                                <option value="full">full</option>
+                            </select>
+                        </div>
+                    </div>
+                </details>
+                <div class="button-group">
+                    <button class="button" id="generateButton">Generate pledges</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Pledge Options</h2>
+            <div id="pledgesList" class="list">
+                <div class="placeholder">No pledges yet.</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const statusEl = document.getElementById('status');
+        const pledgesListEl = document.getElementById('pledgesList');
+
+        function setStatus(state, text) {
+            statusEl.className = `status ${state}`;
+            statusEl.textContent = text;
+        }
+
+        function buildHeaders() {
+            return { 'Content-Type': 'application/json' };
+        }
+
+        function parsePersonalization() {
+            const ageRaw = document.getElementById('age').value.trim();
+            if (!ageRaw) {
+                setStatus('error', 'Age is required.');
+                return undefined;
+            }
+            const lines = [`Age: ${ageRaw}`];
+            const raw = document.getElementById('personalization').value.trim();
+            if (raw) {
+                lines.push(raw);
+            }
+            return lines.join('\n');
+        }
+
+        function parseInputPledges() {
+            const raw = document.getElementById('inputPledges').value;
+            const lines = raw
+                .split('\n')
+                .map((line) => line.trim())
+                .filter((line) => line.length > 0);
+
+            if (lines.length !== 6) {
+                setStatus('error', 'Please provide exactly 6 input pledges (one per line).');
+                return undefined;
+            }
+            return lines;
+        }
+
+        function renderPledgeTriplets(items) {
+            pledgesListEl.innerHTML = '';
+            if (!Array.isArray(items) || !items.length) {
+                const placeholder = document.createElement('div');
+                placeholder.className = 'placeholder';
+                placeholder.textContent = 'No pledges returned.';
+                pledgesListEl.appendChild(placeholder);
+                return;
+            }
+
+            items.forEach((item, index) => {
+                const el = document.createElement('div');
+                el.className = 'list-item';
+                const less = typeof item.less === 'string' ? item.less : '';
+                const def = typeof item.default === 'string' ? item.default : '';
+                const more = typeof item.more === 'string' ? item.more : '';
+                el.innerHTML = `
+                    <strong>#${index + 1}</strong><br>
+                    <strong>Less:</strong> ${less}<br>
+                    <strong>Default:</strong> ${def}<br>
+                    <strong>More:</strong> ${more}
+                `;
+                pledgesListEl.appendChild(el);
+            });
+        }
+
+        async function requestPledges() {
+            const personalization = parsePersonalization();
+            if (personalization === undefined) {
+                return;
+            }
+            const inputPledges = parseInputPledges();
+            if (inputPledges === undefined) {
+                return;
+            }
+
+            const payload = {
+                inputPledges,
+                personalization,
+            };
+            const contribution = document.getElementById('contribution').value;
+            const sphere = document.getElementById('sphere').value;
+            const need = document.getElementById('need').value;
+            const modelTier = document.getElementById('modelTier').value;
+
+            if (contribution) {
+                payload.contribution = contribution;
+            }
+            if (sphere) {
+                payload.sphere = sphere;
+            }
+            if (need) {
+                payload.need = need;
+            }
+            if (modelTier) {
+                payload.modelTier = modelTier;
+            }
+
+            setStatus('loading', 'Requesting pledges...');
+            try {
+                const response = await fetch('/api/generate/pledges', {
+                    method: 'POST',
+                    headers: buildHeaders(),
+                    body: JSON.stringify(payload),
+                });
+                const json = await response.json();
+                if (!response.ok) {
+                    setStatus('error', json.detail || 'Request failed.');
+                    return;
+                }
+                const pledges = Array.isArray(json.pledges) ? json.pledges : [];
+                renderPledgeTriplets(pledges);
+                setStatus('done', `Generated ${pledges.length} pledge triplets.`);
+            } catch (err) {
+                setStatus('error', 'Failed to reach server.');
+            }
+        }
+
+        document.getElementById('generateButton').addEventListener('click', () => {
+            requestPledges();
+        });
+
+        document.getElementById('inputPledges').value = [
+            'Set aside 5 minutes before bed each night for deep breathing',
+            'Make a donation to a charity',
+            'Call one family member this week',
+            'Pick up litter on my next walk',
+            'Write one thank-you note this month',
+            'Attend one local community event',
+        ].join('\n');
+    </script>
+</body>
+</html>

@@ -1,0 +1,8 @@
+{
+  "actions": [
+    { "id": "tell-me-a-story", "label": "Tell me a story" },
+    { "id": "do-research", "label": "Do research" },
+    { "id": "build-lesson-plan", "label": "Build a lesson plan" },
+    { "id": "help-with-homework", "label": "Help with homework" }
+  ]
+}

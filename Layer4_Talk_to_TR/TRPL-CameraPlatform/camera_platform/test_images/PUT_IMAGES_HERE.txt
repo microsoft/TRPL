@@ -1,0 +1,10 @@
+Put your test images here (JPG / PNG).
+They will be processed in alphabetical order.
+
+To run the test:
+  python run_image_test.py
+
+To control image order, prefix filenames with numbers:
+  01_entrance.jpg
+  02_group.jpg
+  03_hand_raised.jpg

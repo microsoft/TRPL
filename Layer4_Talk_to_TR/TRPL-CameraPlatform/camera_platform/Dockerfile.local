@@ -1,0 +1,19 @@
+# syntax=docker/dockerfile:1.7
+FROM ultralytics/ultralytics@sha256:f6d44e082898d10eb620c14dc4e3e1362f9aa7c43da777dc4898930dd149b706
+
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1 \
+    YOLO_CONFIG_DIR=/tmp/ultralytics
+
+WORKDIR /app
+
+COPY requirements.local.txt ./
+RUN --mount=type=secret,id=pip_index_url \
+    PIP_INDEX_URL="$(cat /run/secrets/pip_index_url)" \
+    pip install --no-cache-dir -r requirements.local.txt
+
+COPY . ./
+
+EXPOSE 8080
+
+CMD ["python", "main.py", "--api", "--host", "0.0.0.0", "--port", "8080"]

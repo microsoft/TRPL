@@ -1,0 +1,84 @@
+/* ================================
+   Hero Section Styles
+   ================================ */
+.wrapper {
+  /* Container for all hero content */
+  width: 100%;
+}
+
+.hero {
+  text-align: left;
+  margin-bottom: var(--space-lg);
+}
+
+.tagline {
+  visibility: hidden; /* Hidden until GSAP animates in */
+  color: var(--color-dark-gray);
+  font-family: var(--font-body);
+  font-size: 28px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 80%;
+  text-transform: uppercase;
+  margin-bottom: var(--space-sm);
+  /* Ensure proper clipping for mask reveal */
+  overflow: hidden;
+  /* Reserve space to prevent layout shift during typewriter animation */
+  min-height: 23px; /* 28px * 0.8 line-height */
+}
+
+.title {
+  visibility: hidden; /* Hidden until GSAP animates in */
+  color: var(--color-dark-gray);
+  font-family: var(--font-body);
+  font-size: 54px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 80%;
+  text-transform: uppercase;
+  /* Ensure proper clipping for mask reveal */
+  overflow: hidden;
+  /* Reserve space to prevent layout shift during typewriter animation */
+  min-height: 44px; /* 54px * 0.8 line-height */
+}
+
+.searchContainer {
+  visibility: hidden; /* Hidden until GSAP animates in */
+  width: 100%;
+  max-width: 900px;
+  margin-top: var(--space-lg);
+}
+
+/* ================================
+   Tablet (768px - 1199px)
+   ================================ */
+@media (min-width: 768px) {
+  .hero {
+    margin-bottom: var(--space-xl);
+  }
+
+  .tagline {
+    font-size: 44px;
+    min-height: 36px; /* 44px * 0.8 line-height */
+  }
+
+  .title {
+    font-size: 87px;
+    min-height: 70px; /* 87px * 0.8 line-height */
+  }
+}
+
+/* ================================
+   Desktop (1200px+)
+   ================================ */
+@media (min-width: 1200px) {
+  .tagline {
+    font-size: 60px;
+    min-height: 48px; /* 60px * 0.8 line-height */
+  }
+
+  .title {
+    font-size: 120px;
+    min-height: 96px; /* 120px * 0.8 line-height */
+  }
+}

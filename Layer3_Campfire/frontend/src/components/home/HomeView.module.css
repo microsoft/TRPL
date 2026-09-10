@@ -1,0 +1,150 @@
+/* ================================
+   Mobile First (Default: 0-767px)
+   ================================ */
+.main {
+  background: var(--color-gray-sky);
+  position: relative;
+  min-height: 100vh; /* Ensure main covers viewport */
+  overflow: hidden; /* Prevent scrollbar flash during animations */
+}
+
+/* Source-rendered neutral background */
+.main::before {
+  content: '';
+  position: fixed; /* Fixed to viewport to prevent jumping during animations */
+  inset: 0;
+  background:
+    radial-gradient(circle at 20% 15%, rgba(255, 255, 255, 0.28), transparent 32%),
+    linear-gradient(145deg, var(--color-gray-sky), var(--color-paper-blue));
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Ensure content is above the texture overlay */
+.main > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* ================================
+   Grid Layout - Mobile First
+   ================================ */
+.layout {
+  display: grid;
+  grid-template-areas:
+    "hero"
+    "gallery"
+    "footer";
+  grid-template-columns: 1fr;
+  grid-template-rows: auto auto 1fr;
+  align-content: baseline;
+  width: 100%;
+  min-height: 100vh;
+}
+
+.hero {
+  grid-area: hero;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 60px 30px;
+}
+
+.gallery {
+  grid-area: gallery;
+  width: 100%;
+  opacity: 0; /* Fades in via GSAP animation */
+  overflow: hidden;
+  margin-top: 0; /* No top margin on mobile/tablet */
+  /* Extra padding to accommodate bottom row caption extending below images */
+  padding-bottom: 46px;
+}
+
+.footer {
+  grid-area: footer;
+  visibility: hidden; /* Hidden until GSAP animates in */
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  gap: var(--space-sm);
+  align-items: flex-end;
+  padding: var(--space-lg) 30px; /* Match hero horizontal padding */
+}
+
+.footer button {
+  white-space: nowrap;
+}
+
+.externalLinkIcon {
+  margin-left: -4px;
+}
+
+/* ================================
+   Tablet (768px - 1199px)
+   ================================ */
+@media (min-width: 768px) {
+  .hero {
+    padding: 60px 30px; /* Maintain consistency */
+  }
+
+  .footer {
+    gap: var(--space-md);
+    padding: var(--space-lg) 30px; /* Match hero horizontal padding */
+  }
+}
+
+/* ================================
+   Desktop (1200px+)
+   ================================ */
+@media (min-width: 1200px) {
+  .layout {
+    grid-template-areas:
+      "hero gallery"
+      "footer gallery";
+    grid-template-columns: 70vw 30vw;
+    grid-template-rows: 1fr auto;
+  }
+
+  .hero {
+    padding: 20vh 104px;
+  }
+
+  .gallery {
+    padding: 0 36px;
+    height: 100vh;
+    margin-top: 0; /* Reset margin-top for desktop sidebar layout */
+  }
+
+  .footer {
+    padding: 0 104px 80px;
+  }
+}
+
+/* ================================
+   Background Transition Overlay
+   Fades to white/chat background during transition
+   ================================ */
+.backgroundOverlay {
+  position: fixed;
+  inset: 0;
+  background: linear-gradient(0deg, rgba(153, 173, 197, 0.20) 0%, rgba(153, 173, 197, 0.00) 100%),
+    var(--color-surface);
+  z-index: 50;
+  pointer-events: none;
+  opacity: 0;
+}
+
+/* ================================
+   Error Fallback States
+   ================================ */
+.galleryFallback {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  min-height: 200px;
+  color: var(--color-ink);
+  opacity: 0.6;
+  font-family: var(--font-body);
+  font-size: 14px;
+}

@@ -1,0 +1,7 @@
+{
+  "enabled": true,
+  "names": [],
+  "visitor_ids": [],
+  "min_dwell_sec": 8,
+  "idle_timeout_sec": 1200
+}

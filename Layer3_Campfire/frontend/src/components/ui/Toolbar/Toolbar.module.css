@@ -1,0 +1,52 @@
+/* Toolbar root - horizontal group of controls */
+.root {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-md);
+}
+
+/* Toolbar button - inherits from soft button style */
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 10px;
+  background: var(--color-sand-20);
+  border: none;
+  border-radius: 2px;
+  color: var(--color-night-sky);
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color var(--transition-base);
+}
+
+.button:hover {
+  background: var(--color-sand-50);
+}
+
+.button:focus-visible {
+  outline: 2px solid var(--color-bright-forest);
+}
+
+.button[data-disabled] {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Toolbar separator - vertical divider */
+.separator {
+  width: 1px;
+  height: 16px;
+  background-color: var(--color-sand-75);
+  margin: 0 var(--space-xs);
+}
+
+/* Toolbar group - for grouping related items */
+.group {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}

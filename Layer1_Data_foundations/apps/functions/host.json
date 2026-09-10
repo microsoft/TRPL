@@ -1,0 +1,42 @@
+{
+  "version": "2.0",
+  "functionTimeout": "02:00:00",
+  "logging": {
+    "applicationInsights": {
+      "samplingSettings": {
+        "isEnabled": true,
+        "excludedTypes": "Request"
+      }
+    }
+  },
+  "extensionBundle": {
+    "id": "Microsoft.Azure.Functions.ExtensionBundle",
+    "version": "[4.0.0, 5.0.0)",
+    "suppressQueries": true
+  },
+  "extensions": {
+    "queues": {
+      "batchSize": 20,
+      "maxPollingInterval": "00:00:05"
+    },
+    "durableTask": {
+      "hubName": "BatchOrchestrationHub",
+      "maxConcurrentOrchestratorFunctions": 20,
+      "maxConcurrentActivityFunctions": 40,
+      "extendedSessionsEnabled": false,
+      "extendedSessionIdleTimeoutInSeconds": 60
+    },
+    "serviceBus": {
+      "maxConcurrentCalls": 10,
+      "prefetchCount": 20,
+      "autoCompleteMessages": true,
+      "maxMessageBatchSize": 10,
+      "maxBatchWaitTime": "00:00:30",
+      "maxAutoLockRenewalDuration": "02:00:00"
+    }
+  },
+  "concurrency": {
+    "dynamicConcurrencyEnabled": false,
+    "snapshotPersistenceEnabled": false
+  }
+}

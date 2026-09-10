@@ -1,0 +1,14 @@
+.git
+.github
+.venv
+**/__pycache__
+**/.pytest_cache
+**/.ruff_cache
+backend/.env*
+frontend/.env*
+private/
+frontend/.next
+frontend/node_modules
+frontend/coverage
+frontend/playwright-report
+frontend/test-results

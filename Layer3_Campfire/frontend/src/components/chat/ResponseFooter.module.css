@@ -1,0 +1,96 @@
+.footer {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: var(--space-md);
+}
+
+.sourcesButton {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  height: 26px;
+  padding: 8px;
+  border: none;
+  border-radius: 2px;
+  background: var(--color-sand-50);
+  color: var(--color-hunter-green);
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 10px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.sourcesButtonActive {
+  background: var(--color-dark-forest);
+  color: var(--color-surface);
+}
+
+.sourcesButton:hover {
+  background: var(--color-dark-forest);
+  color: var(--color-surface);
+}
+
+.sourcesButton:hover img {
+  filter: brightness(0) invert(1);
+}
+
+.sourcesButtonActive:hover {
+  background: var(--color-night-sky);
+}
+
+.sourcesButton:focus-visible {
+  outline: 2px solid var(--color-bright-forest);
+  outline-offset: -2px;
+}
+
+.iconButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 26px;
+  padding: 8px;
+  border: none;
+  border-radius: 2px;
+  background: var(--color-sand-50);
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.iconButton:hover:not(:disabled) {
+  background: var(--color-dark-forest);
+}
+
+.iconButton:hover:not(:disabled) svg {
+  filter: brightness(0) invert(1);
+}
+
+.iconButton:focus-visible {
+  outline: 2px solid var(--color-bright-forest);
+  outline-offset: -2px;
+}
+
+.iconButton:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.iconButton:disabled:hover {
+  background: var(--color-sand-50);
+}
+
+.iconRotated {
+  transform: rotate(45deg);
+  filter: brightness(0) invert(1);
+}
+
+.iconButtonCopied {
+  background: var(--color-dark-forest);
+}
+
+.checkmark {
+  font-size: 12px;
+  line-height: 1;
+  color: var(--color-surface);
+}

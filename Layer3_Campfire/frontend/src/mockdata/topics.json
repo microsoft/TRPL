@@ -1,0 +1,10 @@
+{
+  "topics": [
+    { "id": "roosevelts-presidency", "label": "Roosevelt's presidency" },
+    { "id": "square-deal", "label": "Square Deal" },
+    { "id": "rough-riders", "label": "Rough Riders" },
+    { "id": "books-by-tr", "label": "Books authored by TR" },
+    { "id": "antitrust-actions", "label": "Antitrust actions" },
+    { "id": "bull-moose-party", "label": "Bull Moose party" }
+  ]
+}

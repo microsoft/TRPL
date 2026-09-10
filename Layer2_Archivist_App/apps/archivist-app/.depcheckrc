@@ -1,0 +1,13 @@
+{
+  "ignores": [
+    "depcheck",
+    "autoprefixer",
+    "postcss",
+    "tailwindcss"
+  ],
+  "ignore-patterns": [
+    "dist",
+    "node_modules"
+  ]
+}
+

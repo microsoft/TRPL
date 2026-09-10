@@ -1,0 +1,608 @@
+name: trpl-layer1-local
+
+x-functions-build: &functions-build
+  context: ./Layer1_Data_foundations
+  dockerfile: apps/functions/Dockerfile
+  secrets:
+    - pip_index_url
+
+x-bootstrap-build: &bootstrap-build
+  context: ./Layer1_Data_foundations
+  dockerfile: emulators/bootstrap/Dockerfile
+  secrets:
+    - pip_index_url
+
+x-layer2-api-build: &layer2-api-build
+  context: ./Layer2_Archivist_App
+  dockerfile: apps/archivist-api/Dockerfile
+  secrets:
+    - pip_index_url
+
+x-layer2-functions-build: &layer2-functions-build
+  context: ./Layer2_Archivist_App
+  dockerfile: apps/functions/Dockerfile
+  secrets:
+    - pip_index_url
+
+x-layer2-app-build: &layer2-app-build
+  context: ./Layer2_Archivist_App
+  dockerfile: apps/archivist-app/Dockerfile
+  secrets:
+    - npm_registry_url
+
+x-layer3-backend-build: &layer3-backend-build
+  context: ./Layer3_Campfire
+  dockerfile: backend/Dockerfile
+  secrets:
+    - pip_index_url
+
+x-layer3-frontend-build: &layer3-frontend-build
+  context: ./Layer3_Campfire
+  dockerfile: frontend/Dockerfile
+  secrets:
+    - npm_registry_url
+
+x-layer4-brain-build: &layer4-brain-build
+  context: ./Layer4_Talk_to_TR/TRPL-Web/TRPL-web-oss
+  dockerfile: lia_agent_api/Dockerfile
+  secrets:
+    - pip_index_url
+
+x-layer4-brain-cloud-build: &layer4-brain-cloud-build
+  context: ./Layer4_Talk_to_TR/TRPL-Web/TRPL-web-oss
+  dockerfile: lia_agent_api/Dockerfile
+  args:
+    REQUIREMENTS_FILE: requirements.txt
+  secrets:
+    - pip_index_url
+
+x-layer4-token-build: &layer4-token-build
+  context: ./Layer4_Talk_to_TR/TRPL-Web/TRPL-web-oss
+  dockerfile: webapp-tokenserver/Dockerfile
+  secrets:
+    - pip_index_url
+
+x-layer4-worker-build: &layer4-worker-build
+  context: ./Layer4_Talk_to_TR/TRPL-Web/TRPL-web-oss
+  dockerfile: livekit_worker/Dockerfile
+  secrets:
+    - pip_index_url
+
+x-layer4-camera-build: &layer4-camera-build
+  context: ./Layer4_Talk_to_TR/TRPL-CameraPlatform/camera_platform
+  dockerfile: Dockerfile.local
+  secrets:
+    - pip_index_url
+
+x-azurite-container-connection-string: &azurite-container-connection-string "DefaultEndpointsProtocol=http;AccountName=devstoreaccount1;AccountKey=Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==;BlobEndpoint=http://azurite:10000/devstoreaccount1;QueueEndpoint=http://azurite:10001/devstoreaccount1;TableEndpoint=http://azurite:10002/devstoreaccount1;"
+x-cosmos-container-connection-string: &cosmos-container-connection-string "AccountEndpoint=http://cosmos:8081/;AccountKey=C2y6yDjf5/R+ob0N8A7Cgv30VRDJIweEQMu+Ta4kZL9Dac5fSnGWyH7bQiFuGM5GJdjM/lCg==;"
+x-cosmos-key: &cosmos-key "C2y6yDjf5/R+ob0N8A7Cgv30VRDJIweEQMu+Ta4kZL9Dac5fSnGWyH7bQiFuGM5GJdjM/lCg=="
+x-servicebus-container-connection-string: &servicebus-container-connection-string "Endpoint=sb://servicebus;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=SAS_KEY_VALUE;UseDevelopmentEmulator=true;"
+
+services:
+  azurite:
+    container_name: trpl-azurite
+    image: mcr.microsoft.com/azure-storage/azurite@sha256:647c63a91102a9d8e8000aab803436e1fc85fbb285e7ce830a82ee5d6661cf37
+    command:
+      - azurite
+      - --skipApiVersionCheck
+      - --blobHost
+      - 0.0.0.0
+      - --queueHost
+      - 0.0.0.0
+      - --tableHost
+      - 0.0.0.0
+      - --location
+      - /data
+    ports:
+      - "127.0.0.1:10000:10000"
+      - "127.0.0.1:10001:10001"
+      - "127.0.0.1:10002:10002"
+    volumes:
+      - azurite-data:/data
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "node",
+          "-e",
+          "require('http').get('http://127.0.0.1:10000/',()=>process.exit(0)).on('error',()=>process.exit(1))",
+        ]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+    restart: unless-stopped
+
+  cosmos:
+    container_name: trpl-cosmos
+    image: mcr.microsoft.com/cosmosdb/linux/azure-cosmos-emulator@sha256:6ce44ed4ac69cf69a6cb7982d0536cfaa22696172168fc9fe9a722a189d38f99
+    command:
+      - --protocol
+      - http
+      - --enable-init-data
+      - "true"
+    ports:
+      - "127.0.0.1:8081:8081"
+      - "127.0.0.1:1234:1234"
+      - "127.0.0.1:18080:8080"
+    volumes:
+      - cosmos-data:/data
+      - ./Layer1_Data_foundations/emulators/cosmos/init:/init:ro
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "http://localhost:8080/ready"]
+      interval: 5s
+      timeout: 3s
+      retries: 60
+      start_period: 20s
+    restart: unless-stopped
+
+  bootstrap:
+    container_name: trpl-local-bootstrap
+    build: *bootstrap-build
+    image: trpl-local-bootstrap:local
+    environment:
+      AZURE_STORAGE_CONNECTION_STRING: *azurite-container-connection-string
+      COSMOS_CONNECTION_STRING: *cosmos-container-connection-string
+      COSMOS_HEALTH_ENDPOINT: "http://cosmos:8080/ready"
+    depends_on:
+      azurite:
+        condition: service_healthy
+      cosmos:
+        condition: service_healthy
+    restart: "no"
+
+  functions:
+    container_name: trpl-layer1-functions
+    build: *functions-build
+    image: trpl-layer1-functions:local
+    platform: linux/amd64
+    env_file:
+      - ./Layer1_Data_foundations/apps/functions/.env.local
+    environment:
+      AzureWebJobsStorage: *azurite-container-connection-string
+      AZURE_STORAGE_CONNECTION_STRING: *azurite-container-connection-string
+      AZURE_STORAGE_BLOB_ENDPOINT: "http://azurite:10000/devstoreaccount1"
+      COSMOS_ENDPOINT: "http://cosmos:8081/"
+      COSMOS_CONNECTION_STRING: *cosmos-container-connection-string
+      AZURE_SERVICEBUS_CONNECTION_STRING: *servicebus-container-connection-string
+      AZURE_OPENAI_API_KEY_FILE: /run/secrets/azure_openai_api_key
+      WEBSITE_HOSTNAME: "127.0.0.1:7071"
+    ports:
+      - "127.0.0.1:7071:80"
+    depends_on:
+      bootstrap:
+        condition: service_completed_successfully
+    secrets:
+      - azure_openai_api_key
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "python",
+          "-c",
+          "import urllib.request; urllib.request.urlopen('http://127.0.0.1/', timeout=3)",
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 30
+      start_period: 30s
+    restart: unless-stopped
+
+  layer2-api:
+    container_name: trpl-layer2-api
+    profiles: ["full-stack"]
+    build: *layer2-api-build
+    image: trpl-layer2-api:local
+    environment:
+      ENVIRONMENT: local
+      FRONTEND_URL: "http://localhost:5173"
+      COSMOS_DB_ENDPOINT: "http://cosmos:8081/"
+      COSMOS_DB_KEY: *cosmos-key
+      COSMOS_DB_DATABASE_NAME: contentdb
+      COSMOS_DB_CONTAINER_NAME: recordsmetadata
+      COSMOS_DB_AUDIT_CONTAINER_NAME: ocrmetadataaudit
+      COSMOS_DB_STATS_CONTAINER_NAME: statistics
+      COSMOS_DB_BULK_PUBLISH_BATCHES_CONTAINER_NAME: bulk-publish-batches
+      COSMOS_DB_PERIODIC_RUN_HISTORY_CONTAINER_NAME: periodic-run-history
+      COSMOS_DB_CORRECTION_REQUESTS_CONTAINER_NAME: correction-requests
+      COSMOS_DB_CONNECTION_MODE: Gateway
+      EPUB_COSMOS_CONTAINER: epub
+      EPUB_CHUNKS_CONTAINER: epub-chunks
+      EPUB_STORAGE_CONTAINER_NAME: epub-files
+      AZURE_STORAGE_ACCOUNT_NAME: devstoreaccount1
+      ARCHIVIST_STORAGE_ACCOUNT_NAME: devstoreaccount1
+      AZURE_STORAGE_CONNECTION_STRING: *azurite-container-connection-string
+      AZURE_SERVICEBUS_CONNECTION_STRING: *servicebus-container-connection-string
+      DATA_INGESTION_QUEUE_NAME: data-ingestion-queue
+      EPUB_QUEUE_NAME: epub-processing-queue
+      AZURE_FUNCTIONS_BASE_URL: "http://functions:80"
+      DATA_INGEST_FUNCTION_URL: "http://layer2-functions:80"
+    ports:
+      - "127.0.0.1:8000:8000"
+    depends_on:
+      bootstrap:
+        condition: service_completed_successfully
+      servicebus:
+        condition: service_started
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "python",
+          "-c",
+          "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health', timeout=3)",
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 30
+      start_period: 20s
+    restart: unless-stopped
+
+  layer2-functions:
+    container_name: trpl-layer2-functions
+    profiles: ["full-stack"]
+    build: *layer2-functions-build
+    image: trpl-layer2-functions:local
+    platform: linux/amd64
+    environment:
+      AzureWebJobsStorage: *azurite-container-connection-string
+      FUNCTIONS_WORKER_RUNTIME: python
+      AzureWebJobsFeatureFlags: EnableWorkerIndexing
+      ENVIRONMENT: local
+      WEBSITE_HOSTNAME: layer2-functions
+      ServiceBusConnection: *servicebus-container-connection-string
+      AzureFunctionsJobHost__extensions__serviceBus__transportType: amqpTcp
+      COSMOS_DB_ENDPOINT: "http://cosmos:8081/"
+      COSMOS_DB_KEY: *cosmos-key
+      COSMOS_DB_DATABASE_NAME: contentdb
+      COSMOS_DB_CONTAINER_NAME: recordsmetadata
+      COSMOS_DB_AUDIT_CONTAINER_NAME: ocrmetadataaudit
+      COSMOS_DB_STATS_CONTAINER_NAME: statistics
+      COSMOS_DB_BULK_PUBLISH_BATCHES_CONTAINER_NAME: bulk-publish-batches
+      COSMOS_DB_PERIODIC_RUN_HISTORY_CONTAINER_NAME: periodic-run-history
+      COSMOS_DB_CORRECTION_REQUESTS_CONTAINER_NAME: correction-requests
+      COSMOS_CONNECTION_MODE: Gateway
+      COSMOS_ENABLE_DIAGNOSTICS: "false"
+      EPUB_COSMOS_CONTAINER: epub
+      EPUB_CHUNKS_CONTAINER: epub-chunks
+      EPUB_STORAGE_CONTAINER_NAME: epub-files
+      EPUB_QUEUE_NAME: epub-processing-queue
+      AZURE_STORAGE_ACCOUNT_NAME: devstoreaccount1
+      ARCHIVIST_STORAGE_ACCOUNT_NAME: devstoreaccount1
+      AZURE_STORAGE_CONNECTION_STRING: *azurite-container-connection-string
+      AZURE_OPENAI_ENDPOINT: "${LAYER2_AZURE_OPENAI_ENDPOINT:-}"
+      AZURE_OPENAI_EMBEDDING_DEPLOYMENT_NAME: "${LAYER2_AZURE_OPENAI_EMBEDDING_DEPLOYMENT_NAME:-text-embedding-3-large}"
+      AZURE_OPENAI_API_KEY_FILE: /run/secrets/azure_openai_api_key
+      AZURE_SEARCH_ENDPOINT: "${LAYER2_AZURE_SEARCH_ENDPOINT:-}"
+      AZURE_SEARCH_INDEX: "${LAYER2_AZURE_SEARCH_INDEX:-}"
+      AZURE_SEARCH_API_KEY_FILE: /run/secrets/azure_search_api_key
+      ARCHIVIST_API_BASE_URL: "http://layer2-api:8000"
+      AzureWebJobs.ReconcileStuckPublishingTimer.Disabled: "true"
+    ports:
+      - "127.0.0.1:7072:80"
+    depends_on:
+      bootstrap:
+        condition: service_completed_successfully
+      servicebus:
+        condition: service_started
+      layer2-api:
+        condition: service_healthy
+    secrets:
+      - azure_openai_api_key
+      - azure_search_api_key
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "python",
+          "-c",
+          "import urllib.request; urllib.request.urlopen('http://127.0.0.1/', timeout=3)",
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 30
+      start_period: 30s
+    restart: unless-stopped
+
+  layer2-app:
+    container_name: trpl-layer2-app
+    profiles: ["full-stack"]
+    build: *layer2-app-build
+    image: trpl-layer2-app:local
+    ports:
+      - "127.0.0.1:5173:80"
+    depends_on:
+      layer2-api:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://127.0.0.1/"]
+      interval: 10s
+      timeout: 5s
+      retries: 20
+    restart: unless-stopped
+
+  servicebus:
+    container_name: trpl-servicebus
+    profiles: ["full-stack"]
+    image: mcr.microsoft.com/azure-messaging/servicebus-emulator@sha256:5a96d893b245031740f7d46e0fe5ff282d24b78c4b7d761dd57590f3f010a9b3
+    ports:
+      - "127.0.0.1:5672:5672"
+      - "127.0.0.1:5300:5300"
+    environment:
+      ACCEPT_EULA: "${ACCEPT_EULA:-N}"
+      SQL_SERVER: mssql
+      MSSQL_SA_PASSWORD: "${MSSQL_SA_PASSWORD:?Set MSSQL_SA_PASSWORD in .env.local}"
+      EMULATOR_HTTP_PORT: "5300"
+    volumes:
+      - ./emulators/servicebus/config.json:/ServiceBus_Emulator/ConfigFiles/Config.json:ro
+    depends_on:
+      - mssql
+    restart: unless-stopped
+
+  mssql:
+    container_name: trpl-servicebus-sql
+    profiles: ["full-stack"]
+    image: mcr.microsoft.com/mssql/server@sha256:ba4c8329f48fb8f02e1416be6a930ebfd71268caee78aa985f3af4315e457c89
+    platform: linux/amd64
+    environment:
+      ACCEPT_EULA: "${ACCEPT_EULA:-N}"
+      MSSQL_SA_PASSWORD: "${MSSQL_SA_PASSWORD:?Set MSSQL_SA_PASSWORD in .env.local}"
+    volumes:
+      - servicebus-sql-data:/var/opt/mssql
+    restart: unless-stopped
+
+  layer3-redis:
+    container_name: trpl-layer3-redis
+    profiles: ["layer3"]
+    image: redis@sha256:02419de7eddf55aa5bcf49efb74e88fa8d931b4d77c07eff8a6b2144472b6952
+    command: ["redis-server", "--appendonly", "yes"]
+    volumes:
+      - layer3-redis-data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+    restart: unless-stopped
+
+  layer3-backend:
+    container_name: trpl-layer3-backend
+    profiles: ["layer3"]
+    build: *layer3-backend-build
+    image: trpl-layer3-backend:local
+    env_file:
+      - ./Layer3_Campfire/backend/.env.local
+    ports:
+      - "127.0.0.1:8001:8000"
+    volumes:
+      - ./Layer3_Campfire/private/guardrails/campfire-safety-error-patterns.json:/run/secrets/campfire-safety-error-patterns.json:ro
+    depends_on:
+      layer3-redis:
+        condition: service_healthy
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "python",
+          "-c",
+          "import json,urllib.request; data=json.load(urllib.request.urlopen('http://127.0.0.1:8000/healthz',timeout=3)); assert data['status']=='ok'",
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 30
+      start_period: 20s
+    restart: unless-stopped
+
+  layer3-frontend:
+    container_name: trpl-layer3-frontend
+    profiles: ["layer3"]
+    build: *layer3-frontend-build
+    image: trpl-layer3-frontend:local
+    env_file:
+      - ./Layer3_Campfire/frontend/.env.local
+    ports:
+      - "127.0.0.1:3000:3000"
+    depends_on:
+      layer3-backend:
+        condition: service_healthy
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "node",
+          "-e",
+          "fetch('http://127.0.0.1:3000/api/health').then(r=>{if(!r.ok)process.exit(1)}).catch(()=>process.exit(1))",
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 30
+      start_period: 20s
+    restart: unless-stopped
+
+  layer4-brain:
+    container_name: trpl-layer4-brain
+    profiles: ["layer4"]
+    build: *layer4-brain-build
+    image: trpl-layer4-brain:local
+    env_file:
+      - ./Layer4_Talk_to_TR/TRPL-Web/TRPL-web-oss/lia_agent_api/.env.local
+    ports:
+      - "127.0.0.1:8010:8010"
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "python",
+          "-c",
+          "import json,urllib.request; data=json.load(urllib.request.urlopen('http://127.0.0.1:8010/healthz',timeout=3)); assert data['status']=='ok' and data['runtime_mode']=='deterministic'",
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 30
+      start_period: 20s
+    restart: unless-stopped
+
+  layer4-brain-cloud:
+    container_name: trpl-layer4-brain-cloud
+    profiles: ["layer4-cloud", "layer4-live", "layer4-camera"]
+    build: *layer4-brain-cloud-build
+    image: trpl-layer4-brain:cloud-local
+    env_file:
+      - ./Layer4_Talk_to_TR/TRPL-Web/TRPL-web-oss/lia_agent_api/.env.cloud.local
+    ports:
+      - "127.0.0.1:8011:8010"
+    volumes:
+      - ./Layer4_Talk_to_TR/TRPL-Web/TRPL-web-oss/lia_agent_api/private/guardrails:/run/secrets/layer4-guardrails:ro
+      - ./Layer4_Talk_to_TR/TRPL-Web/TRPL-web-oss/lia_agent_api/private/storys:/app/storys:ro
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "python",
+          "-c",
+          "import json,urllib.request; data=json.load(urllib.request.urlopen('http://127.0.0.1:8010/healthz',timeout=3)); assert data['status']=='ok' and data['runtime_mode']=='cloud' and data['providers']['llm'] and data['providers']['search']",
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 30
+      start_period: 30s
+    restart: unless-stopped
+
+  layer4-token-server:
+    container_name: trpl-layer4-token-server
+    profiles: ["layer4"]
+    build: *layer4-token-build
+    image: trpl-layer4-token-server:local
+    env_file:
+      - ./Layer4_Talk_to_TR/TRPL-Web/TRPL-web-oss/webapp-tokenserver/.env.local
+    ports:
+      - "127.0.0.1:8002:8002"
+    depends_on:
+      layer4-brain:
+        condition: service_healthy
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "python",
+          "-c",
+          "import json,urllib.request; data=json.load(urllib.request.urlopen('http://127.0.0.1:8002/healthz',timeout=3)); assert data['status']=='ok' and data['runtime_mode']=='deterministic'",
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 30
+      start_period: 10s
+    restart: unless-stopped
+
+  layer4-livekit:
+    container_name: trpl-layer4-livekit
+    profiles: ["layer4-live"]
+    image: livekit/livekit-server@sha256:3497163e15c48fef6e7830c78716f9e9d5edc28abf7aa90b61c86e93bbc306b1
+    env_file:
+      - ./Layer4_Talk_to_TR/TRPL-Web/TRPL-web-oss/private/livekit/.env.live.local
+    command:
+      - --bind
+      - 0.0.0.0
+      - --node-ip
+      - 127.0.0.1
+      - --udp-port
+      - "7882"
+    ports:
+      - "127.0.0.1:7880:7880"
+      - "127.0.0.1:7881:7881"
+      - "7882:7882/udp"
+    restart: unless-stopped
+
+  layer4-token-server-live:
+    container_name: trpl-layer4-token-server-live
+    profiles: ["layer4-live"]
+    build: *layer4-token-build
+    image: trpl-layer4-token-server:local
+    env_file:
+      - ./Layer4_Talk_to_TR/TRPL-Web/TRPL-web-oss/webapp-tokenserver/.env.live.local
+    environment:
+      AVATAR_ENABLED: "false"
+    ports:
+      - "127.0.0.1:8003:8002"
+    depends_on:
+      layer4-brain-cloud:
+        condition: service_healthy
+      layer4-livekit:
+        condition: service_started
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "python",
+          "-c",
+          "import json,urllib.request; data=json.load(urllib.request.urlopen('http://127.0.0.1:8002/healthz',timeout=3)); assert data['status']=='ok' and data['runtime_mode']=='cloud' and data['providers']['livekit']",
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 30
+      start_period: 10s
+    restart: unless-stopped
+
+  layer4-live-worker:
+    container_name: trpl-layer4-live-worker
+    profiles: ["layer4-live"]
+    build: *layer4-worker-build
+    image: trpl-layer4-live-worker:local
+    env_file:
+      - ./Layer4_Talk_to_TR/TRPL-Web/TRPL-web-oss/livekit_worker/.env.live.local
+    environment:
+      LIA_PHASES: "storys"
+    depends_on:
+      layer4-brain-cloud:
+        condition: service_healthy
+      layer4-livekit:
+        condition: service_started
+    restart: unless-stopped
+
+  layer4-camera:
+    container_name: trpl-layer4-camera
+    profiles: ["layer4-camera"]
+    build: *layer4-camera-build
+    image: trpl-layer4-camera:local
+    env_file:
+      - ./Layer4_Talk_to_TR/TRPL-CameraPlatform/camera_platform/.env.live.local
+    environment:
+      LOOP_VIDEO_FILES: "true"
+    ports:
+      - "127.0.0.1:8084:8080"
+    volumes:
+      - ./Layer4_Talk_to_TR/TRPL-CameraPlatform/camera_platform/private/models:/models:ro
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    depends_on:
+      layer4-brain-cloud:
+        condition: service_healthy
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "python",
+          "-c",
+          "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8080/api/health',timeout=3)",
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 30
+      start_period: 60s
+    restart: unless-stopped
+
+volumes:
+  azurite-data:
+  cosmos-data:
+  servicebus-sql-data:
+  layer3-redis-data:
+
+secrets:
+  azure_openai_api_key:
+    file: ./Layer1_Data_foundations/.env.azure-openai-key
+  azure_search_api_key:
+    file: ./Layer1_Data_foundations/.env.azure-search-key
+  pip_index_url:
+    file: ./Layer1_Data_foundations/.env.pip-index
+  npm_registry_url:
+    file: ./Layer1_Data_foundations/.env.npm-registry
