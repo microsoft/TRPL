@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 """Pytest fixtures for outbound API."""
 import os
 from unittest.mock import patch

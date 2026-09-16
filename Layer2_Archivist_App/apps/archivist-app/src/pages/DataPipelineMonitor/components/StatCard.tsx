@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
 interface StatCardProps {
   icon: React.ReactNode
   iconBg: string

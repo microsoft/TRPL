@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 from enum import Enum
 from typing import Literal, Optional
 from pydantic import BaseModel, Field, model_validator

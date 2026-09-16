@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 """
 Simple test script for the Archivist API.
 Run this script to verify the API is working correctly.

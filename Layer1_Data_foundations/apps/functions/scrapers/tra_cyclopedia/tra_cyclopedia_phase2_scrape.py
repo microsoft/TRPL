@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 """
 Phase 2: Download each TRA Cyclopedia browse page and save extracted content.
 

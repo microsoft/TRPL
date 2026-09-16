@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 """Blob storage helpers for content hydration.
 
 - inline mode reads OCR/visual text already stored on the Cosmos record; this module

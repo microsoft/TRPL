@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
 import { useState, useCallback, useEffect, useMemo, useRef } from 'react'
 import { apiService } from '@/services/api'
 import { Database, FileImage, Download, ScanText, Brain, Settings2, Sparkles, LucideIcon } from 'lucide-react'

@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 """
 Azure OpenAI Batch API helper for creating and managing batch jobs.
 

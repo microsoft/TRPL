@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 """Pydantic models for correction requests API."""
 from __future__ import annotations
 

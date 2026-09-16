@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 """
 Digital Items Ingestion Helper — fetches items from external sources.
 

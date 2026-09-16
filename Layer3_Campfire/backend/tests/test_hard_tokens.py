@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 """Regression tests for hard-token extraction (REPORT.md #24).
 
 The semantic cache uses hard tokens as a lexical gate on top of cosine

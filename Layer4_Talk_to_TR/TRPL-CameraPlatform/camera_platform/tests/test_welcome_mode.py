@@ -1,4 +1,7 @@
 #!/usr/bin/env python
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 """
 Tests for the welcome-greeting mode toggle (welcome_use_llm / WELCOME_USE_LLM).
 

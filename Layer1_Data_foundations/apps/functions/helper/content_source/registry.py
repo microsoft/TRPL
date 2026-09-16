@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 """Fixed registry for shipped content-source adapters."""
 
 from __future__ import annotations

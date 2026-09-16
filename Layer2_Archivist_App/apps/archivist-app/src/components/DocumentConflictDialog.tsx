@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
 import ConfirmDialog from '@/components/ConfirmDialog';
 import {
   DOCUMENT_CONFLICT_MESSAGE,

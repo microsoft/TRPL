@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 """
 Ingest chunk containers from Cosmos DB into Azure AI Search indexes.
 

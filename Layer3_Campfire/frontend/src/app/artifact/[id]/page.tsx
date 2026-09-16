@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
 import { ArtifactDetailView } from '@/components/artifact-detail'
 import { ErrorBoundary } from '@/components/ui'
 

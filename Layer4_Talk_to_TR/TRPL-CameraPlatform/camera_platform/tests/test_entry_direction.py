@@ -1,4 +1,7 @@
 #!/usr/bin/env python
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 """
 Tests for the entry-direction gate — telling an arrival (inbound crossing of
 the entry zone) from a departure (outbound crossing) so that leaving the room

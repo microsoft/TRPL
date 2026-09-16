@@ -1,4 +1,7 @@
 #!/usr/bin/env python
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 """
 Camera MJPEG Streaming Service
 Run this script on each Mac to stream the local camera feed via HTTP to the main monitoring system

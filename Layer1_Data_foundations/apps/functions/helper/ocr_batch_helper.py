@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 """
 Helper functions for creating OCR batch jobs with Azure OpenAI.
 

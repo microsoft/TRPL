@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 """Base service class for Azure services."""
 import sys
 from pathlib import Path

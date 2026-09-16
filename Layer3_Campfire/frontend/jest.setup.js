@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
 // Jest setup file
 // Add custom matchers and global test configuration
 

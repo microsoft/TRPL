@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 """
 Multi-method authentication module for lia-agent API.
 Supports Basic Auth and API Key authentication.

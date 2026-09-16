@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 """
 Reconcile documents stuck in archivist_status=publishing (host crash, lost queue, etc.).
 

@@ -1,3 +1,7 @@
+/* Copyright (c) Microsoft Corporation.
+ * Licensed under the MIT license.
+ */
+
 .positioner {
   max-width: var(--available-width);
 }

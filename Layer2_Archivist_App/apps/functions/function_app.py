@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 # pylint: disable=invalid-name
 
 """Azure Functions App for ingesting CosmosDB documents into Azure AI Search."""

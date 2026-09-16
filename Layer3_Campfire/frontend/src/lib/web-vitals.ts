@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
 /**
  * Core Web Vitals + Gallery Image Performance Telemetry
  *

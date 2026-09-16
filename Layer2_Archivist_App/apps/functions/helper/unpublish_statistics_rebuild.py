@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 """
 Full precomputed statistics rebuild after an unpublish batch activity (before publish-batch prune).
 

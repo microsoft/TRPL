@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 """Deterministic offline adapter backed by the repository's fictional sample pack."""
 
 from __future__ import annotations

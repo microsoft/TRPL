@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 """Tests for fail-clear LiveKit worker deployment configuration."""
 
 import os

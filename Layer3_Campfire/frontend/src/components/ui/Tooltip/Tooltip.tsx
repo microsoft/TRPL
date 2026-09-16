@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
 'use client'
 
 import { Tooltip as BaseTooltip } from '@base-ui/react/tooltip'

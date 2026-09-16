@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 """
 Run GPT-4 Vision OCR on digital items that have PDF/image assets.
 

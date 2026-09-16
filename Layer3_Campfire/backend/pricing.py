@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 """Per-1M-token USD pricing for Azure OpenAI models in use.
 
 Verify against current Azure pricing before relying on these figures.

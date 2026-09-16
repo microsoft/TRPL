@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 """
 Ingest scraped digital resources into Cosmos DB ``digital-items`` container.
 

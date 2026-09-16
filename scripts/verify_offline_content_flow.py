@@ -1,4 +1,7 @@
 #!/usr/bin/env python3
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 """Verify synthetic adapter ingestion and the derived gallery without networking."""
 
 from __future__ import annotations

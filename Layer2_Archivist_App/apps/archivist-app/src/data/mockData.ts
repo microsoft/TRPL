@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
 import { ArchivalRecord, User, QueueStats } from '@/types'
 
 // Synthetic UI fallback records. Historical subjects and institution names

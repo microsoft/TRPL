@@ -1,4 +1,7 @@
 #!/usr/bin/env python3
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 """Configure and bootstrap the Layer 1 local emulator environment."""
 
 from __future__ import annotations

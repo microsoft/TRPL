@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 # =====================================================================
 # Camera Platform stack launcher (auto-start)
 #   1. camera-stream  (Orbbec -> MJPEG on :5000)   [system Python]

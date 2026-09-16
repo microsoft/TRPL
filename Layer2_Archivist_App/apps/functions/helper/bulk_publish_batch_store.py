@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 """
 Store metadata for bulk/retry publish jobs (Cosmos audit).
 

@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
 // Re-export all components
 export { default as StatCard } from './StatCard'
 export { default as StatusBadge } from './StatusBadge'

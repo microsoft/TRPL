@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 """Pydantic models for API request/response schemas."""
 from typing import List, Optional, Dict, Any
 

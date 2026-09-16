@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 """Teachers mode — Instructional Teaching Assistant persona for K–12 educators and program designers."""
 
 from .base import BASE_FOLLOWUP, BASE_QUERY, BASE_RAG, BASE_SCOPE

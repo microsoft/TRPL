@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
 import { XCircle, AlertTriangle } from 'lucide-react'
 import ModalPortal from '@/components/ModalPortal'
 import type { RetryConfig, PipelineStage } from '../../types'

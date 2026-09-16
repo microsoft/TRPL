@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
 import { NextRequest, NextResponse } from 'next/server'
 import { env } from '@/lib/env'
 import { ChatRequestSchema } from '@/schemas/chat'

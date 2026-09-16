@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
 /**
  * Strips HTML tags from a string and decodes HTML entities.
  * Extracts content from the body tag if present.

@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 """JSON-backed prompt override store for PM-editable prompts.
 
 Overrides are keyed as "<scenario>.<slot>" (e.g. "storys.adult").

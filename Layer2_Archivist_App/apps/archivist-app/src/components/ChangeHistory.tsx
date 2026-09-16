@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
 import React, { useEffect, useState, useImperativeHandle, forwardRef, useCallback } from 'react'
 import { Clock, User, Edit3, AlertCircle } from 'lucide-react'
 import { apiService, AuditEntry } from '@/services/api'

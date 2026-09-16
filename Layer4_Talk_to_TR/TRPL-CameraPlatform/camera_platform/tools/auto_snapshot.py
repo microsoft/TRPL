@@ -1,4 +1,7 @@
 #!/usr/bin/env python
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 """
 Auto-snapshot: run this, walk out of frame, it saves a clean empty-scene
 shot. For first-time zone calibration.

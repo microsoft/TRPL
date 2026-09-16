@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 """Extract per-page OCR text from Moore Chronology PDFs and build Cosmos documents."""
 
 from __future__ import annotations

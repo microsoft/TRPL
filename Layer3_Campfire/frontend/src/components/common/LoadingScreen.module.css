@@ -1,3 +1,7 @@
+/* Copyright (c) Microsoft Corporation.
+ * Licensed under the MIT license.
+ */
+
 /* Loading screen - covers viewport while assets load */
 .container {
   position: fixed;

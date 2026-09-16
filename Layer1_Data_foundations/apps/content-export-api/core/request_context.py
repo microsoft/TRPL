@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 """Per-request correlation id for logging."""
 from __future__ import annotations
 

@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 # pylint: disable=broad-exception-caught,too-few-public-methods,invalid-name
 
 """

@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 """
 Local E2E check: POST correction intake + GET list (uses Cosmos from .env.local).
 

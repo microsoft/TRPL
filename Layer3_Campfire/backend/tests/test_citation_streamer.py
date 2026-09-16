@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 from chatbot.utils.citation_streamer import CitationStreamer
 
 

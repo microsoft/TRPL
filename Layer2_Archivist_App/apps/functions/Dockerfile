@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 FROM mcr.microsoft.com/azure-functions/python@sha256:4d233f5a48eecb5eea9077dc66f50f4593cb46c97472970e1f818312b80ca710
 
 ENV AzureWebJobsScriptRoot=/home/site/wwwroot \

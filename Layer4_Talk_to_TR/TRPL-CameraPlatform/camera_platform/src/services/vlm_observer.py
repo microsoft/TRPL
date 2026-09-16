@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 """
 VLM Observer Worker — async person appearance description via vision LLM.
 

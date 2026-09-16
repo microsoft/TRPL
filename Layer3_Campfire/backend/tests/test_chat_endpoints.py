@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 """Integration tests for REST endpoints in main.py.
 
 Covers happy paths and auth failures for:

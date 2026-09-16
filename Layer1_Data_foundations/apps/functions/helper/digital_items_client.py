@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 """
 Cosmos DB client for the ``digital-items`` container in ``contentdb``.
 

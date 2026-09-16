@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
 /**
  * Simple logging utility for consistent error handling
  * Sends errors and warnings to Application Insights in production

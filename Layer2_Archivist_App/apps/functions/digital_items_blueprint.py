@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 """Azure Functions Blueprint: digital-items HTTP triggers.
 
 These HTTP-triggered functions handle:

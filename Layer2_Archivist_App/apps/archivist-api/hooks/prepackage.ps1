@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 # Linux App Service requires a Linux antenv for ZERO_TRUST builds (Oryx disabled, route-all blocks PyPI).
 # When ZERO_TRUST is not enabled, Oryx runs on App Service and prepackage is not required.
 $ErrorActionPreference = 'Stop'

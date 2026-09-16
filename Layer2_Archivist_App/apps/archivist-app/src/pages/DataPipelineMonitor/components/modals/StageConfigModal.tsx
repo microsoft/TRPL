@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
 import { PlayCircle } from 'lucide-react'
 import ModalPortal from '@/components/ModalPortal'
 import type { StageConfig, ExtraStageConfig, PipelineStage } from '../../types'

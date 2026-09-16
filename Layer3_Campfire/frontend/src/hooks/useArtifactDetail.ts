@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
 import { useQuery } from '@tanstack/react-query'
 import { API_ROUTES } from '@/lib/constants'
 

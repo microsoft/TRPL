@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 # for Azure App Service when deploying as code (instead of container)
 # NOTE: App Service load-balances over the container network, so this MUST bind
 # 0.0.0.0 and is therefore internet-facing. Ensure CLIENT_API_KEYS is set so the

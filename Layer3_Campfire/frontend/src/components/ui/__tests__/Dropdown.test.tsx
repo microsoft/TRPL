@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
 import { render, screen, fireEvent, waitFor } from '@testing-library/react'
 import { Dropdown, type DropdownOption } from '../Dropdown/Dropdown'
 

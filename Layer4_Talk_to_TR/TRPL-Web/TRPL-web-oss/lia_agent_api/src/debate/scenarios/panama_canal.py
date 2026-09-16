@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 from debate.prompts import ROOSEVELT_TRANSCRIPTS, ROOSEVELT_VOICE_SNIPPET, SCENARIO_COMMON, SHARED_RULES, SITUATIONAL_CONTEXT, as_roosevelt
 
 

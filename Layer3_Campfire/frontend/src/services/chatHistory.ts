@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
 import type { Message } from '@/schemas/chat'
 import { getOrCreateAnonymousUserId } from '@/lib/anonymousUser'
 

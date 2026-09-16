@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 """Main FastAPI application entry point for the Archivist API."""
 import os
 

@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 """API key authentication for outbound retrieval."""
 from __future__ import annotations
 

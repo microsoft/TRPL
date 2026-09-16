@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
 'use client'
 
 import { Archive, HelpCircle, Clock, LogOut, User, Menu } from 'lucide-react'

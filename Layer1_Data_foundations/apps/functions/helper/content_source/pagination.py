@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 """Pure helpers for Durable content-source cursor state."""
 
 from __future__ import annotations

@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 import os, json, threading, time
 from pathlib import Path
 from collections import deque

@@ -1,4 +1,7 @@
 #!/usr/bin/env python
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 """
 RSNet Viewer — inspect what the remote RealSense HTTP API is serving.
 

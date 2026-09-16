@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 import type { Message } from '@/schemas/chat'

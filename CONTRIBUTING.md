@@ -6,6 +6,18 @@ This repository is a completed implementation showcase. It does not accept new
 features or provider expansions. Contributions are limited to security
 maintenance and documentation corrections that preserve published behavior.
 
+## Contributor License Agreement
+
+Most contributions require you to agree to a Contributor License Agreement
+(CLA) declaring that you have the right to, and actually do, grant us the
+rights to use your contribution. For details, visit the
+[Microsoft CLA site](https://cla.opensource.microsoft.com/).
+
+When you submit a pull request, a CLA bot will automatically determine whether
+you need to provide a CLA and decorate the pull request appropriately, for
+example with a status check or comment. Follow the instructions provided by the
+bot. You only need to do this once across all repositories using our CLA.
+
 ## Before opening a change
 
 1. Read the README for the component you plan to change.
@@ -61,3 +73,8 @@ real records.
 
 Do not open public issues for suspected vulnerabilities. Follow
 [SECURITY.md](SECURITY.md).
+
+## Code of Conduct
+
+This project has adopted the
+[Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/).

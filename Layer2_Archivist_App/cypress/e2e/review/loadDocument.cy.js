@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
 /**
  * @integration — hits live API; excluded from default `npm run cypress:run`.
  * Requires local API + document in Cosmos DB.

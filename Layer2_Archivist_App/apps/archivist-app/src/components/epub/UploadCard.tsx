@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
 import React, { useRef, useCallback } from 'react'
 import { Upload, FileText, CheckCircle2, Loader2 } from 'lucide-react'
 

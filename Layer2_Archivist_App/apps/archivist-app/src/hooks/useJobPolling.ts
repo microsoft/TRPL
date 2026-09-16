@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
 import { useState, useEffect, useRef, useCallback } from 'react'
 import { apiService } from '@/services/api'
 

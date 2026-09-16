@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 """Process-wide authentication helpers for Azure data-plane SDKs.
 
 Cloud services authenticate through :func:`get_credential`. Local Azure OpenAI

@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 """Load local.settings.json Values into environment (dev convenience helper)."""
 import json
 from pathlib import Path

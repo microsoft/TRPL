@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 mkdb contentdb
 mkcon recordsmetadata /id --database=contentdb
 mkcon ingestion-errors /id --database=contentdb

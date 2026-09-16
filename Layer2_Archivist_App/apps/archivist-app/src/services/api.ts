@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
 // API Service for Archivist App
 import { getAccessToken, getIdToken } from './auth';
 import {

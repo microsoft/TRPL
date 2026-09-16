@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 """Opaque continuation tokens for offset-based pagination.
 
 A token is the base64 encoding of {"skip": N} — matching the example token in

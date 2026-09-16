@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 """Content-source ingestion helpers and downstream Cosmos persistence."""
 
 # Environment variables for configuration

@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 """Transforms raw Cosmos records into Approved Records API response shapes.
 
 Implements the field mapping, content-type discriminator, and content delivery

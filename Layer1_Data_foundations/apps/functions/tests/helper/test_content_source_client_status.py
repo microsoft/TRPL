@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 """Unit tests for content-source persistence and export tracking integration."""
 import asyncio
 from unittest.mock import AsyncMock, patch

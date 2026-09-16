@@ -1,4 +1,7 @@
 # -*- coding: utf-8 -*-
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 from pydantic import BaseModel, Field
 from debate.scenarios.coal_strike import COAL_STRIKE_INTRO, COAL_STRIKE_OUTRO, COAL_STRIKE_SCENARIO_SYS
 from debate.scenarios.coal_strike_army_threat import (

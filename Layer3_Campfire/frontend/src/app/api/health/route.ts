@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
 import { NextResponse } from 'next/server';
 
 export const dynamic = 'force-dynamic'; // Always run dynamically, never cache

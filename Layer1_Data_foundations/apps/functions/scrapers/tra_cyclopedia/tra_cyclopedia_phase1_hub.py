@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 """
 Phase 1: Theodore Roosevelt Association Cyclopedia hub.
 

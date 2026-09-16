@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 """Shared Azure credential for Cosmos (local dev: TRPL tenant via ENTRA_TENANT_ID)."""
 from __future__ import annotations
 

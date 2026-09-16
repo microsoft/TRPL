@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
 /**
  * True if metadata "Date Published to Portal" is present and non-empty.
  * Matches backend normalization (string, { label }, arrays, numbers).

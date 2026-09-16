@@ -1,4 +1,7 @@
 #!/usr/bin/env python3
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 """Verify the Layer 3 degraded local stack without Azure dependencies."""
 
 from __future__ import annotations

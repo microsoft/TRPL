@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 from unittest.mock import MagicMock, patch
 
 from helper.create_epub_index import (

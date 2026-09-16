@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
 import { checkLimit, __resetForTests, __bucketCountForTests } from '../rate-limit'
 
 describe('checkLimit', () => {

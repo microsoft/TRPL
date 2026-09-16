@@ -1,4 +1,7 @@
 # -*- coding: utf-8 -*-
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 """
 RAG Agent — retrieves relevant content from 3 sources:
   1. Story files (85 stories with full narratives)

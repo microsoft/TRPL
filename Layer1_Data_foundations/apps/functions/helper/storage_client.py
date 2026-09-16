@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 """Blob Storage client construction for cloud and local emulator environments."""
 
 from __future__ import annotations

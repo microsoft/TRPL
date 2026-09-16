@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 """API routes for Digital Resources (digital-items container)."""
 # pylint: disable=duplicate-code  # durable-function status fields shared with routes.py
 

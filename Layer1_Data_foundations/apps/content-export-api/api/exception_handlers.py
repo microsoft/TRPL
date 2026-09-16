@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 """Global exception handlers with minimal JSON error bodies."""
 from __future__ import annotations
 

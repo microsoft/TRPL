@@ -29,10 +29,12 @@ This repository accompanies:
 - A starting point that adopters can customize for their own collections,
   policies, providers, interfaces, and visitor experiences.
 
-The code is provided **as is** under the [MIT License](LICENSE). GitHub issues and pull requests are
-reviewed on a best-effort basis, without response or resolution timelines.
-Security updates are maintained when issues are confirmed, but no delivery ETA
-or service-level agreement is provided.
+The code is provided **as is** under the [MIT License](LICENSE-CODE), and the
+documentation is provided under the
+[Creative Commons Attribution 4.0 International license](LICENSE). GitHub
+issues and pull requests are reviewed on a best-effort basis, without response
+or resolution timelines. Security updates are maintained when issues are
+confirmed, but no delivery ETA or service-level agreement is provided.
 
 ## Architecture
 
@@ -147,16 +149,17 @@ their changes.
 
 ## Support and contributions
 
-- Use [GitHub issues](https://github.com/YOUR_ORG/YOUR_REPOSITORY/issues)
+- Use [GitHub issues](https://github.com/microsoft/TRPL/issues)
   for reproducible defects.
 - Pull requests are limited to security maintenance and documentation
   corrections that preserve the published behavior.
 - Reviews, fixes, and security updates do not have an ETA or SLA.
-- Do not report suspected vulnerabilities in public issues. Follow [SECURITY.md](SECURITY.md). A dedicated public security-reporting
-  channel will be published separately before release.
+- Do not report suspected vulnerabilities in public issues. Follow the
+  [security reporting instructions](SECURITY.md).
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) and
-[CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md) before participating.
+[the Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/)
+before participating.
 
 ## Project status
 
@@ -164,3 +167,13 @@ Cloud-backed
 AI, speech, camera, and real-time media paths require adopter-supplied services,
 content, hardware, and policy configuration. The repository will continue to
 receive security maintenance on a best-effort basis.
+
+## Trademarks
+
+This project may contain trademarks or logos for projects, products, or
+services. Authorized use of Microsoft trademarks or logos is subject to and
+must follow
+[Microsoft's Trademark & Brand Guidelines](https://www.microsoft.com/en-us/legal/intellectualproperty/trademarks/usage/general).
+Use of Microsoft trademarks or logos in modified versions of this project must
+not cause confusion or imply Microsoft sponsorship. Any use of third-party
+trademarks or logos is subject to those third parties' policies.

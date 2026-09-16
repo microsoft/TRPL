@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 """Authentication helpers for Layer 2 Azure data-plane clients."""
 
 from functools import lru_cache

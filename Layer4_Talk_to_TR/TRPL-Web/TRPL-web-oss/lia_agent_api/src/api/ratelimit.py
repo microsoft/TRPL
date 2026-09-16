@@ -1,4 +1,7 @@
 # -*- coding: utf-8 -*-
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 """Minimal, dependency-free per-client sliding-window rate limiter.
 
 Kept intentionally simple so the project runs out-of-the-box without an extra

@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 def test_health_unauthenticated(client):
     for path in ("/api/v1/health", "/health"):
         response = client.get(path)

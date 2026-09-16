@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 """Content export API — read-only FastAPI service."""
 from fastapi import FastAPI
 

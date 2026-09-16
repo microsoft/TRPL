@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
 import { createRoot } from 'react-dom/client'
 import './index.css'
 import App from './App.jsx'

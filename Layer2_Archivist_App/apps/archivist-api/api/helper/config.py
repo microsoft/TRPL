@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 """
 Configuration management for Azure AI Foundry OCR and Entity Extraction utility.
 """

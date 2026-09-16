@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 """
 Boot self-test — fail loud on startup if critical dependencies are broken.
 

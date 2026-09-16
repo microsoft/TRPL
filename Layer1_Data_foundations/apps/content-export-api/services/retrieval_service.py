@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 """Approved Records retrieval — approval-status + approval-date-range queries.
 
 The external API exposes approval semantics (approved_from/approved_to params,

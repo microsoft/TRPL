@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 """Contract, pagination, mapping, asset, registry, and offline flow tests."""
 
 import asyncio

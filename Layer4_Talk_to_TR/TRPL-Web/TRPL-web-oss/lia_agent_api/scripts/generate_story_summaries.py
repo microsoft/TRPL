@@ -1,5 +1,8 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 """
 Generate one-line summaries for each story using LLM.
 Reads each story .txt file, sends the narrative to LLM, gets a 1-sentence summary.

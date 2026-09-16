@@ -1,4 +1,7 @@
 #!/usr/bin/env python3
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 """Run an authenticated cloud-RAG smoke test and require cited output."""
 
 from __future__ import annotations

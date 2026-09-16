@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 """PII-scrubbed JSON logging, request-id context, OpenTelemetry tracer access.
 
 PII detection and redaction are delegated to Microsoft Presidio. We call each

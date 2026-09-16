@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 """
 Utility functions for converting files (PDF, TIFF, PNG, JPEG) to JPEG data URLs.
 Supports both local files and URLs with improved error handling.

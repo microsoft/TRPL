@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
 export interface ArchivalRecord {
   querySelector(arg0: string): unknown;
   id: string;

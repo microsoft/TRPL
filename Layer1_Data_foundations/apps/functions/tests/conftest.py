@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 """Shared pytest configuration for functions unit tests."""
 import os
 from unittest.mock import MagicMock, patch

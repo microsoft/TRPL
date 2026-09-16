@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
 import actionsData from './actions.json'
 import topicsData from './topics.json'
 import examplePromptsData from './examplePrompts.json'

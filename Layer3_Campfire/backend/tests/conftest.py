@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 """Pytest configuration and shared fixtures for backend tests."""
 
 import os

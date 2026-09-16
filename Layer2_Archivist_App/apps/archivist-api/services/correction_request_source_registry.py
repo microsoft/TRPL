@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 """Map Entra application (client) ids to allowlisted source_app_id + display_name."""
 from dataclasses import dataclass
 from typing import Any, Dict, Optional, Tuple

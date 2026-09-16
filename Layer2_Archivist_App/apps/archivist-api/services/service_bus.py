@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 """Simple Azure Service Bus message sender."""
 
 from azure.identity import DefaultAzureCredential

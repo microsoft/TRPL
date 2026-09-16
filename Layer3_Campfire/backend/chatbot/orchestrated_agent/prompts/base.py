@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 """Base prompts shared across all modes.
 
 Each per-mode file (discovery, research, teachers, students) composes the four

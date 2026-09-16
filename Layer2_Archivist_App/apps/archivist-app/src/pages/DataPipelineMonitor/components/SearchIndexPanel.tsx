@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
 import { useState, useEffect, useCallback, useRef } from 'react'
 import { Search, RefreshCw, Info, Lock, CheckCircle2, XCircle } from 'lucide-react'
 import { apiService } from '@/services/api'

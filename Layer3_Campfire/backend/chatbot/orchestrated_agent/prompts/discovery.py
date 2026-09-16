@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 """Discovery mode — Balanced General Assistant persona for general visitors."""
 
 from .base import BASE_FOLLOWUP, BASE_QUERY, BASE_RAG, BASE_SCOPE

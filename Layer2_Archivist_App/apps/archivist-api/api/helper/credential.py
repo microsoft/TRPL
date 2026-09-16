@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 """Process-wide credential singletons for Azure data-plane SDKs.
 
 All helpers should authenticate to Azure via :func:`get_credential` rather than

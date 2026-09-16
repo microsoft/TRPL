@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
 import { ApiDocumentMetadata } from "@/services/api";
 import { ArchivalRecord, ResourceType } from "@/types";
 

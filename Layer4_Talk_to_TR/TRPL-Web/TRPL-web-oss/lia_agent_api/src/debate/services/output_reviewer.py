@@ -1,4 +1,7 @@
 # -*- coding: utf-8 -*-
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 """L3 Output Reviewer — parallel safety audit of TR's response stream.
 
 Runs in parallel with the main agent's streaming output. Accumulates

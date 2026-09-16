@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 """Provider-neutral content-source contracts and the shipped synthetic adapter."""
 
 from .contracts import (

@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 """
 Document status categorization for statistics rebuilds in Azure Functions.
 

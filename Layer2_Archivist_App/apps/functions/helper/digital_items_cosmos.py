@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 """Cosmos DB client for the digital-items container.
 
 Digital items (Moore Chronology, TR Cyclopedia, Genealogy Papers) live in the

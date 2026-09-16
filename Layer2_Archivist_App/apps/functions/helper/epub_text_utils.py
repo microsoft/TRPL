@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 """EPUB-specific text processing utilities.
 
 Uses tiktoken for accurate token counting and spaCy for sentence-aware splitting.

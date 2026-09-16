@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 """
 Person Cache — per-person appearance and state cache with TTL-based cleanup.
 

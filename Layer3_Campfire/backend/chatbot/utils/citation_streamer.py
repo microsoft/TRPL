@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 class CitationStreamer:
     """Strip [N] / [N, M] citation markers from streamed text and collect indices.
 

@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 """Tests for local environment configuration and Azure AI discovery."""
 
 import pytest

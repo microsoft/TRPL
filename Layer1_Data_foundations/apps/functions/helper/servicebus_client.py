@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 """Service Bus helper utilities.
 
 Provides helpers to send messages to Azure Service Bus with scheduling

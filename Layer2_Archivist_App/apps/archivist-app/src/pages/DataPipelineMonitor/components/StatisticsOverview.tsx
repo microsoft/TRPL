@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
 import { Database, Clock, CheckCircle2, AlertTriangle, ScanText } from 'lucide-react'
 import StatCard from './StatCard'
 import type { PipelineStats } from '../types'

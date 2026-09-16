@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
 /// <reference types="vite/client" />
 
 // Extend ImportMetaEnv with our VITE_ variables used in the app

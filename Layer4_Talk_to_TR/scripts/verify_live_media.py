@@ -1,4 +1,7 @@
 #!/usr/bin/env python3
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 """Verify self-hosted LiveKit, avatar-free speech, and the camera VLM."""
 
 from __future__ import annotations

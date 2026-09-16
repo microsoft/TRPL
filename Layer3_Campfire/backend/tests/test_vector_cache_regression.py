@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 """Regression tests for VectorizedLRUCache bugs (REPORT.md #9, #10, #29).
 
 Each test reproduces the exact divergence/failure mode that the in-code

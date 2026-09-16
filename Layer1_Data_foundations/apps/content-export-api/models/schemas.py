@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 """Response models for the Approved Records API.
 
 Shapes follow the content source sync API design (Section 5).
