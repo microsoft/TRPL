@@ -1,3 +1,6 @@
+' Copyright (c) Microsoft Corporation.
+' Licensed under the MIT license.
+
 ' =====================================================================
 ' Auto-start launcher for the Camera Platform stack.
 '

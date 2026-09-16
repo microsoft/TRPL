@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 """Query and update bulk / retry publish batch records (Cosmos container)."""
 
 from __future__ import annotations

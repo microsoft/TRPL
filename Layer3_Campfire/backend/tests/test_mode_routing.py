@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 """Verifies that the orchestrated agent picks the correct (mode, stage) prompt.
 
 This is a safety net: if a future edit to prompts/__init__.py wires the wrong

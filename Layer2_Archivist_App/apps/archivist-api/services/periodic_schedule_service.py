@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 """Periodic ingestion schedules stored in the same Cosmos container as run history.
 
 Documents use ``entity_type == "schedule"``. Run rows omit ``entity_type`` or use ``"run"``.

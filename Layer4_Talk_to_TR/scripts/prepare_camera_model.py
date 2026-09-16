@@ -1,4 +1,7 @@
 #!/usr/bin/env python3
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 """Download the pinned YOLO pose weight into the ignored local model cache."""
 
 from __future__ import annotations

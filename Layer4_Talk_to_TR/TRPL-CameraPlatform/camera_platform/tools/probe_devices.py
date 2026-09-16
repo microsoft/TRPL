@@ -1,4 +1,7 @@
 #!/usr/bin/env python
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 """Probe device indices using the SAME open() style as camera_manager.py
 (no explicit backend), so the enumeration matches exactly what
 camera_platform sees. Each working index opens a live preview so you

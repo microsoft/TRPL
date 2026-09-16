@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
 import { renderHook, act } from '@testing-library/react'
 import { useVerticalGallery } from '../useVerticalGallery'
 

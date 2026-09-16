@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 """Dry-run latency probe: first-token latency per question, no LiveKit.
 
 Each question runs in its OWN fresh storys session (clean round-2 TTFT),

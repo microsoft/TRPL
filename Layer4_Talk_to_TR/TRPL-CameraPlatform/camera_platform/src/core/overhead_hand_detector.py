@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 """
 Overhead view hand raise detection module
 For scenarios where the camera is mounted above looking down

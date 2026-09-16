@@ -1,4 +1,7 @@
 #!/usr/bin/env python
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 """
 Open any UVC camera (RealSense color, FaceTime, external USB cams) via
 OpenCV — no pyrealsense2, no depth, no SDK dependencies beyond cv2.

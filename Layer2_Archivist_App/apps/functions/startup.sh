@@ -1,4 +1,7 @@
 #!/bin/bash
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 # Install Playwright Chromium browser + OS deps if not already present.
 # Runs on each container cold start; skips if already installed.
 BROWSER_DIR="${PLAYWRIGHT_BROWSERS_PATH:-/home/.playwright}"

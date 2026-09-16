@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
 import { Settings2, Loader2, CheckCircle2, XCircle, RotateCcw } from 'lucide-react'
 import type { StageConfig } from '../types'
 

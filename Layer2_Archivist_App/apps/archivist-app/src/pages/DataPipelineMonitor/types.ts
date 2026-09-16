@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
 // Types for Data Pipeline Monitor
 
 // Backend stage configuration (from API)

@@ -1,4 +1,7 @@
 #!/usr/bin/env bash
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 # Start ONLY the livekit_worker (token_server lives in the Azure Web App now).
 set -euo pipefail
 

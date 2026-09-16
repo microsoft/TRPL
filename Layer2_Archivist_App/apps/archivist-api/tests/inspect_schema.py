@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 """
 Quick script to inspect the actual schema of documents in CosmosDB.
 Run this to see what fields your documents actually have.

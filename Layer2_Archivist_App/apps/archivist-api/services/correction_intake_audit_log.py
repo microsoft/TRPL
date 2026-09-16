@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 """
 Structured audit logs for POST /correction-requests (Log Analytics / KQL friendly).
 

@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
 /**
  * Application Insights telemetry service
  * Client-side only - uses dynamic imports to avoid SSR issues

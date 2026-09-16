@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 """Minimal public error bodies for API responses."""
 from __future__ import annotations
 

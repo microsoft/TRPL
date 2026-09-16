@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 """Tests for Cosmos etag comparison helpers."""
 import sys
 from pathlib import Path

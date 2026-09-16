@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
 'use client'
 
 import { Button as BaseButton } from '@base-ui/react/button'

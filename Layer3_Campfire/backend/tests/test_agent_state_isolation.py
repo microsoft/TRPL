@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 """Regression tests for EndToEndAgent failure modes (REPORT.md #5 and #6)."""
 
 from unittest.mock import AsyncMock, MagicMock, patch

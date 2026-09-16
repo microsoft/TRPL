@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
 import { ArchivalRecord, CollectionSummary } from '@/types'
 import { equalsIgnoreCase } from '@/utils/textCompare'
 

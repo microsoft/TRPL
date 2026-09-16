@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
 /**
  * Toast notification utilities
  * Centralized toast calls with consistent messaging and styling

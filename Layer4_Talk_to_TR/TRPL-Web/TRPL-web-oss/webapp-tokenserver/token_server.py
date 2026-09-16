@@ -1,4 +1,7 @@
 # -*- coding: utf-8 -*-
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 """
 Token + static server. Generates LiveKit JWTs and serves the SPA.
 

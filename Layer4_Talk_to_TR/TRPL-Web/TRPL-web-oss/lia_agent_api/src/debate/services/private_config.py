@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 """Load deployment-only configuration from environment variables or files."""
 from __future__ import annotations
 

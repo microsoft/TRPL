@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 # pylint: disable=too-many-arguments, too-many-positional-arguments, too-many-instance-attributes, invalid-name
 
 """

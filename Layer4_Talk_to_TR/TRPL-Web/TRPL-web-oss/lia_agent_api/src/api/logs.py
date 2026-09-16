@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 from contextlib import contextmanager
 from datetime import datetime
 import logging

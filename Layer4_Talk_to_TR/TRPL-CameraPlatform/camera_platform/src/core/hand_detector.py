@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 """
 Hand raise detection module (professional version)
 Based on body-local coordinate system + normalized ratios + multi-condition scoring + temporal stability

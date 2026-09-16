@@ -1,4 +1,7 @@
 #!/usr/bin/env python3
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 """Generate ignored Layer 4 live-media acceptance configuration and fixtures."""
 
 from __future__ import annotations

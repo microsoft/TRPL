@@ -1,4 +1,7 @@
 # -*- coding: utf-8 -*-
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 """Read/write prompt overrides used by agent_registry.
 
 Internal PM tool. The override file is kept under the server-user's home

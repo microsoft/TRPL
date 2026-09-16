@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
 'use client'
 
 import React, { useState, useEffect, useCallback, useRef } from 'react'

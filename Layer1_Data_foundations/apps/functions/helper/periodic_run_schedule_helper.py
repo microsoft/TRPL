@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 """
 Periodic schedule + run history helpers (Cosmos ``periodic_run_history``).
 

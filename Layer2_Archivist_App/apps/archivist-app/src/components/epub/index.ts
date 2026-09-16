@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
 // EPUB Processing Components
 export { default as EpubStatusBadge, statusConfig } from './EpubStatusBadge'
 export { default as PipelineStats } from './PipelineStats'

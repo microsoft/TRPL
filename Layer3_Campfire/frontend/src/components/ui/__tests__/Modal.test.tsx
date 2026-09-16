@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
 import { render, screen, fireEvent, waitFor } from '@testing-library/react'
 import { Modal } from '../Modal/Modal'
 

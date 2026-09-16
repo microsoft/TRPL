@@ -1,4 +1,7 @@
 #!/usr/bin/env python3
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 """
 Minimal downstream WebSocket consumer for the camera_platform event stack.
 

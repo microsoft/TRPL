@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 """Base auth types and dependency factories for lia-agent API."""
 
 

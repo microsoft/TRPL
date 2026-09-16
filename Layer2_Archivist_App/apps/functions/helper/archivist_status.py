@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 """Canonical archivist_status values: trimmed lowercase in Cosmos (aligned with Data Foundations ingest)."""
 
 from typing import Any

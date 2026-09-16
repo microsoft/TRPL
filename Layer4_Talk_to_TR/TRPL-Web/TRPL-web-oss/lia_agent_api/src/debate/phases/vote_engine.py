@@ -1,4 +1,7 @@
 # -*- coding: utf-8 -*-
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 from debate.graph import MiniGraph
 from debate.models.state import DebateState
 from debate.nodes.vote import VoteNode, VoteRecapNode

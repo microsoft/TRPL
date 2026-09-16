@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 __all__ = [
     "ScenarioDefinition",
     "get_scenario",

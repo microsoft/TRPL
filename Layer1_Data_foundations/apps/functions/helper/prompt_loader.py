@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 """
 Prompt loader utility for loading and managing OCR extraction prompts.
 """

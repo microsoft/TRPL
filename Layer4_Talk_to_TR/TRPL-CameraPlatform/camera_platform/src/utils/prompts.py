@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 """
 Prompt Registry — all LLM/VLM prompts centralized here.
 

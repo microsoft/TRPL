@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 """API routes for document management and retrieval."""
 
 # pylint:disable = too-many-locals

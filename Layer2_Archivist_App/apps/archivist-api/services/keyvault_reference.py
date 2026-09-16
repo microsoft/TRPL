@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 """Helpers for resolving App Service Key Vault reference strings."""
 
 import logging

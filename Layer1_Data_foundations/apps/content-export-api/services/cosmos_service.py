@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 """Cosmos DB queries for recordsmetadata."""
 from __future__ import annotations
 

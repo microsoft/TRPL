@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 """
 Phase 3: Crawl per-letter Index pages linked from the Index A–Z hub (module 339476).
 

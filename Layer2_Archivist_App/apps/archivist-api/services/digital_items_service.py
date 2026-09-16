@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 """Service for querying digital resource items from the digital-items Cosmos container."""
 
 import logging

@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 """Blob service unit tests."""
 import sys
 from datetime import datetime, timedelta, timezone

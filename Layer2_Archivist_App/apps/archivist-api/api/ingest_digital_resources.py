@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 """
 Ingest Moore Chronology and Genealogy & Papers digital items into Cosmos DB.
 

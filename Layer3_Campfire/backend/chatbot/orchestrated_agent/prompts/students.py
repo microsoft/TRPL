@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 """Students mode — Student-Friendly Tutor persona for younger learners and beginners."""
 
 from .base import BASE_FOLLOWUP, BASE_QUERY, BASE_RAG, BASE_SCOPE

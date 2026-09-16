@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 """
 Integration test script for WebSocket chat functionality.
 Tests multi-turn conversations and chat history restoration.

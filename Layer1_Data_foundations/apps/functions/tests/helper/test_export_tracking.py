@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 """Unit tests for the helper.export_tracking module."""
 from helper.export_tracking import (
     default_export_tracking,

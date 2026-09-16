@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 """Approved Records API endpoints (content source sync API design, Section 4.2)."""
 from __future__ import annotations
 

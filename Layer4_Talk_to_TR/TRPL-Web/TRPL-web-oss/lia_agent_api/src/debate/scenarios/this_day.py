@@ -1,4 +1,7 @@
 # -*- coding: utf-8 -*-
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 """
 This Day in TR History — calendar lookup for what happened on today's date
 during Roosevelt's life (1858-1919).

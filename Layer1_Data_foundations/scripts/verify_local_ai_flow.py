@@ -1,4 +1,7 @@
 #!/usr/bin/env python3
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 """Verify the complete local Layer 1 and Layer 2 flow with Azure AI Batch."""
 
 from __future__ import annotations

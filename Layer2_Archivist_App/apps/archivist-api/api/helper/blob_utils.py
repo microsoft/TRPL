@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 """Shared blob-upload and content-type utilities for ingestion scripts."""
 
 from __future__ import annotations

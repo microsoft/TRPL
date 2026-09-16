@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
 'use client'
 
 import { ChevronLeft, ChevronRight, ChevronLast, ChevronFirst } from 'lucide-react'

@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
 import { render, screen, fireEvent } from '@testing-library/react'
 import { Button } from '../Button/Button'
 

@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
 const ANON_USER_ID_KEY = 'reading-room-anon-user-id'
 let cachedUserId: string | null = null
 

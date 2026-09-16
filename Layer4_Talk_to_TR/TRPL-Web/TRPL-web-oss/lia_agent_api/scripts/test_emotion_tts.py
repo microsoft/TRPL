@@ -1,4 +1,7 @@
 #!/usr/bin/env python3
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 """Emotion-label smoke test for the custom DragonHD V2.5 voice.
 
 Synthesizes one short sentence per (emotion-label x feed-format) and saves each

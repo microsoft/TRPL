@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 """HTTP guards for correction request intake (POST only)."""
 from __future__ import annotations
 

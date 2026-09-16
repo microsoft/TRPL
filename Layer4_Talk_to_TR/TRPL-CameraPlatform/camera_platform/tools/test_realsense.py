@@ -1,4 +1,7 @@
 #!/usr/bin/env python
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 """
 Standalone RealSense D455 verification — run in Terminal directly,
 NOT through Claude Code or any wrapper, so TCC attribution goes to

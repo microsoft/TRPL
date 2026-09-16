@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 """
 Event Publisher — unified outbound channel for camera service → agent server.
 

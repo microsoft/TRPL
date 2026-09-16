@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 """Workload (Entra) JWT validation for correction-request intake."""
 import logging
 import os

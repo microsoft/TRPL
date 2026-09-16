@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
 /**
  * Trimmed, case-insensitive string equality for filters (repository/collection labels, etc.).
  */

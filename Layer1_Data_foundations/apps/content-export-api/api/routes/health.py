@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 """Unauthenticated health endpoints for AGW probes."""
 import logging
 

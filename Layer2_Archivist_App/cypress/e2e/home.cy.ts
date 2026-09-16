@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
 describe('TRPL Home Page', () => {
   it('should load the home page successfully', () => {
     cy.visit('http://localhost:5173')

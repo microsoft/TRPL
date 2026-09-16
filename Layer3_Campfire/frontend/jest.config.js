@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
 const nextJest = require('next/jest')
 
 const createJestConfig = nextJest({

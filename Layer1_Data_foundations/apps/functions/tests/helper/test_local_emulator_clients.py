@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 """Local emulator client selection and safety tests."""
 
 from unittest.mock import MagicMock, patch

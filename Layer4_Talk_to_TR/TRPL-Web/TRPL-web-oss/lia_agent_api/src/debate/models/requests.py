@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 import logging
 from typing import Literal
 from pydantic import BaseModel, ConfigDict, Field, field_validator

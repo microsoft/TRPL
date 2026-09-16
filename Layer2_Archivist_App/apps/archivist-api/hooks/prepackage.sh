@@ -1,4 +1,7 @@
 #!/usr/bin/env bash
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 # Build antenv on the deploy runner (has PyPI egress). App Service Oryx build is disabled
 # under ZERO_TRUST — the zip must include a ready virtualenv (route-all blocks pypi.org).
 #

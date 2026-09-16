@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 """
 Configuration module for lia-agent.
 Loads and manages application settings from environment variables.

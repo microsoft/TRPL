@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
 import { clsx, type ClassValue } from 'clsx'
 import { type RefCallback, type MutableRefObject } from 'react'
 

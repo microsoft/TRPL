@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 """Global handlers: minimal JSON errors, full detail in logs with request id."""
 from __future__ import annotations
 

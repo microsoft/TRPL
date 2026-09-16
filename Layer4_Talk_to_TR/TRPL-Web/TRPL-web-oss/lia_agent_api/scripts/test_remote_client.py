@@ -1,4 +1,7 @@
 #!/usr/bin/env python3
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 """Sanity-test the lia_agent_api protocol from a remote machine.
 
   LIA_API_BASE=http://host:8010 LIA_API_KEY=xxxx \

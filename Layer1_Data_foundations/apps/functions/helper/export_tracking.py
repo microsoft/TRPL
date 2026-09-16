@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 """Cosmos export_tracking flags for outbound retrieval filtering."""
 from __future__ import annotations
 

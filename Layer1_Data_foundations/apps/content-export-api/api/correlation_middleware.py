@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 """Assign X-Request-ID per request and log request lifecycle."""
 from __future__ import annotations
 

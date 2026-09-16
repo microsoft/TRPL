@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
 import { createHmac, randomUUID, timingSafeEqual } from 'node:crypto'
 import type { NextRequest, NextResponse } from 'next/server'
 import { env } from '@/lib/env'

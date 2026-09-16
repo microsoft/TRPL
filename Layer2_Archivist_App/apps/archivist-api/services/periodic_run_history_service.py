@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 """Periodic sync run history (Cosmos ``periodic_run_history``, partition key ``/id``).
 
 Written when the API starts the Azure Function ``content-source-periodic-sync`` (see ``record_periodic_sync_started``).

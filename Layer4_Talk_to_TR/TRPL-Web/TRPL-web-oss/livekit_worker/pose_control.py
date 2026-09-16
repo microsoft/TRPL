@@ -1,4 +1,7 @@
 # -*- coding: utf-8 -*-
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 """LemonSlice pose-trigger control. Lightweight async helper used by the
 bridge to fire `<pose:NAME/>` markers emitted inline by the LLM stream.
 

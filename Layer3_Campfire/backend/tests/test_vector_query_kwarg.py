@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 """Regression test: VectorizedQuery's k must reach the SDK.
 
 azure-search-documents 11.6 renamed the candidate-count kwarg from `k`

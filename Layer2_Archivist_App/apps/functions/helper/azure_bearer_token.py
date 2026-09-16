@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 """Acquire Entra bearer tokens for Azure resources via managed identity / az login."""
 from __future__ import annotations
 

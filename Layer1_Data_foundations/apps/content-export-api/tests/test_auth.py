@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 _RANGE = "approved_from=2026-03-01T00:00:00Z&approved_to=2026-03-16T00:00:00Z"
 
 

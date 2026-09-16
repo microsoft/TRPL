@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 # pylint: disable=too-many-locals, too-many-statements, too-many-branches
 
 """

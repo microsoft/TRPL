@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Clock, CheckCircle2, XCircle, Loader2, PlayCircle, ChevronDown, ChevronRight, Trash2, ExternalLink } from 'lucide-react'

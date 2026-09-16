@@ -1,4 +1,7 @@
 # -*- coding: utf-8 -*-
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 """
 LiveKit worker that wires lia_agent_api → Azure Speech and an optional avatar.
 

@@ -1,4 +1,7 @@
 #!/usr/bin/env python3
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 """Verify Layer 4 cloud text generation and retained Layer 2 book retrieval."""
 
 from __future__ import annotations

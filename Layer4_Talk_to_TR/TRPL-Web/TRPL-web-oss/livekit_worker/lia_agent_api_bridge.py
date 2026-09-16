@@ -1,4 +1,7 @@
 # -*- coding: utf-8 -*-
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 """
 Bridge between lia_agent_api (the brain) and a LiveKit AgentSession.
 

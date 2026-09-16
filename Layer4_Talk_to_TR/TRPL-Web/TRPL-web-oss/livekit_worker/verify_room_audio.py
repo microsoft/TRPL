@@ -1,4 +1,7 @@
 #!/usr/bin/env python3
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 """Join a local LiveKit room and require agent-published audio."""
 
 from __future__ import annotations

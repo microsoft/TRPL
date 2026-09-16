@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 """Per-mode, per-stage system prompts for the orchestrated agent.
 
 Layout: one module per mode (discovery/research/teachers/students) composes

@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 """
 Multi-camera manager
 Supports USB, RTSP, video files, and Intel RealSense depth cameras.

@@ -1,4 +1,7 @@
 # -*- coding: utf-8 -*-
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 """L1 pattern and L2 model-based prompt-injection detector.
 
 Runs on each visitor input. In observe mode, detections are logged and

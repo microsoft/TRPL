@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 """Local Cosmos credential and status-filter regression tests."""
 
 import sys

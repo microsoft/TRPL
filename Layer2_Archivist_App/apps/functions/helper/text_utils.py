@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 """Text processing utilities for chunking and token counting using tiktoken."""
 
 import logging

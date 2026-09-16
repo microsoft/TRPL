@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
 import React, { createContext, useContext, useState, useEffect, useMemo, ReactNode } from 'react';
 import { getCurrentUser, UserInfo } from '@/services/auth';
 

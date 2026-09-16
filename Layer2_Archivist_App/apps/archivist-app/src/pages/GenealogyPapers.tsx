@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
 import React, { useEffect, useState, useRef } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { ArrowLeft, ArrowRight, BookOpen, Volume2, Image as ImageIcon, Loader2, ChevronDown, FileText, Users, AlignLeft, Upload, EyeOff, CheckCircle2, XCircle } from 'lucide-react'

@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 """
 Zone Labeler — click on a screenshot with the mouse to label the
 entry_zone / mic_zone polygons.

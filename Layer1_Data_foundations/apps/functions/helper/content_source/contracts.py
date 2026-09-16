@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 """Provider-neutral content-source contracts for the TRPL showcase.
 
 These interfaces intentionally describe only behavior exercised by this reference

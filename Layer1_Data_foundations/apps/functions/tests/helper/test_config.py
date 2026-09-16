@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 """Tests for model-specific Azure OpenAI request parameters."""
 
 from helper.config import AzureConfig, get_chat_completion_parameters

@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 """
 Run OCR on digital items using Azure OpenAI Batch API.
 

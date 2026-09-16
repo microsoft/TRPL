@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 """
 Zone persistence — read/write labeled zones to config/zones.json.
 

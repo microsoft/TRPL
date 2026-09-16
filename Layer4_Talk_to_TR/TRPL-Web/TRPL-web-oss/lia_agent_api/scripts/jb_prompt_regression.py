@@ -1,4 +1,7 @@
 # -*- coding: utf-8 -*-
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 """Offline regression runner for deployment-only guardrail cases.
 
 Loads private cases and runs them through the effective storys.adult system

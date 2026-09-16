@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 """
 Hourly intake rate limit using the same Cosmos container as correction requests.
 

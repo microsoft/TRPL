@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
 import { Loader2, PlayCircle, Pause, Square } from 'lucide-react'
 import type { ActiveJob } from '../types'
 

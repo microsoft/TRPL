@@ -1,4 +1,7 @@
 #!/usr/bin/env python3
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 """Create ignored Layer 4 cloud-text settings from the working Layer 3 setup."""
 
 from __future__ import annotations

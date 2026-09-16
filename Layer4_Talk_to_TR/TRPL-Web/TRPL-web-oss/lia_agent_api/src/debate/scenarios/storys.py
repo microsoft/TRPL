@@ -1,4 +1,7 @@
 # -*- coding: utf-8 -*-
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 """Storytelling scenario: TR shares stories from his life with museum visitors.
 
 Three prompt variants:

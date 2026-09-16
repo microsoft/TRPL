@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
 // Authentication Service for Azure App Service Easy Auth
 
 import { isExpired } from "react-jwt";

@@ -1,4 +1,7 @@
 # -*- coding: utf-8 -*-
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 import logging
 from datetime import datetime
 from debate.models.inputs import TimeoutInput, TouchscreenVoteInput

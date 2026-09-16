@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 """Research mode — Historical Research and Biography Analyst persona for academic users."""
 
 from .base import BASE_FOLLOWUP, BASE_QUERY, BASE_RAG, BASE_SCOPE

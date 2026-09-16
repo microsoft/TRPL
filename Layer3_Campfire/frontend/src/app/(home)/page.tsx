@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
 import { HomeView } from '@/components/home'
 import { ErrorBoundary } from '@/components/ui'
 

@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 """Authentication dependencies for FastAPI routes using Azure App Service Easy Auth."""
 import os
 import logging

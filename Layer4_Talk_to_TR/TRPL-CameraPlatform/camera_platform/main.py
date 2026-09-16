@@ -1,4 +1,7 @@
 #!/usr/bin/env python
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 """
 Multi-Camera Room Monitoring System - Main Entry Point
 Supports visual monitoring, event recording, and LLM analysis

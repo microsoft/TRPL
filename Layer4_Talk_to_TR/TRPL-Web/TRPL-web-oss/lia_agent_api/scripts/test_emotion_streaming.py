@@ -1,4 +1,7 @@
 #!/usr/bin/env python3
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 """Does a single leading [Label] survive a *streamed* multi-sentence reply?
 
 Background

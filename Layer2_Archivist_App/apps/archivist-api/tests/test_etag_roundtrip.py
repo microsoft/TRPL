@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 """ETag round-trip and OCR update helper tests."""
 import sys
 from pathlib import Path

@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 """Configuration for the Content export API."""
 import os
 from typing import Optional

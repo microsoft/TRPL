@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
 import { Clock, CheckCircle2, XCircle, Loader2, Pause, Square } from 'lucide-react'
 
 interface StatusBadgeProps {

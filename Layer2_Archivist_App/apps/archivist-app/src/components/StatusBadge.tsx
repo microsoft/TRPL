@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
 import React from 'react'
 import { CheckCircle2, TrendingUp, AlertCircle, TrendingDown, BarChart3, LucideIcon } from 'lucide-react'
 

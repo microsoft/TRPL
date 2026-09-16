@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 """Groundedness judge prompt. Mode-agnostic — the same rubric is applied to every
 mode's RAG output because factual support against cited sources does not vary by
 audience persona.

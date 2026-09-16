@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
 /**
  * Optimistic concurrency (ETag / If-Match) conflicts when saving document edits.
  */

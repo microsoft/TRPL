@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 """Utilities for generating embeddings using OpenAI or Azure OpenAI."""
 # pylint:disable = no-member, line-too-long
 import logging

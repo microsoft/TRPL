@@ -1,4 +1,7 @@
-﻿import React, { useState, useEffect, useCallback, useRef } from 'react'
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
+import React, { useState, useEffect, useCallback, useRef } from 'react'
 import {
   Play,
   Loader2,

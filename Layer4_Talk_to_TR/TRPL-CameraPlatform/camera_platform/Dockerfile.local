@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 # syntax=docker/dockerfile:1.7
 FROM ultralytics/ultralytics@sha256:f6d44e082898d10eb620c14dc4e3e1362f9aa7c43da777dc4898930dd149b706
 

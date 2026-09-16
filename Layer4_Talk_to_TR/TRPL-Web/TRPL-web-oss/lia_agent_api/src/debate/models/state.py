@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 import asyncio
 from pydantic import BaseModel, ConfigDict, computed_field, Field, field_validator, model_validator
 from datetime import datetime

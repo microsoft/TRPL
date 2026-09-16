@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 """
 Cross-camera person re-identification module (Person ReID)
 Uses OSNet to extract appearance features, matches cross-camera persons via cosine similarity.

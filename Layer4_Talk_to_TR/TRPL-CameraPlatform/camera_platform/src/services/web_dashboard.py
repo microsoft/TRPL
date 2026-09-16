@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 """
 Web Dashboard service plugin
 Adds Web UI interface to the API

@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
 import type { Metadata } from 'next'
 import { QueryProvider } from '@/providers/QueryProvider'
 import { TelemetryProvider } from '@/providers/TelemetryProvider'

@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 """
 Image encoding utilities — single source of truth for crop/frame encoding.
 """

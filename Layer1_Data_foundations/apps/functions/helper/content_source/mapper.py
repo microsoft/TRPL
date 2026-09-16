@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 """Canonical mapping shared by ingestion and the synthetic gallery projection."""
 
 from __future__ import annotations

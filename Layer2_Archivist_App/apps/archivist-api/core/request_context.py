@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 """Per-request context (correlation / request id) for logging without leaking internals to clients."""
 from __future__ import annotations
 

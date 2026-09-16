@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
 import React from 'react'
 import { FileText, Loader2, Trash2, RotateCcw } from 'lucide-react'
 import EpubStatusBadge from './EpubStatusBadge'
