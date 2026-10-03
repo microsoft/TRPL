@@ -11,7 +11,7 @@ azure-keyvault-secrets==4.9.0
 websocket-client==1.8.0
 azure-identity==1.18.0
 # pyjwt[crypto] pulls in `cryptography`, required for RS256/JWKS workload token validation (correction intake)
-pyjwt[crypto]==2.8.0
+pyjwt[crypto]==2.15.0
 ebooklib==0.19
 python-multipart==0.0.9
 # Runtime HTTP client (used by api/routes.py for Azure Functions orchestration calls)
