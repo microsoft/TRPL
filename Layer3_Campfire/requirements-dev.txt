@@ -1441,9 +1441,9 @@ thinc==8.3.13 \
     --hash=sha256:e9c7c5c104737b414c8c4ec578e67d78b6c859afe25cbc0684402e721415bd7f \
     --hash=sha256:f697174d3fb474966ce50b430bbafa101a6d2f7ffb559dac4b5c59389ef72d22
     # via spacy
-tinytag==2.2.1 \
-    --hash=sha256:e6d06610ebe7cd66fd07be2d3b9495914ab32654a5e47657bb8cd44c2484523c \
-    --hash=sha256:ed8b1e6d25367937e3321e054f4974f9abfde1a3e0a538824c87da377130c2b6
+tinytag==2.3.0 \
+    --hash=sha256:231ba5b2fb7a6db478f6dd344ebf20dfdfcd5907f142d475605d516dd7e8b9a8 \
+    --hash=sha256:84850f8045424b944475b9754bc35c7e09bcae1ab08d1f88d9293aa33af39a27
     # via pyrit
 tldextract==5.3.1 \
     --hash=sha256:6bfe36d518de569c572062b788e16a659ccaceffc486d243af0484e8ecf432d9 \
