@@ -20,4 +20,4 @@ spacy==3.7.5
 playwright==1.60.0
 # OCR pipeline (PDF → image → GPT-4 Vision)
 pymupdf==1.25.5
-Pillow==12.3.0
+Pillow==13.0.0
