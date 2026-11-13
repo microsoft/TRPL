@@ -21,7 +21,7 @@ azure-monitor-opentelemetry-exporter==1.0.0b28
 # -----------------------------------------------------------------------------
 # IMAGE PROCESSING / OCR PREPROCESSING
 # -----------------------------------------------------------------------------
-Pillow==12.3.0
+Pillow==13.0.0
 opencv-python==5.0.0.93
 numpy==2.5.1
 scikit-image==0.26.0
