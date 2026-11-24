@@ -24,7 +24,7 @@
         "clean": "npm run clean --workspaces --if-present && rimraf node_modules/.cache"
     },
     "devDependencies": {
-        "cypress": "^14.2.0",
+        "cypress": "^16.3.0",
         "@types/node": "^20.19.0",
         "azurite": "^3.35.0",
         "concurrently": "^8.2.2",
